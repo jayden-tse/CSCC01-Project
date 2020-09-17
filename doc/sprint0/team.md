@@ -1,4 +1,4 @@
-Full Name       UTORID      Student ID    Email (utoronto only)           Best way to contact
+**Full Name       UTORID      Student ID    Email (utoronto only)           Best way to contact**
 
 Jayden Tse      tsejayde    1005172894    jayden.tse@mail.utoronto.ca     DM/ping on discord and email. Available 12am-12pm
 
