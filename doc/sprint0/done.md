@@ -65,14 +65,14 @@ ________________
 
 We accept these guidelines and intend to fulfill them (sign below):
 
-**Jayden Tse
+**Jayden Tse**
 
-Adam Wu
+**Adam Wu**
 
-Mickias Marcos
+**Mickias Marcos**
 
-Phillip Pham
+**Phillip Pham**
 
-Howard Hong
+**Howard Hong**
 
-Yishen Feng**
+**Yishen Feng**
