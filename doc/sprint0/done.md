@@ -64,6 +64,7 @@ ________________
 
 
 We accept these guidelines and intend to fulfill them (sign below):
+
 Jayden Tse
 
 Adam Wu
