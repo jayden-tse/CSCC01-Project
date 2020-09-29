@@ -65,9 +65,11 @@ After his favorite team’s loss in the finals, Charles has a strong opinion tha
 **Key Principles:**
 
 People like to share, whether it’s their skill, opinions or knowledge
+
 **Principle: ACS prestige**
 
 The idea is to reward users with great ACS scores and knowledge/predictions of current sports teams while also allowing anyone of the targeted audience to use the app to practice and compete with other analysts. 
+
 **Principle: Social Interaction**
 
 This platform allows sports fans and enthusiasts to put their statements and opinions in discussions to be judged as well as analyze other users’ statements and opinions as well.
