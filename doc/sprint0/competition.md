@@ -1,5 +1,6 @@
-﻿Identifies existing products (and possibly provide URLs) that solve the same (or similar) problem as yours.
-Sports-related competition
+**Identifies existing products (and possibly provide URLs) that solve the same (or similar) problem as yours.
+Sports-related competition**
+
 * ESPN app (espn.com/espn/apps/espn)
    * Purely sports news and information
    * No/very little community aspect
@@ -15,16 +16,19 @@ Sports betting related competition (i.e. draftkings.com)
 * However, their approach is in making money from bets rather than having a prestige around their skills in predictions
 
 
-How is your product different?
+**How is your product different?**
+
 The ESPN app is only for news and live games. Facebook and Twitter don’t focus on sports because their apps are directed towards a wider audience. Reddit has smaller communities for specific topics, including sports. Draftkings requires actual money to bet. However, none of these products are able to estimate how credible people are in analysing sport events.
 
 
-If your product is better for specific users and/or specific scenarios,
+**If your product is better for specific users and/or specific scenarios,**
 * Who are the users and/or what are the scenarios?
+
 Our users are for sports analysts and fans. Our product is better for sports fans who would like to prove that they know what they’re talking about. With ACS (Analytical Credibility Score), we will be able to quantify each user’s credibility in analysing sports. 
 
 
 * Why do you think the competitors didn’t focus on these users and/or scenarios? and, what would it take from them to do so?
+
 The competitors didn’t focus on these users because the goals for the social platforms involved a much broader audience and a different function, as stated above. If they decided to focus on these types of users, they could drive away other users from their platforms who are not as invested into sports as fans and analysts.
 
 
