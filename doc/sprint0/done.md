@@ -1,4 +1,4 @@
-﻿A user story is “done” when:
+**A user story is “done” when:**
 * It is satisfied (i.e. working)
 * It is fully unit tested (i.e all features work independently)
 * It is successfully integrated with the entire application (i.e integration/system testing)
@@ -8,60 +8,7 @@
 * Follows Google Style Guide (if available)
 * Marked as Done on JIRA
 * Code committed to master branch once all preconditions are met (i.e above)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ________________
-
 
 We accept these guidelines and intend to fulfill them (sign below):
 
