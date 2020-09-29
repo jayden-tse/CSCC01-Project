@@ -65,7 +65,7 @@ ________________
 
 We accept these guidelines and intend to fulfill them (sign below):
 
-Jayden Tse
+**Jayden Tse
 
 Adam Wu
 
@@ -75,4 +75,4 @@ Phillip Pham
 
 Howard Hong
 
-Yishen Feng
+Yishen Feng**
