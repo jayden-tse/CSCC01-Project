@@ -1,18 +1,24 @@
-﻿SPORTCRED
-Signup
+**SPORTCRED**
+
+* = important                ** = Necessary
+
+**Signup**
+
 * **As a new user, I want to be able to create an account so that I can explore this app. 20
    * Name, email, phone number, gender, age, location
    * Only 1 account per email/phone number
 
 
-Login
+**Login**
+
 * **As a registered user, I want to be able to log into my account so that I can use the app 8
 * As a registered user, I want to be able to sign out of my account so that I can log into a different/same account 3
 * As a registered user, I want to reset my password so that I can access my account again if I forget 13
    * As a registered user, I want to link my account to my email/phone, so that I can recover my password if necessary 2
 
 
-Profile
+**Profile**
+
 * **As a registered user, I want to view my profile, so that I can make sure my account info is correct. 8
 * *As a registered user, I want to be able to change my information in profile so that I can share basic information about myself via the app 2
    * As a registered user, I want to select a profile picture so that I can express who I am 3
@@ -26,7 +32,8 @@ Profile
 * As a registered user, I want to see my pick history so that I/other people can review my previous predictions 5
 
 
-The Zone (home page)
+**The Zone (home page)**
+
 * **As a registered user, I want to be able to access the different parts of the app from The Zone, so that I can see what the app has to offer 1
    * Access Open Court, Trivia, Picks & Predictions, Debate
 * *As a registered user, I want to get notifications on the current game from The Zone so that I can be updated when I am busy 20
@@ -35,7 +42,7 @@ The Zone (home page)
 
 
 
-Open Court - As a registered user, I want to be able to...
+**Open Court** - As a registered user, I want to be able to...
 * **View posts (includes a title, message, and original poster’s name) so that I can see what other people have to say. 5
    * *Comment on posts so that I can express my take on the subject of this post 3
    * *Upvote/downvote posts via a scale so that I can express whether I agree/disagree 3
@@ -48,7 +55,8 @@ Open Court - As a registered user, I want to be able to...
 * View reports so that I can moderate the community (extra) 20
 
 
-Trivia
+**Trivia**
+
 * **As a registered user, I want to be able to request a head-to-head battle with another user by SMS so that I may gain/lose ACS points 20
    * As a user, I want to get a notification from the app if my friend invites me to a trivia game so that I know and am alerted 20
 * As a registered user, I want to have a timer on trivias so that other users can’t cheat easily 2
@@ -56,7 +64,8 @@ Trivia
 * *As a user, I want to have unique questions in my trivia game, so that I don’t get asked the same questions every game 5
 
 
-Picks & Predictions
+**Picks & Predictions**
+
 * *As a registered user, I want to have a list of pro players/coaches to put in my lineup from the picks/predictions button so that I can show off my picks of the year 13
    * MVP
    * Defensive player of the year
@@ -79,9 +88,9 @@ Picks & Predictions
 * **As a ACS bot, I want to be able to compute the player’s new ACS after every successful/failed pick/prediction so that they are rewarded/punished 5
 
 
-Debate
+**Debate**
+
 * **As a registered user, I want to be able to debate/analyze/answer the question in my tier so that I can show other users within my tier what my response is and gain points. 8
 * *As a registered user, I want to be able to agree/disagree on posts so that I can express my opinion on a debate (based on a scale from 1-10). 5
 * **As a ACS bot, I want to look back retrospectively at debates and:
    * Compute the amount of ACS gained/lost from a debate so that they can see what level they are at 5
-* = important                ** = Necessary
