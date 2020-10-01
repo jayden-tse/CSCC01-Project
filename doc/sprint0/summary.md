@@ -12,33 +12,8 @@ Dave: the casual sports fan
 * Dave is 16 years old, and watches basketball whenever his friends do. He likes talking about recent games with his friends and they often debate about who the best basketball player is.
 John: the hardcore sports fan
 * John is a 20 year old man who knows everything about basketball, and watches every game live. His favorite team switches every season because he knows all about the best upcoming and veteran players that show up in every team. He knows 30 years of NBA history and has watched countless hours of basketball while studying for university exams. 
-Debron Jameson: the professional athlete
-* Debron is a professional athlete that plays for the Mississauga Mihawks. He is in his prime, 24 years old, and can shoot 3 pointers from the 3 point line. He is well respected and attends major tournaments all across the country. He also knows his competition, and is able to prepare strategies against opponents in his coming tournaments.
 Charles: the sports analyst
 * Charles is a 40 year old sports analyst. He has been watching every team, recording every game, and keeping record of every point scored. He gives commentaries for a living and does his best to stay unbiased during live commentaries. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 **Key Scenarios:**
 
@@ -55,12 +30,6 @@ Dave thinks he knows a lot about NBA history, so he challenges his buddy John to
 **Picks & Predictions**
 
 Debron wishes to earn ACS points and decides to play from the Picks & Predictions as his favourite team has an upcoming match in the regular season. Debron logs in successfully with his registered account and selects the Picks & Predictions on the The Zone module. Debron views a list of daily picks in the regular season for upcoming games that have not started yet. Debron finally finds the match he is interested in and chooses the team he predicts will win. After the game has finished, the results are in and shows he predicted correctly from the match and is rewarded with ACS points.
-
-
-**Analysis/Debate**
-
-After his favorite team’s loss in the finals, Charles has a strong opinion that Tom, an underperforming athlete on his favorite team is a major factor in the loss and decides to express his opinion by starting a debate on the topic. Charles logs in to Sportcred and accesses the debate forums from the zone. He then creates a post with a lot of evidence expressing his opinion that Tom has a strong role in his favorite team’s loss in the finals. A few hours later, Charles found out that most people had agreed with his opinion and as a result, he gained some ACS points.
-
 
 **Key Principles:**
 
