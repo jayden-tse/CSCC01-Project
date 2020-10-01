@@ -7,7 +7,7 @@ Our objective is to build a social iOS/web basketball analysis and debate app th
 
 **Key Personas:**
 
-Sport fans (casual/hardcore, from teenagers to adults/seniors), coaches, sport analysts, athletes 
+Sport fans (casual/hardcore, from teenagers to adults/seniors), coaches, sport analysts, athletes
 Dave: the casual sports fan
 * Dave is 16 years old, and watches basketball whenever his friends do. He likes talking about recent games with his friends and they often debate about who the best basketball player is.
 John: the hardcore sports fan
@@ -28,15 +28,16 @@ John wishes to earn ACS points and decides to play from the Picks & Predictions 
 
 **Analysis/Debate**
 
-After his favorite team’s loss in the finals, Charles has a strong opinion that Tom, an underperforming athlete on his favorite team is a major factor in the loss and decides to express his opinion by starting a debate on the topic. Charles logs in to Sportcred and accesses the debate forums from the zone. He then creates a post with a lot of evidence expressing his opinion that Tom has a strong role in his favorite team’s loss in the finals. A few hours later, Charles found out that most people had agreed with his opinion and as a result, he gained some ACS points.
+As a profressional sports analyst, Charles is constantly looking for ways to practice his analysis skills so that he can keep improving his commentaries. He receives an email notification for the 2 new analysis/debate questions of the day on Sportcred, so he logs in to Sportcred, navigates to the Analysis/Debate section, and types his analyses. He is satisfied with his analyses, so he submits them and waits for the other people that were given the same question to answer. In the evening, he receives another email notification that says all analyses were submitted for one of the questions and it's ready for review. He opens the Analysis/Debate section again and critically reads both of the responses. He is amazed by how insightful one of the responses were and learns a lot from it, so he slides the agreeance scale to the highest rating. However, the other response did not support it's arguments very well so he gives it a low agreeance. A few hours later, he sees that the other people strongly agreed with his analysis so he gains a good amount of ACS.
+
 
 **Key Principles:**
 
-People like to share, whether it’s their skill, opinions or knowledge
+People like to share, whether it’s their skill, opinions or knowledge.
 
 **Principle: ACS prestige**
 
-High ACS scores should feel hard-earned and look very impressive to other users on the app, hence the prestige. Users should feel encouraged to keep improving daily and ranking up a tier should feel satisfying
+High ACS scores should feel hard-earned and look very impressive to other users on the app, hence the prestige. Users should feel encouraged to keep improving daily and ranking up a tier should feel satisfying.
 
 **Principle: Social Interaction**
 
