@@ -17,11 +17,6 @@ Charles: the sports analyst
 
 **Key Scenarios:**
 
-**Open Court**
-
-Some news has been revealed about a certain athlete. John learns of this and feeling confident, he decides to login into Sportcred and post his opinion on the matter. The next day, he sees that a lot of people generally disagreed with what he said and even commented on his post to express their opposition. John’s ego is shattered since almost no one agrees with him so he decides to delete his post.
-
-
 **Trivia**
 
 Dave thinks he knows a lot about NBA history, so he challenges his buddy John to in a questionnaire about important events and players. Little did he know, John was an expert on this topic and completely smashed him, getting every question correct. Dave is surprised to see how knowledgeable his friend was, but learned a lot about NBA history through the quiz questions. John gets a prize of X ACS added to his ACS as a result of his outstanding performance, while Dave sadly loses Y for his lack of knowledge.
@@ -29,7 +24,11 @@ Dave thinks he knows a lot about NBA history, so he challenges his buddy John to
 
 **Picks & Predictions**
 
-Debron wishes to earn ACS points and decides to play from the Picks & Predictions as his favourite team has an upcoming match in the regular season. Debron logs in successfully with his registered account and selects the Picks & Predictions on the The Zone module. Debron views a list of daily picks in the regular season for upcoming games that have not started yet. Debron finally finds the match he is interested in and chooses the team he predicts will win. After the game has finished, the results are in and shows he predicted correctly from the match and is rewarded with ACS points.
+John wishes to earn ACS points and decides to play from the Picks & Predictions as his favourite team has an upcoming match in the regular season. John logs in successfully with his registered account and selects the Picks & Predictions on the The Zone module. John views a list of daily picks in the regular season for upcoming games that have not started yet. John finally finds the match he is interested in and chooses the team he predicts will win. After the game has finished, the results are in and shows he predicted correctly from the match and is rewarded with ACS points.
+
+**Analysis/Debate**
+
+After his favorite team’s loss in the finals, Charles has a strong opinion that Tom, an underperforming athlete on his favorite team is a major factor in the loss and decides to express his opinion by starting a debate on the topic. Charles logs in to Sportcred and accesses the debate forums from the zone. He then creates a post with a lot of evidence expressing his opinion that Tom has a strong role in his favorite team’s loss in the finals. A few hours later, Charles found out that most people had agreed with his opinion and as a result, he gained some ACS points.
 
 **Key Principles:**
 
