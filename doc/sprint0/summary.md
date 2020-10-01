@@ -68,7 +68,7 @@ People like to share, whether it’s their skill, opinions or knowledge
 
 **Principle: ACS prestige**
 
-The idea is to reward users with great ACS scores and knowledge/predictions of current sports teams while also allowing anyone of the targeted audience to use the app to practice and compete with other analysts. 
+High ACS scores should feel hard-earned and look very impressive to other users on the app, hence the prestige. Users should feel encouraged to keep improving daily and ranking up a tier should feel satisfying
 
 **Principle: Social Interaction**
 
