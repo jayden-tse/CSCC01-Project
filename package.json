@@ -21,6 +21,8 @@
   "homepage": "https://github.com/UTSCCSCC01/project-yes#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongodb": "^3.6.2"
+    "mongodb": "^3.6.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   }
 }
