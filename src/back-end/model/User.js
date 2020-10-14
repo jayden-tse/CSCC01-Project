@@ -1,21 +1,20 @@
 class User {
 
-    User(username, password, email, phoneNum, questionaire, profile) {
+    User(username, password, email, phoneNum, profile) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.phoneNum = phoneNum;
-        this.questionaire = questionaire;
         this.profile = profile;
     }
 
-    get questionaire() {
-        return this.questionaire;
+    get id() {
+        return this.id;
     }
 
-    set questionaire(questionaire) {
-        this.questionaire = questionaire;
+    set id(id) {
+        this.id = id;
     }
     
     get username() {
@@ -40,14 +39,6 @@ class User {
 
     set phoneNum(phoneNum) {
         this.phoneNum = phoneNum;
-    }
-    
-    get questionaire() {
-        return this.questionaire;
-    }
-
-    set questionaire(questionaire) {
-        this.questionaire = questionaire;
     }
     
     get profile() {

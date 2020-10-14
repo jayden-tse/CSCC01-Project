@@ -1,9 +1,10 @@
 class Profile {
     
-    Profile(picture, about, status, ACS) {
+    Profile(picture, about, status, questionaire, ACS) {
         this.picture = picture;
         this.about = about;
         this.status = status;
+        this.questionnaire = questionnaire;
         this.ACS = ACS;
     }
 
@@ -31,10 +32,18 @@ class Profile {
         this.status = status;
     }
 
+    get questionnaire() {
+        return this.questionnaire;
+    }
+
+    set questionnaire(questionnaire) {
+        this.questionnaire = questionnaire;
+    }
+
     get ACS() {
         return this.ACS;
     }
-    
+
     set ACS(ACS) {
         this.ACS = ACS
     }
