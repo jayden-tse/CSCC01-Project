@@ -1,6 +1,6 @@
 class Profile {
     
-    Profile(picture, about, status, questionaire, ACS) {
+    Profile(picture, about, status, questionnaire, ACS) {
         this.picture = picture;
         this.about = about;
         this.status = status;
