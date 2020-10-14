@@ -7,19 +7,35 @@ class Profile {
         this.ACS = ACS;
     }
 
-    updatePicture(picture) {
-
+    get picture() {
+        return this.picture;
+    }
+    
+    set picture(picture) {
+        this.picture = picture;
     }
 
-    updateAbout(about) {
-
+    get about() {
+        return this.about;
     }
 
-    updateStatus(status) {
-
+    set about(about) {
+        this.about = about;
     }
 
-    updateACS(ACS) {
+    get status() {
+        return this.status;
+    }
 
+    set status(status) {
+        this.status = status;
+    }
+
+    get ACS() {
+        return this.ACS;
+    }
+    
+    set ACS(ACS) {
+        this.ACS = ACS
     }
 }
