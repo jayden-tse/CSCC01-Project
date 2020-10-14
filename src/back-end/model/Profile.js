@@ -1,25 +1,50 @@
 class Profile {
     
-    Profile(picture, about, status, ACS) {
+    Profile(picture, about, status, questionaire, ACS) {
         this.picture = picture;
         this.about = about;
         this.status = status;
+        this.questionnaire = questionnaire;
         this.ACS = ACS;
     }
 
-    updatePicture(picture) {
-
+    get picture() {
+        return this.picture;
+    }
+    
+    set picture(picture) {
+        this.picture = picture;
     }
 
-    updateAbout(about) {
-
+    get about() {
+        return this.about;
     }
 
-    updateStatus(status) {
-
+    set about(about) {
+        this.about = about;
     }
 
-    updateACS(ACS) {
+    get status() {
+        return this.status;
+    }
 
+    set status(status) {
+        this.status = status;
+    }
+
+    get questionnaire() {
+        return this.questionnaire;
+    }
+
+    set questionnaire(questionnaire) {
+        this.questionnaire = questionnaire;
+    }
+
+    get ACS() {
+        return this.ACS;
+    }
+
+    set ACS(ACS) {
+        this.ACS = ACS
     }
 }
