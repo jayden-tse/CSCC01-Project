@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class SignupController {
     nodemailer = require('nodemailer');
     // const MongoClient = require('mongodb').MongoClient;
@@ -32,3 +33,5 @@ class SignupController {
     }
 
 }
+=======
+>>>>>>> df5a7df20ce51d39384e45396450b05594d86ea8
