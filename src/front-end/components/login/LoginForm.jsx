@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import logo from "../sportcredLogo2.png";
+import logo from "../../resources/sportcredLogo2.png";
 import "./LoginForm.css";
 
 class LoginForm extends Component {
