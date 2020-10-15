@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 class SignupController {
     nodemailer = require('nodemailer');
     // const MongoClient = require('mongodb').MongoClient;
@@ -13,7 +12,6 @@ class SignupController {
             pass: 'projectyes'
             }
         });
-
 
     notifyUserForNewAccount(user) {
         var mailOptions = {
@@ -32,6 +30,17 @@ class SignupController {
         });
     }
 
+    bcrypt = require('bcrypt');
+    saltRounds = 10;
+
+    passwordHasher(password) {
+        var salt = bcrypt.genSaltSync(saltRounds);
+        var hashedPassword = bcrypt.hashSync(password, salt);
+        return hashedPassword;
+    }
+
+    passwordChecker(password, hashedPassword) {
+        var state = bcrypt.compareSync(password, hashedPassword);
+        return state
+    }
 }
-=======
->>>>>>> df5a7df20ce51d39384e45396450b05594d86ea8
