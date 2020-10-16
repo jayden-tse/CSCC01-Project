@@ -28,7 +28,7 @@ class DropdownButton extends React.Component {
   render() {
     return (
       <div className="dropdown">
-        <button className="CurrentUser" onClick={(e)=>this._handleClick(e)}>Dave
+        <button className="CurrentUser" onClick={(e) => this._handleClick(e)}>{this.props.name}
         </button>
         { this.state.isVisible ? this.renderDropdown() : null }
       </div>
