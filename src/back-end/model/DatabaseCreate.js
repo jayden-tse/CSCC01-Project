@@ -1,20 +1,20 @@
+const nodemailer = require('nodemailer');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+// Business email from which users will get the confirmation.
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'sportcredyes@gmail.com',
+        pass: 'projectyes'
+    }
+});
 class DatabaseCreate {
-    nodemailer = require('nodemailer');
-    // const MongoClient = require('mongodb').MongoClient;
-    // const URI = "mongodb+srv://SPORTCRED:1234@sportcred.q4w2z.mongodb.net/SPORTCRED?retryWrites=true&w=majority";
-    // const client = new MongoClient(URI, { useNewUrlParser: true, useUnifiedTopology: true });
-
-    // Business email from which users will get the confirmation.
-    transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'sportcredyes@gmail.com',
-            pass: 'projectyes'
-        }
-    });
-
+    // MongoClient = require('mongodb').MongoClient;
+    // URI = "mongodb+srv://SPORTCRED:1234@sportcred.q4w2z.mongodb.net/SPORTCRED?retryWrites=true&w=majority";
+    // client = new MongoClient(URI, { useNewUrlParser: true, useUnifiedTopology: true });
     notifyUserForNewAccount(user) {
-        var mailOptions = {
+        let mailOptions = {
             from: 'sportcredyes@gmail.com',
             to: user.email,
             subject: 'New Account',
@@ -30,17 +30,24 @@ class DatabaseCreate {
         });
     }
 
-    bcrypt = require('bcrypt');
-    saltRounds = 10;
-
     passwordHasher(password) {
-        var salt = bcrypt.genSaltSync(saltRounds);
-        var hashedPassword = bcrypt.hashSync(password, salt);
+        let salt = bcrypt.genSaltSync(saltRounds);
+        let hashedPassword = bcrypt.hashSync(password, salt);
         return hashedPassword;
     }
 
     passwordChecker(password, hashedPassword) {
-        var state = bcrypt.compareSync(password, hashedPassword);
+        let state = bcrypt.compareSync(password, hashedPassword);
         return state
+    }
+
+    async uniqueEmail(client, mail) {
+        let result = await client.db("SPORTCRED").collection("Users").findOne({ "email": mail });
+        return result === null;
+    }
+
+    async uniquePhoneNum(client, num) {
+        let result = await client.db("SPORTCRED").collection("Users").findOne({ "phoneNum": num });
+        return result === null;
     }
 }
