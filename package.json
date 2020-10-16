@@ -20,10 +20,11 @@
   },
   "homepage": "https://github.com/UTSCCSCC01/project-yes#readme",
   "dependencies": {
+    "bcrpyt": "^2.0.0",
     "bcrypt": "^5.0.0",
     "express": "^4.17.1",
     "mongodb": "^3.6.2",
-    "nodemailer": "^6.4.13",
+    "nodemailer": "^6.4.14",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }
