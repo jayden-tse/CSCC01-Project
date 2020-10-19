@@ -14,11 +14,12 @@ class ProfilePicture extends Component {
     return (
       <div className="ProfilePicture">
         <ProfilePictureDisplay src={this.state.src} />
-        <ProfilePictureEdit name="Edit" onClick={this.handleEdit} />
+
         <ProfilePictureSubmit
           name="Profile Picture Submit"
           value={this.state.src}
         />
+        <ProfilePictureEdit name="Edit" onClick={this.handleEdit} />
       </div>
     );
   }

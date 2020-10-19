@@ -13,10 +13,10 @@ class ProfileDisplay extends Component {
   render() {
     return (
       <div className="ProfileDisplay">
-        <ProfileAbout />
-        <ProfileACS />
         <ProfilePicture />
+        <ProfileAbout />
         <ProfileStatus />
+        <ProfileACS />
       </div>
     );
   }
