@@ -1,5 +1,4 @@
 class Matches {
-    
     Matches(matches) {
         this.matches = matches;
     }

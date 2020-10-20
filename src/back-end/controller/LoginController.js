@@ -8,3 +8,8 @@ exports.auth_get = function(req, res, next) {
         });
     })(req, res, next);
 };
+
+exports.logout = function(req, res, next) {
+    req.logout();
+    res.redirect('/');
+}

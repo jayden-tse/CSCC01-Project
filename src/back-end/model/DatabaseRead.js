@@ -1,6 +1,4 @@
-const MongoClient = require('mongodb').MongoClient;
-const URI = "mongodb+srv://SPORTCRED:1234@sportcred.q4w2z.mongodb.net/SPORTCRED?retryWrites=true&w=majority";
-const client = new MongoClient(URI, { useNewUrlParser: true, useUnifiedTopology: true });
+var mongoConnect = require('../../mongoConnect');
 
 const bcrypt = require('bcrypt');
 const passport = require('passport');
@@ -8,16 +6,15 @@ const LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy(
     async function(username, password, done) {
-        await client.connect();
-        Users = client.db("SPORTCRED").collection("Users");
+        Users = DB.collection("Users");
         Users.findOne({ username: username },
             function(err, user) {
                 if (err) { return done(err); }
                 if (!user) {
                     return done(null, false, { message: 'Incorrect username.' });
                 }
-                let x = new DatabaseRead();
-                if (!x.passwordChecker(password, user.password)) {
+                let dbRead = new DatabaseRead();
+                if (!dbRead.passwordChecker(password, user.password)) {
                     return done(null, false, { message: 'Incorrect password.' });
                 }
                 return done(null, user);
@@ -26,12 +23,12 @@ passport.use(new LocalStrategy(
 ));
 
 class DatabaseRead {
-    async findEmail(client, email) {
-        return await client.db("SPORTCRED").collection("Users").findOne({ "email": email });
+    async findEmail(email) {
+        return await mongoConnect.getDBCollection("Users").findOne({ "email": email });
     }
 
-    async findPhoneNum(client, num) {
-        return await client.db("SPORTCRED").collection("Users").findOne({ "phoneNum": num });
+    async findPhoneNum(num) {
+        return await mongoConnect.getDBCollection("Users").findOne({ "phoneNum": num });
     }
 
     passwordChecker(password, hashedPassword) {
@@ -39,3 +36,5 @@ class DatabaseRead {
         return state
     }
 }
+
+module.exports = DatabaseRead;

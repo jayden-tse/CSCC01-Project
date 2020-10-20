@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+//const router = express();
+const validateUser = require('./validator');
 
 const signupController = require('./back-end/controller/SignupController');
 const loginController = require('./back-end/controller/LoginController');
@@ -12,7 +14,7 @@ const triviaController = require('./back-end/controller/TriviaController');
 /* USER */
 
 // Create user
-router.put('/user', signupController.user_put);
+router.put('/user', validateUser.validateUser, signupController.user_put);
 
 // Get user
 router.get('/user', signupController.user_get);
@@ -35,6 +37,8 @@ router.delete('/user', signupController.user_del);
 // Get login authentication
 router.get('/login', loginController.auth_get);
 
+// Logout
+router.get('/logout', loginController.logout);
 
 /* PROFILE */
 
@@ -134,3 +138,5 @@ router.put('/opencourt/likes', opencourtController.open_court_update_likes_put);
 
 // Delete open court comment
 router.delete('/opencourt', opencourtController.open_court_comment_del);
+
+module.exports = router;
