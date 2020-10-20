@@ -13,7 +13,7 @@ class TopNavBar extends React.Component{
       <nav className="TopNavBar"> 
         <img className="logo" src={"../../resources/sportcredLogo.png"}/>
         <button className="TheZoneButton" onClick={this.props.redirectToTheZone}>The Zone</button>
-        <CurrentUser userName="Dave"
+        <CurrentUser
           handleLogout={this.props.handleLogout}
           redirectToProfile={this.props.redirectToProfile}
         />
