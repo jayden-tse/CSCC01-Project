@@ -38,7 +38,7 @@ router.delete('/user', signupController.user_del);
 router.get('/login', loginController.auth_get);
 
 // Logout
-router.get('/logout', loginController.logout);
+router.put('/logout', loginController.auth_put);
 
 /* PROFILE */
 

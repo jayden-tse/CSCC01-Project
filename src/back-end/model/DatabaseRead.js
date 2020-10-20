@@ -1,12 +1,13 @@
 var mongoConnect = require('../../mongoConnect');
+const LocalStrategy = require('passport-local').Strategy;
 
 const bcrypt = require('bcrypt');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport');
+
 
 passport.use(new LocalStrategy(
     async function(username, password, done) {
-        Users = DB.collection("Users");
+        Users = mongoConnect.getDBCollection("Users");
         Users.findOne({ username: username },
             function(err, user) {
                 if (err) { return done(err); }
@@ -21,7 +22,12 @@ passport.use(new LocalStrategy(
             });
     }
 ));
-
+passport.serializeUser(function(user, done) {
+    done(null, user.username);
+});
+passport.deserializeUser(function(username, done) {
+    done(null, mongoConnect.getDBCollection("Users").findOne({ "username": username }));
+});
 class DatabaseRead {
     async findEmail(email) {
         return await mongoConnect.getDBCollection("Users").findOne({ "email": email });
