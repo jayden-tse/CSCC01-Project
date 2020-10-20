@@ -14,8 +14,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      auth: true,
-      currentPage: "Profile",
+      auth: false,
+      currentPage: "Login",
       currentUser: "hello",
     };
     this.loginSuccess = this.loginSuccess.bind(this);
@@ -44,7 +44,10 @@ class App extends React.Component {
   }
 
   handleLogout() {
-    this.setstate({ currentPage: "login", auth: true });
+    this.setState({
+      currentPage: "Login",
+      auth: false,
+    });
   }
 
   redirectToTheZone() {
