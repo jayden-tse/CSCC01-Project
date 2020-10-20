@@ -6,7 +6,6 @@ import TriviaPage from "./components/TriviaPage";
 import DebatePage from "./components/DebatePage";
 import PicksAndPredictionsPage from "./components/PicksAndPredictionsPage";
 import OpenCourtPage from "./components/OpenCourtPage";
-import ProfilePage from "./components/Profile/ProfilePage";
 
 //Main page that display different pages depending on current state
 class App extends React.Component {
@@ -68,8 +67,6 @@ class App extends React.Component {
         page = <PicksAndPredictionsPage />;
       } else if (this.state.currentPage === "Debate") {
         page = <DebatePage />;
-      } else if (this.state.currentPage === "Profile") {
-        page = <ProfilePage user={this.state.currentUser} />;
       }
     }
 
