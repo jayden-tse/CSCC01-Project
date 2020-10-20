@@ -30,20 +30,17 @@ class DatabaseCreate {
     // Store the User into the database. Also check for unique contact info and send
     // the user confirmation when their account has been successfully created.
     async storeUser(user) {
-        try {
-            // Only store this user in the database if there exists no other accounts with
-            // the same phone numbers and email.
-            let newNum = await dbRead.findPhoneNum(user.phoneNum);
-            let newEmail = await dbRead.findEmail(user.email);
-            if (newNum && newEmail) {
-                this.notifyUserForNewAccount(user);
-                let result = await mongoConnect.getDBCollection("Users").insertOne(user);
-            }
-            else {
-                console.error('An existing user has this email and/or phone number.')
-            }
-        } catch (e) {
-            console.error(e);
+        // Only store this user in the database if there exists no other accounts with
+        // the same phone numbers and email.
+        let newNum = await dbRead.findPhoneNum(user.phoneNum);
+        let newEmail = await dbRead.findEmail(user.email);
+        console.log(newNum + " " + newEmail);
+        if (newNum === null && newEmail === null) {
+            this.notifyUserForNewAccount(user);
+            let result = await mongoConnect.getDBCollection("Users").insertOne(user);
+            return true;
+        } else {
+            return false;
         }
     }
 

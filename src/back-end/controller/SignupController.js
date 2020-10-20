@@ -5,7 +5,7 @@ const User = require('../model/User.js');
 // const DatabaseUpdate = require('../model/DatabaseUpdate.js');
 // const DatabaseDelete = require('../model/DatabaseDelete.js');
 
-exports.user_put = function(req, res) {
+exports.user_put = async function(req, res) {
     // Get user data from the input, but don't create the actual User yet.
     let questionnaireAnswers = {
         q1: req.body.q1,
@@ -20,9 +20,12 @@ exports.user_put = function(req, res) {
     let hashedUser = dbCreate.createUser(user, questionnaireAnswers); // This is our User
 
     // Store the user into the database.
-    dbCreate.storeUser(hashedUser);
-    console.log("sending");
-    res.sendStatus(200);
+    
+    if (await dbCreate.storeUser(hashedUser)) {
+        res.sendStatus(200);
+    } else {
+        res.status(400).send('An existing user has this email and/or phone number.');
+    }
 };
 
 exports.user_get = function(req, res) {
