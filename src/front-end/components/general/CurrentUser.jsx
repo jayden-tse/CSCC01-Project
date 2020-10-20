@@ -6,19 +6,13 @@ class CurrentUser extends React.Component{
   constructor(props) {
       super(props);
       this.state = {
-          user: {}
+        user: {
+          name: "Dave",
+          picture: "../../resources/sportcredLogo.png"
+        }
       }
     }
 
-    //Need backend api to test, set api link to fetch user data, need profile pic and username
-    componentDidMount() {
-        fetch('http://localhost:3000/api/someapi')
-            .then(res => res.json())
-            .then(data => this.setState(
-                { user:data })
-            );
-    }
-  
   render() {
     return (
       <div className="CurrentUserContainer">
