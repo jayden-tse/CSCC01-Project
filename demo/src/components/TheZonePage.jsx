@@ -1,5 +1,6 @@
 import React from 'react';
 import TheZone from './theZone/TheZone';
+
 // replace whatever is in render with components
 // needed for the page
 
