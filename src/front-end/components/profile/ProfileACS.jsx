@@ -4,7 +4,8 @@ class ProfileACS extends Component {
   constructor(props) {
     super(props);
     //get ACS and such from props
-    this.state = { ACS: 300, ACSChange: -1 };
+    console.log(props.ACS);
+    this.state = { ACS: props.ACS, ACSChange: props.ACSChange };
   }
 
   render() {
