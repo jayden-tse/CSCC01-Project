@@ -13,11 +13,14 @@ import TopNavBar from './components/general/TopNavBar';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      auth:false,
-      currentPage:"Signup",
-      currentUser:"hello"
+	this.state = {
+      auth: false,
+      currentPage: "Login",
+      currentUser: "hello",
     };
+    this.loginSuccess = this.loginSuccess.bind(this);
+    this.redirectToSignup = this.redirectToSignup.bind(this);
+    this.redirectToTheZone = this.redirectToTheZone.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.redirectToProfile = this.redirectToProfile.bind(this);
     this.redirectToTrivia = this.redirectToTrivia.bind(this);
@@ -26,7 +29,26 @@ class App extends React.Component {
     this.redirectToPicksAndPredictions = this.redirectToPicksAndPredictions.bind(this);
    }
 
-    redirectToProfile() {
+  loginSuccess(username) {
+    this.setState({
+      auth: true,
+      currentUser: username,
+    });
+  }
+
+  redirectToSignup() {
+    this.setState({
+      currentPage: "Signup",
+    });
+  }
+
+  redirectToTheZone() {
+    this.setState({
+      currentPage: "TheZone",
+    });
+  }
+  
+   redirectToProfile() {
     this.setState({
       currentPage: "Profile"
     })
@@ -65,43 +87,49 @@ class App extends React.Component {
         page = <SignupPage />;
       }
       else {
-        page = <LoginPage />;
-      }
+        page = (
+          <LoginPage
+            onSignupRedirect={this.redirectToSignup}
+            onLoginSuccess={this.loginSuccess}
+            onTheZoneRedirect={this.redirectToTheZone}
+          />
+        );
     } else {
       if (this.state.currentPage === "TheZone") {
-        page = <div>
+        page = (<div>
           <TopNavBar handleLogout={this.handleLogout}
+			redirectToTheZone={this.redirectToTheZone}
             redirectToProfile={this.redirectToProfile}/>
           <TheZonePage
           redirectToDebate={this.redirectToDebate}
           redirectToOpenCourt={this.redirectToOpenCourt}
           redirectToPicksAndPredictions={this.redirectToPicksAndPredictions}
           redirectToTrivia={this.redirectToTrivia} />
-        </div>;
+        </div> );
       } else if (this.state.currentPage === "OpenCourt") {
-        page = <div>
+        page = (<div>
           <TopNavBar handleLogout={this.handleLogout}
             redirectToProfile={this.redirectToProfile} />
           <OpenCourtPage />
-        </div>;
+        </div> );
       } else if (this.state.currentPage === "Trivia") {
-        page = <div>
+        page = (<div>
           <TopNavBar handleLogout={this.handleLogout}
             redirectToProfile={this.redirectToProfile}/>
           <TriviaPage />
-        </div>;
+        </div>);
       } else if (this.state.currentPage === "PicksAndPredictions") {
-        page = <div>
+        page = (<div>
           <TopNavBar handleLogout={this.handleLogout}
             redirectToProfile={this.redirectToProfile}/>
           <PicksAndPredictionsPage />
-        </div>;
+        </div>);
       } else if (this.state.currentPage === "Debate") {
-        page = <div>
+        page = (<div>
           <TopNavBar handleLogout={this.handleLogout}
           redirectToProfile={this.redirectToProfile} />
           <DebatePage />
-        </div>;
+        </div>);
       }
     }
 
