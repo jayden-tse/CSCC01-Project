@@ -60,17 +60,6 @@ class DatabaseCreate {
             }
         });
     }
-
-    passwordHasher(password) {
-        let salt = bcrypt.genSaltSync(saltRounds);
-        let hashedPassword = bcrypt.hashSync(password, salt);
-        return hashedPassword;
-    }
-
-    passwordChecker(password, hashedPassword) {
-        let state = bcrypt.compareSync(password, hashedPassword);
-        return state
-    }
 }
 
 module.exports = DatabaseCreate;
