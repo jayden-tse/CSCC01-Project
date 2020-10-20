@@ -36,18 +36,6 @@ class DatabaseCreate {
         return hashedPassword;
     }
 
-    passwordChecker(password, hashedPassword) {
-        let state = bcrypt.compareSync(password, hashedPassword);
-        return state
-    }
 
-    async uniqueEmail(client, mail) {
-        let result = await client.db("SPORTCRED").collection("Users").findOne({ "email": mail });
-        return result === null;
-    }
 
-    async uniquePhoneNum(client, num) {
-        let result = await client.db("SPORTCRED").collection("Users").findOne({ "phoneNum": num });
-        return result === null;
-    }
 }
