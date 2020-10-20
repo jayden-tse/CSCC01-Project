@@ -7,6 +7,7 @@ import DebatePage from './components/DebatePage';
 import PicksAndPredictionsPage from './components/PicksAndPredictionsPage';
 import OpenCourtPage from './components/OpenCourtPage';
 import TopNavBar from './components/general/TopNavBar';
+import ProfilePage from "./components/Profile/ProfilePage";
 
 //Main page that display different pages depending on current state
 class App extends React.Component {
@@ -123,11 +124,13 @@ class App extends React.Component {
           <PicksAndPredictionsPage />
         </div>);
       } else if (this.state.currentPage === "Debate") {
-        page = (<div>
+         page = (<div>
           <TopNavBar handleLogout={this.handleLogout}
           redirectToProfile={this.redirectToProfile} />
           <DebatePage />
         </div>);
+      } else if (this.state.currentPage === "Profile") {
+        page = <ProfilePage ACS="800" ACSChange="-10" />;
       }
     }
 
