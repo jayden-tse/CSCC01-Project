@@ -12,7 +12,8 @@ class TheZonePage extends React.Component {
   render() {
     return (
       <div>
-        <TopNavBar />
+        <TopNavBar handleLogout={this.props.handleLogout}
+          redirectToProfile={this.props.redirectToProfile}/>
         <TheZone redirectToDebate={this.props.redirectToDebate}
           redirectToOpenCourt={this.props.redirectToOpenCourt}
           redirectToPicksAndPredictions={this.props.redirectToPicksAndPredictions}

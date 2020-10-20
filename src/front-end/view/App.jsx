@@ -17,16 +17,32 @@ class App extends React.Component {
       currentPage:"Debate",
       currentUser:"hello"
     };
+    this.handleLogout = this.handleLogout.bind(this);
+    this.redirectToProfile = this.redirectToProfile.bind(this);
     this.redirectToTrivia = this.redirectToTrivia.bind(this);
     this.redirectToDebate = this.redirectToDebate.bind(this);
     this.redirectToOpenCourt = this.redirectToPicksAndPredictions.bind(this);
     this.redirectToPicksAndPredictions = this.redirectToPicksAndPredictions.bind(this);
-   }
+  }
+
+  handleLogout() {
+    this.setState({
+      auth: false,
+      currentPage: "Login",
+      currentUser: null
+    })
+  }
+
+  redirectToProfile() {
+    this.setState({
+      currentPage: "Profile"
+    })
+  }
 
   redirectToTrivia() {
     this.setState({
       currentPage: "Trivia"
-		})
+    })
   }
 
   redirectToDebate() {
@@ -62,7 +78,10 @@ class App extends React.Component {
       }
     } else {
       if (this.state.currentPage === "TheZone") {
-        page = <TheZonePage redirectToDebate={this.redirectToDebate}
+        page = <TheZonePage
+          handleLogout={this.handleLogout}
+          redirectToProfile={this.redirectToProfile}
+          redirectToDebate={this.redirectToDebate}
           redirectToOpenCourt={this.redirectToOpenCourt}
           redirectToPicksAndPredictions={this.redirectToPicksAndPredictions}
           redirectToTrivia={this.redirectToTrivia} />;
