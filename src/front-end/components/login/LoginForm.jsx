@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import logo from "../../resources/sportcredLogo2.png";
 import "./LoginForm.css";
+import LoginCalls from "./LoginCalls";
 
 class LoginForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { LoginError: false, Email: "", Password: "" };
+    this.state = { LoginError: false, Username: "", Password: "" };
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
@@ -15,8 +16,16 @@ class LoginForm extends Component {
   }
 
   handleLoginSubmit() {
+    var result = LoginCalls.loginAuthenticate(
+      this.state.Username,
+      this.state.password
+    );
     //on login error
     this.setState({ LoginError: true });
+    //confirm login
+
+    //handle route if good login
+    //this.props.onLogin();
   }
 
   render() {
@@ -25,8 +34,8 @@ class LoginForm extends Component {
         <img className="SportcredLogo" src={logo} alt="Sportcred Logo" />
         <LoginInput
           type="text"
-          name="Email"
-          value={this.state.Email}
+          name="Username"
+          value={this.state.Username}
           onChange={this.handleChange}
         />
         <LoginInput
@@ -77,7 +86,7 @@ function LoginSubmit(props) {
 
 function LoginToSignup(props) {
   return (
-    <a className="LoginToSignup" href=".">
+    <a className="LoginToSignup" href="./Signup">
       {props.message}
     </a>
   );
