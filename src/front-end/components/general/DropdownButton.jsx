@@ -19,12 +19,8 @@ class DropdownButton extends React.Component {
   renderDropdown(){
     return(
       <ul className="dropdownList">
-        <li className="dropdownItem">
-          <a href="#" onClick={this.props.redirectToProfile}>Profile</a>
-        </li>
-        <li className="dropdownItem">
-          <a href="#" onClick={this.props.handleLogout}>Logout</a>
-        </li>
+        <li className="dropdownItem"><a href="#">Profile</a></li>
+        <li className="dropdownItem"><a href="#">Logout</a></li>
       </ul>
     );
   }

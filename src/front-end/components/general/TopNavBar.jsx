@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import CurrentUser from './CurrentUser';
 import "./TopNavBar.css";
 
@@ -6,17 +6,19 @@ import "./TopNavBar.css";
 class TopNavBar extends React.Component{
   constructor(props) {
       super(props);
+      this.RedirectToTheZone = this.RedirectToTheZone.bind(this);
+  }
+  
+  RedirectToTheZone() {
+    
   }
 
   render() {
     return (
       <nav className="TopNavBar"> 
         <img className="logo" src={"../../resources/sportcredLogo.png"}/>
-        <button className="TheZoneButton" onClick={this.props.redirectToTheZone}>The Zone</button>
-        <CurrentUser userName="Dave"
-          handleLogout={this.props.handleLogout}
-          redirectToProfile={this.props.redirectToProfile}
-        />
+        <button className="TheZoneButton" onClick={this.RedirectToTheZone}>The Zone</button>
+        <CurrentUser userName="Dave"/>
       </nav>
     )
   }
