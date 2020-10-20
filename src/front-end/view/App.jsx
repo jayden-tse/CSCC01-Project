@@ -17,21 +17,42 @@ class App extends React.Component {
       currentPage:"Debate",
       currentUser:"hello"
     };
-  }
-  render() {
-    return (
-      <div>
-      {(!this.state.auth) && (this.state.currentPage==="Signup")&&<SignupPage/>}
-      {(!this.state.auth) && (this.state.currentPage!=="Signup")&&<LoginPage/>}
-       {(this.state.auth) && (this.state.currentPage==="TheZone")&&<TheZonePage/>}
-      {(this.state.auth) && (this.state.currentPage==="OpenCourt")&&<OpenCourtPage/>}
-       {(this.state.auth) && (this.state.currentPage==="Trivia")&&<TriviaPage/>}
-       {(this.state.auth) && (this.state.currentPage==="PicksAndPredictions")&&<PicksAndPredictionsPage/>}
-        {(this.state.auth) && (this.state.currentPage==="Debate")&&<DebatePage/>}
-      </div>
-      
-    )
-  }
+   }
+
+
+    render() {
+        let page = null;
+
+        if (!this.state.auth) {
+            // logic to determine which page
+
+            if (this.state.currentPage === "Signup") {
+                page = <SignupPage />;
+            }
+            else {
+                page = <LoginPage />;
+            }
+        } else {
+            //
+            if (this.state.currentPage === "TheZone") {
+                page = <TheZonePage />;
+            } else if (this.state.currentPage === "OpenCourt") {
+                page = <OpenCourtPage />;
+            } else if (this.state.currentPage === "Trivia") {
+                page = <TriviaPage />;
+            } else if (this.state.currentPage === "PicksAndPredictions") {
+                page = <PicksAndPredictionsPage />;
+            } else if (this.state.currentPage === "Debate") {
+                page = <DebatePage />;
+            }
+        }
+
+        return (
+            <div>
+                {page}
+            </div>
+         )
+    }
 }
 
 export default App;
