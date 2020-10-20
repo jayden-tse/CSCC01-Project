@@ -22,8 +22,10 @@ class CurrentUser extends React.Component{
   render() {
     return (
       <div className="CurrentUserContainer">
-            <DropdownButton name={this.state.user.name}/>
-            <img className="profilePic" src={this.state.user.picture} />
+        <DropdownButton name={this.state.user.name}
+          handleLogout={this.props.handleLogout}
+          redirectToProfile={this.props.redirectToProfile}/>
+        <img className="profilePic" src={this.state.user.picture} />
        </div>
     )
   }
