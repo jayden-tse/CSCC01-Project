@@ -20,39 +20,37 @@ class App extends React.Component {
    }
 
 
-    render() {
-        let page = null;
+  render() {
+    let page = null;
 
-        if (!this.state.auth) {
-            // logic to determine which page
-
-            if (this.state.currentPage === "Signup") {
-                page = <SignupPage />;
-            }
-            else {
-                page = <LoginPage />;
-            }
-        } else {
-            //
-            if (this.state.currentPage === "TheZone") {
-                page = <TheZonePage />;
-            } else if (this.state.currentPage === "OpenCourt") {
-                page = <OpenCourtPage />;
-            } else if (this.state.currentPage === "Trivia") {
-                page = <TriviaPage />;
-            } else if (this.state.currentPage === "PicksAndPredictions") {
-                page = <PicksAndPredictionsPage />;
-            } else if (this.state.currentPage === "Debate") {
-                page = <DebatePage />;
-            }
-        }
-
-        return (
-            <div>
-                {page}
-            </div>
-         )
+    if (!this.state.auth) {
+    // logic to determine which page
+      if (this.state.currentPage === "Signup") {
+        page = <SignupPage />;
+      }
+      else {
+        page = <LoginPage />;
+      }
+    } else {
+      if (this.state.currentPage === "TheZone") {
+        page = <TheZonePage />;
+      } else if (this.state.currentPage === "OpenCourt") {
+        page = <OpenCourtPage />;
+      } else if (this.state.currentPage === "Trivia") {
+        page = <TriviaPage />;
+      } else if (this.state.currentPage === "PicksAndPredictions") {
+        page = <PicksAndPredictionsPage />;
+      } else if (this.state.currentPage === "Debate") {
+        page = <DebatePage />;
+      }
     }
+
+    return (
+      <div>
+        {page}
+      </div>
+    )
+  }
 }
 
 export default App;
