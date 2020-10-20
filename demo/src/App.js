@@ -8,7 +8,6 @@ import PicksAndPredictionsPage from './components/PicksAndPredictionsPage';
 import OpenCourtPage from './components/OpenCourtPage';
 import TopNavBar from './components/general/TopNavBar';
 
-
 //Main page that display different pages depending on current state
 class App extends React.Component {
   constructor(props) {
@@ -35,7 +34,6 @@ class App extends React.Component {
       currentUser: username,
     });
   }
-
   redirectToSignup() {
     this.setState({
       currentPage: "Signup",
@@ -82,11 +80,10 @@ class App extends React.Component {
     let page = null;
 
     if (!this.state.auth) {
-    // logic to determine which page
+      // logic to determine which page
       if (this.state.currentPage === "Signup") {
         page = <SignupPage />;
-      }
-      else {
+      } else {
         page = (
           <LoginPage
             onSignupRedirect={this.redirectToSignup}
@@ -94,6 +91,7 @@ class App extends React.Component {
             onTheZoneRedirect={this.redirectToTheZone}
           />
         );
+      }
     } else {
       if (this.state.currentPage === "TheZone") {
         page = (<div>
@@ -133,11 +131,7 @@ class App extends React.Component {
       }
     }
 
-    return (
-      <div>
-        {page}
-      </div>
-    )
+    return <div>{page}</div>;
   }
 }
 
