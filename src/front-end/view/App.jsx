@@ -1,11 +1,11 @@
 import React from 'react';
-import SignupPage from './SignupPage.jsx';
-import LoginPage from './LoginPage.jsx';
-import TheZonePage from './TheZonePage.jsx';
-import TriviaPage from './TriviaPage.jsx';
-import DebatePage from './DebatePage.jsx';
-import PicksAndPredictionsPage from './PicksAndPredictionsPage.jsx';
-import OpenCourtPage from './OpenCourtPage.jsx';
+import SignupPage from './SignupPage';
+import LoginPage from './LoginPage';
+import TheZonePage from './TheZonePage';
+import TriviaPage from './TriviaPage';
+import DebatePage from './DebatePage';
+import PicksAndPredictionsPage from './PicksAndPredictionsPage';
+import OpenCourtPage from './OpenCourtPage';
 
 
 //Main page that display different pages depending on current state
