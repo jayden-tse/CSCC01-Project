@@ -25,7 +25,8 @@ class LoginForm extends Component {
     //confirm login
 
     //handle route if good login
-    //this.props.onLogin();
+    this.props.onLoginSuccess();
+    this.props.onTheZoneRedirect();
   }
 
   render() {
@@ -51,7 +52,10 @@ class LoginForm extends Component {
         <br />
         <LoginSubmit onClick={this.handleLoginSubmit} name="Login" />
         <br />
-        <LoginToSignup message="Or make a new account here" />
+        <LoginToSignup
+          message="Or make a new account here"
+          onClick={this.props.onSignupRedirect}
+        />
       </div>
     );
   }
@@ -86,7 +90,7 @@ function LoginSubmit(props) {
 
 function LoginToSignup(props) {
   return (
-    <a className="LoginToSignup" href="./Signup">
+    <a className="LoginToSignup" href="#" onClick={props.onClick}>
       {props.message}
     </a>
   );
