@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import logo from "../../resources/sportcredLogo2.png";
-import "./LoginForm.css";
-import LoginCalls from "./LoginCalls";
+import logo from "../resources/sportcredLogo2.png";
+import "./LoginPage.css";
+//import LoginCalls from "./LoginCalls";
 
-class LoginForm extends Component {
+class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.state = { LoginError: false, Username: "", Password: "" };
@@ -16,10 +16,10 @@ class LoginForm extends Component {
   }
 
   handleLoginSubmit() {
-    var result = LoginCalls.loginAuthenticate(
-      this.state.Username,
-      this.state.password
-    );
+    // var result = LoginCalls.loginAuthenticate(
+    //   this.state.Username,
+    //   this.state.password
+    // );
     //on login error
     this.setState({ LoginError: true });
     //confirm login
@@ -31,7 +31,7 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <div className="LoginForm">
+      <div className="LoginPage">
         <img className="SportcredLogo" src={logo} alt="Sportcred Logo" />
         <LoginInput
           type="text"
@@ -96,4 +96,4 @@ function LoginToSignup(props) {
   );
 }
 
-export default LoginForm;
+export default LoginPage;
