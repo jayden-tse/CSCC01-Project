@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./ProfileAbout.css";
 
 const VIEW = "View",
   EDIT = "Edit",
@@ -70,10 +71,15 @@ class ProfileAbout extends Component {
   render() {
     return (
       <div className="ProfileAbout">
+        <ProfileAboutHeader message="About:" />
         {this.state.mode === VIEW ? this.renderView() : this.renderEdit()}
       </div>
     );
   }
+}
+
+function ProfileAboutHeader(props) {
+  return <label className="ProfileAboutHeader">{props.message}</label>;
 }
 
 function ProfileAboutView(props) {
