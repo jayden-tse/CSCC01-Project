@@ -16,12 +16,8 @@ exports.user_put = async function(req, res) {
     }
     let user = new User(req.body.username, req.body.password, req.body.email, req.body.phoneNum, null);
 
-    // Pass this data into DatabaseCreate where it will be created into a new User and Store the user .
-    let hashedUser = dbCreate.createUser(user, questionnaireAnswers); // This is our User
-
-    // Store the user into the database.
-    
-    if (await dbCreate.storeUser(hashedUser)) {
+    // Pass this data into DatabaseCreate where it will be created into a new User and Store the user.
+    if (await dbCreate.createUser(user, questionnaireAnswers)) {
         res.sendStatus(200);
     } else {
         res.status(400).send('An existing user has this email and/or phone number.');
