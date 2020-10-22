@@ -1,26 +1,26 @@
-.ProfileAboutHeader {
+.ProfileStatusHeader {
   height: 5%;
   color: white;
   font-size: 22;
 }
 
-.ProfileAboutView {
-  height: 250px;
+.ProfileStatusView {
+  height: 60%;
   width: 99%;
   position: relative;
   color: #6b6e70;
 }
 
-.ProfileAboutEditMessage {
+.ProfileStatusEditMessage {
   height: 250px;
   width: 99%;
   resize: none;
   position: relative;
 }
 
-.ProfileAboutEditButton,
-.ProfileAboutSave,
-.ProfileAboutCancel {
+.ProfileStatusEditButton,
+.ProfileStatusSave,
+.ProfileStatusCancel {
   width: fit-content;
   display: block;
   position: relative;

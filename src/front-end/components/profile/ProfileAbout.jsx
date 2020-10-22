@@ -101,7 +101,6 @@ function ProfileAboutEditMode(props) {
         defaultValue={props.message}
         onChange={props.onChange}
       />
-      <br />
       <button type="button" className="ProfileAboutSave" onClick={props.onSave}>
         {SAVE}
       </button>

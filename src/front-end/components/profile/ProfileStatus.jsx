@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./ProfileStatus.css";
 
 const VIEW = "View",
   EDIT = "Edit",
@@ -70,10 +71,15 @@ class ProfileStatus extends Component {
   render() {
     return (
       <div className="ProfileStatus">
+        <ProfileStatusHeader message="Status:" />
         {this.state.mode === VIEW ? this.renderView() : this.renderEdit()}
       </div>
     );
   }
+}
+
+function ProfileStatusHeader(props) {
+  return <label className="ProfileStatusHeader">{props.message}</label>;
 }
 
 function ProfileStatusView(props) {
@@ -95,7 +101,6 @@ function ProfileStatusEditMode(props) {
         defaultValue={props.message}
         onChange={props.onChange}
       />
-      <br />
       <button
         type="button"
         className="ProfileStatusSave"
