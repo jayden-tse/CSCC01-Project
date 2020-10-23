@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { getUserPicture, setUserPicture } from "./ProfilePictureCalls";
 import "./ProfilePicture.css";
 
 const VIEW = "View",
@@ -11,15 +12,22 @@ class ProfilePicture extends Component {
     super(props);
     this.state = {
       mode: VIEW,
-      org:
-        "https://www.ikea.com/ca/en/images/products/klappa-soft-toy-ball-multicolor__0873092_PE682669_S5.JPG",
-      src:
-        "https://www.ikea.com/ca/en/images/products/klappa-soft-toy-ball-multicolor__0873092_PE682669_S5.JPG",
+      org: "",
+      src: "",
     };
     this.handleEdit = this.handleEdit.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentWillMount() {
+    //get user picture from storage before render
+    var image = getUserPicture(this.props.username);
+    this.setState({
+      org: image,
+      src: image,
+    });
   }
 
   handleEdit() {
@@ -30,7 +38,7 @@ class ProfilePicture extends Component {
   handleSave() {
     console.log("Profile About save");
     //change message in database
-
+    setUserPicture(this.state.username, this.state.src);
     //if successful, change message in state
     this.setState({ org: this.state.src });
 

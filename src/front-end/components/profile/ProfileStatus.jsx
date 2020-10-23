@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { getUserStatus, setUserStatus } from "./ProfileStatusCalls";
 import "./ProfileStatus.css";
 
 const VIEW = "View",
@@ -10,14 +11,19 @@ class ProfileStatus extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: "Status Message",
-      editMessage: "Status Message",
+      message: "",
+      editMessage: "",
       mode: VIEW,
     };
     this.handleEdit = this.handleEdit.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentWillMount() {
+    var mes = getUserStatus(this.props.username);
+    this.setState({ message: mes, editMessage: mes });
   }
 
   handleEdit() {
@@ -28,6 +34,7 @@ class ProfileStatus extends Component {
   handleSave() {
     console.log("Profile Status save");
     //change message in database
+    setUserStatus(this.props.username, this.state.editMessage);
 
     //if successful, change message in state
     this.setState({ message: this.state.editMessage });

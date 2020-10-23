@@ -5,8 +5,6 @@ import "./ProfileACS.css";
 class ProfileACS extends Component {
   constructor(props) {
     super(props);
-    //get ACS and such from props
-    console.log(props.username);
     this.state = { ACS: 0, ACSChange: 0 };
   }
 

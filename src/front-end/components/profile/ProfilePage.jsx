@@ -8,16 +8,16 @@ import "./ProfilePage.css";
 class ProfilePage extends Component {
   constructor(props) {
     super(props);
-    this.state = { username: props.username };
+    this.state = {};
   }
 
   render() {
     return (
       <div className="ProfilePage">
-        <ProfilePicture username={this.state.username} />
-        <ProfileAbout username={this.state.username} />
-        <ProfileStatus username={this.state.username} />
-        <ProfileACS username={this.state.username} />
+        <ProfilePicture username={this.props.username} />
+        <ProfileAbout username={this.props.username} />
+        <ProfileStatus username={this.props.username} />
+        <ProfileACS username={this.props.username} />
       </div>
     );
   }
