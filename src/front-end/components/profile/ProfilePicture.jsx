@@ -1,29 +1,71 @@
 import React, { Component } from "react";
 import "./ProfilePicture.css";
 
+const VIEW = "View",
+  EDIT = "Edit",
+  SAVE = "Save",
+  CANCEL = "Cancel";
+
 class ProfilePicture extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      mode: VIEW,
+      org:
+        "https://www.ikea.com/ca/en/images/products/klappa-soft-toy-ball-multicolor__0873092_PE682669_S5.JPG",
       src:
         "https://www.ikea.com/ca/en/images/products/klappa-soft-toy-ball-multicolor__0873092_PE682669_S5.JPG",
     };
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleSave = this.handleSave.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleEdit() {
     console.log("Profile Picture edit");
+    this.setState({ mode: EDIT });
   }
+
+  handleSave() {
+    console.log("Profile About save");
+    //change message in database
+
+    //if successful, change message in state
+    this.setState({ org: this.state.src });
+
+    this.setState({ mode: VIEW });
+  }
+
+  handleCancel() {
+    console.log("Profile About cancel");
+
+    //reset editMessage
+    this.setState({ src: this.state.org });
+
+    this.setState({ mode: VIEW });
+  }
+
+  handleChange(e) {
+    this.setState({ src: e.target.value });
+  }
+
   render() {
     return (
       <div className="ProfilePicture">
         <ProfilePictureDisplay src={this.state.src} />
 
-        <ProfilePictureSubmit
-          name="Profile Picture Submit"
-          value={this.state.src}
-        />
-        <ProfilePictureEdit name="Edit" onClick={this.handleEdit} />
+        {this.state.mode === EDIT ? (
+          <ProfilePictureSubmit
+            name="Profile Picture Submit"
+            value={this.state.src}
+            onSave={this.handleSave}
+            onCancel={this.handleCancel}
+            onChange={this.handleChange}
+          />
+        ) : (
+          <ProfilePictureEdit name="Edit" onClick={this.handleEdit} />
+        )}
       </div>
     );
   }
@@ -54,9 +96,25 @@ function ProfilePictureSubmit(props) {
         type="text"
         name={props.name}
         defaultValue={props.value}
+        onChange={props.onChange}
       />
+      <div className="ProfilePictureButtonContainer">
+        <button
+          type="button"
+          className="ProfilePictureCancel"
+          onClick={props.onCancel}
+        >
+          {CANCEL}
+        </button>
+        <button
+          type="button"
+          className="ProfilePictureSave"
+          onClick={props.onSave}
+        >
+          {SAVE}
+        </button>
+      </div>
     </form>
   );
 }
-
 export default ProfilePicture;

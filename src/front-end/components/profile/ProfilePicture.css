@@ -14,6 +14,15 @@
   margin-left: auto;
   margin-right: auto;
 }
+.ProfilePictureSave,
+.ProfilePictureCancel {
+  width: fit-content;
+  display: inline-block;
+}
+
+.ProfilePictureButtonContainer {
+  text-align: center;
+}
 
 .ProfilePictureSubmitBox {
   display: block;
