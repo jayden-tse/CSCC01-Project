@@ -1,12 +1,20 @@
 import React, { Component } from "react";
+import { getUserACS, getUserACSChange } from "./ProfileACSCalls";
 import "./ProfileACS.css";
 
 class ProfileACS extends Component {
   constructor(props) {
     super(props);
     //get ACS and such from props
-    console.log(props.ACS);
-    this.state = { ACS: props.ACS, ACSChange: props.ACSChange };
+    console.log(props.username);
+    this.state = { ACS: 0, ACSChange: 0 };
+  }
+
+  componentWillMount() {
+    this.setState({ ACS: getUserACS(this.props.username) });
+    this.setState({
+      ACSChange: getUserACSChange(this.props.username),
+    });
   }
 
   render() {
