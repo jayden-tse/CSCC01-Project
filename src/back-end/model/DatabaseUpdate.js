@@ -10,12 +10,12 @@ class DatabaseUpdate {
         };
         let result = await mongoConnect.getDBCollection("Users").updateOne(user, x);
     }
-    async update(user, message) {
+    async updateStatus(user, message) {
         let x = {
             $set: {
-                'profile.about': message,
+                'profile.status': message,
             },
         };
-        let result = await mongoConnect.getDBCollection("Users").updateOne(user, message);
+        let result = await mongoConnect.getDBCollection("Users").updateOne(user, x);
     }
 }
