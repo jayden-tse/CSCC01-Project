@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import logo from "../resources/sportcredLogo2.png";
+import logo from "../../resources/sportcredLogo2.png";
 import "./LoginPage.css";
-//import LoginCalls from "./LoginCalls";
+import { login } from "./LoginCalls";
 
 class LoginPage extends Component {
   constructor(props) {
@@ -16,17 +16,25 @@ class LoginPage extends Component {
   }
 
   handleLoginSubmit() {
-    // var result = LoginCalls.loginAuthenticate(
-    //   this.state.Username,
-    //   this.state.password
-    // );
-    //on login error
-    this.setState({ LoginError: true });
-    //confirm login
-
-    //handle route if good login
-    this.props.onLoginSuccess();
-    this.props.onTheZoneRedirect();
+    login(this.state.Username, this.state.password)
+      .then((response) => {
+        //      console.log(response);
+        if (response.ok) {
+          //confirm login
+          //handle route if good login
+          this.props.onLoginSuccess();
+          this.props.onTheZoneRedirect();
+        } else {
+          //on login error ~400
+          //console.log(response.status);
+          this.setState({ LoginError: true });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("Error with login response");
+        this.setState({ LoginError: true });
+      });
   }
 
   render() {
