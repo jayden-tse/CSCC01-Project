@@ -2,20 +2,14 @@ var mongoConnect = require('../../mongoConnect');
 const dbRead = require('./DatabaseRead');
 
 class DatabaseUpdate {
-    async updateAbout(user, message) {
+    async updateMessage(user, type, message) {
+        let messageType = 'profile.' + type;
         let x = {
             $set: {
-                'profile.about': message,
+                messageType: message,
             },
         };
         let result = await mongoConnect.getDBCollection("Users").updateOne(user, x);
-    }
-    async updateStatus(user, message) {
-        let x = {
-            $set: {
-                'profile.status': message,
-            },
-        };
-        let result = await mongoConnect.getDBCollection("Users").updateOne(user, x);
+        return result.acknowledged; // returns true if it succeeded
     }
 }
