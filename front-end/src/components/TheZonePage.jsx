@@ -1,6 +1,5 @@
 import React from 'react';
 import TheZone from '../components/theZone/TheZone';
-import TopNavBar from '../components/general/TopNavBar';
 // replace whatever is in render with components
 // needed for the page
 
@@ -12,8 +11,6 @@ class TheZonePage extends React.Component {
   render() {
     return (
       <div>
-        <TopNavBar handleLogout={this.props.handleLogout}
-          redirectToProfile={this.props.redirectToProfile}/>
         <TheZone redirectToDebate={this.props.redirectToDebate}
           redirectToOpenCourt={this.props.redirectToOpenCourt}
           redirectToPicksAndPredictions={this.props.redirectToPicksAndPredictions}
