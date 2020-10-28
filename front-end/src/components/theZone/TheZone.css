@@ -46,5 +46,12 @@ h1 {
 
 .postHeader {
   border: 1px solid black;
-  height: 20vh;
+  height: 15vh;
+}
+.percentageDisplay {
+  float:right;
+}
+.percentageText {
+  color: #61892F;
+  font-size:6vh;
 }

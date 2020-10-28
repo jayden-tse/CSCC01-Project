@@ -27,10 +27,13 @@ class TheZonePost extends React.Component {
     return (
       <div className="post">        
         <div className="postHeader">
+          <div className="percentageDisplay">
+            <h2 className="percentageText">{this.state.agreePercent}% Agree</h2>
+          </div>
           <div className="agree">
-            <h2><span>{this.state.agreePercent}</span>% agree</h2>
             <TheZoneAgreeScale postid={this.props.postid} />
           </div>
+
           <h1>{this.state.title}</h1>
           <p>Posted by:<span>{this.state.poster}</span></p>
         </div>
