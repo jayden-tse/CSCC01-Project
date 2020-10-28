@@ -1,6 +1,6 @@
 import React from "react";
 import SignupPage from "./components/SignupPage";
-import LoginPage from "./components/LoginPage";
+import LoginPage from "./components/login/LoginPage";
 import TheZonePage from "./components/TheZonePage";
 import TriviaPage from "./components/TriviaPage";
 import DebatePage from "./components/DebatePage";
