@@ -8,18 +8,17 @@ body {
    background-color:#222629;
    color:#6B6E70;
 }
-
 button {
   background-color: #474B4F;
   color: #6B6E70;
-  height:7vh;
+  height:40px;
 }
 textarea {
   width: calc(100% - 10px);
   margin: 2px;
 }
-h1 {
-  font-size: 20vh;
+.title {
+  font-size: 40px;
 }
 .postTitle {
     width: calc(100% - 10px);
@@ -46,12 +45,12 @@ h1 {
 
 .postHeader {
   border: 1px solid black;
-  height: 15vh;
+  height: 100px;
 }
 .percentageDisplay {
   float:right;
 }
 .percentageText {
   color: #61892F;
-  font-size:6vh;
+  font-size:40px;
 }

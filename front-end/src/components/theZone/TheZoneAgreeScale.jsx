@@ -27,7 +27,7 @@ class TheZoneAgreeScale extends React.Component {
           <div>
             <span>{this.state.agreePercentage}</span>
           </div>
-          <input 
+          <input
             name="agreePercentage"
             type="range"
             min="0"
