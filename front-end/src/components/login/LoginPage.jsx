@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import logo from "../../resources/sportcredLogo2.png";
 import "./LoginPage.css";
 import { login } from "./LoginCalls";
+import Utilities from "../../util/Utilities.js";
 
 class LoginPage extends Component {
   constructor(props) {
@@ -16,7 +17,9 @@ class LoginPage extends Component {
   }
 
   handleLoginSubmit() {
-    login(this.state.Username, this.state.Password)
+    var utils = new Utilities();
+    const hashed = utils.passwordHasher(this.state.Password);
+    login(this.state.Username, hashed)
       .then((response) => {
         //      console.log(response);
         if (response.ok) {
