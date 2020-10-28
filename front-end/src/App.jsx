@@ -124,6 +124,7 @@ class App extends React.Component {
           <div>
             <TopNavBar
               handleLogout={this.handleLogout}
+              redirectToTheZone={this.redirectToTheZone}
               redirectToProfile={this.redirectToProfile}
             />
             <OpenCourtPage />
@@ -134,6 +135,7 @@ class App extends React.Component {
           <div>
             <TopNavBar
               handleLogout={this.handleLogout}
+              redirectToTheZone={this.redirectToTheZone}
               redirectToProfile={this.redirectToProfile}
             />
             <TriviaPage />
@@ -144,6 +146,7 @@ class App extends React.Component {
           <div>
             <TopNavBar
               handleLogout={this.handleLogout}
+              redirectToTheZone={this.redirectToTheZone}
               redirectToProfile={this.redirectToProfile}
             />
             <PicksAndPredictionsPage />
@@ -154,13 +157,23 @@ class App extends React.Component {
           <div>
             <TopNavBar
               handleLogout={this.handleLogout}
+              redirectToTheZone={this.redirectToTheZone}
               redirectToProfile={this.redirectToProfile}
             />
             <DebatePage />
           </div>
         );
       } else if (this.state.currentPage === "Profile") {
-        page = <ProfilePage ACS="800" ACSChange="-10" />;
+        page = (
+          <div>
+            <TopNavBar
+              handleLogout={this.handleLogout}
+              redirectToTheZone={this.redirectToTheZone}
+              redirectToProfile={this.redirectToProfile}
+            />
+            page = <ProfilePage ACS="800" ACSChange="-10" />
+          </div>
+        );
       }
     }
 
