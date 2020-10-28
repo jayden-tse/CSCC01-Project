@@ -14,6 +14,9 @@ exports.user_put = async function(req, res) {
         q4: req.body.q4,
         q5: req.body.q5
     }
+
+    // 1st line is for backend testing ONLY, swap comment to test for backend and uncomment passwordHasher.
+    // let user = new User(req.body.username, dbCreate.passwordHasher(req.body.password), req.body.email, req.body.phoneNum, null);
     let user = new User(req.body.username, req.body.password, req.body.email, req.body.phoneNum, null);
 
     // Pass this data into DatabaseCreate where it will be created into a new User and Store the user.

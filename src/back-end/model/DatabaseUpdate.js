@@ -4,12 +4,14 @@ const dbRead = require('./DatabaseRead');
 class DatabaseUpdate {
     async updateMessage(user, type, message) {
         let messageType = 'profile.' + type;
-        let x = {
+        let userJson = { 'username': user.user };
+        console.log(await mongoConnect.getDBCollection("Users").findOne(userJson));
+        let result = await mongoConnect.getDBCollection("Users").updateOne(userJson, {
             $set: {
-                messageType: message,
-            },
-        };
-        let result = await mongoConnect.getDBCollection("Users").updateOne(user, x);
-        return result.acknowledged; // returns true if it succeeded
+                [messageType]: message
+            }
+        });
+        return result;
     }
 }
+module.exports = DatabaseUpdate;
