@@ -16,7 +16,7 @@ class LoginPage extends Component {
   }
 
   handleLoginSubmit() {
-    login(this.state.Username, this.state.password)
+    login(this.state.Username, this.state.Password)
       .then((response) => {
         //      console.log(response);
         if (response.ok) {
@@ -52,7 +52,6 @@ class LoginPage extends Component {
           name="Password"
           value={this.state.Password}
           onChange={this.handleChange}
-          hidden={true}
         />
         {this.state.LoginError && (
           <LoginInputError message="Error Logging In" />
