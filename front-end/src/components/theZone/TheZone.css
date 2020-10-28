@@ -3,6 +3,10 @@
   height:7vh;
   border: 1px solid #000000;
 }
+.redirect {
+  width: 33.3%;
+  font-size: 3.5vh;
+}
 
 body {
    background-color:#222629;
@@ -16,41 +20,4 @@ button {
 textarea {
   width: calc(100% - 10px);
   margin: 2px;
-}
-.title {
-  font-size: 40px;
-}
-.postTitle {
-    width: calc(100% - 10px);
-    margin: 2px;
-}
-.redirect{
-  width:33.3%;
-  font-size: 3.5vh;
-}
-
-.post {
-  border: 1px solid black;
-  margin: 5px;
-}
-
-.agree {
-  float: right;
-  margin-right: 10px;
-}
-
-.comment {
-  border: 1px solid black;
-}
-
-.postHeader {
-  border: 1px solid black;
-  height: 100px;
-}
-.percentageDisplay {
-  float:right;
-}
-.percentageText {
-  color: #61892F;
-  font-size:40px;
 }

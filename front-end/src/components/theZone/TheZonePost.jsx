@@ -1,4 +1,5 @@
 import React from "react";
+import "./TheZonePost.css";
 import TheZoneCreateComment from "./TheZoneCreateComment";
 import TheZoneAgreeScale from "./TheZoneAgreeScale";
 
