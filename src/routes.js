@@ -38,10 +38,10 @@ router.delete("/user", signupController.user_del);
 /* LOGIN */
 
 // Get login authentication
-router.get("/login", cors(), loginController.auth_get);
+router.put("/login", loginController.auth);
 
 // Logout
-router.put("/logout", loginController.auth_put);
+router.put("/logout", loginController.deauth);
 
 /* PROFILE */
 

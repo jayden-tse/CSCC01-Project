@@ -33,7 +33,7 @@ exports.profile_update_about_put = async function(req, res) {
         // user is authenticated
         console.log(req.session.passport);
         let result = await dbUpdate.updateMessage(req.session.passport, 'about', req.body.about);
-        if (result) {
+        if (result.matchedCount) {
             res.sendStatus(200); // OK
         } else {
             res.status(500).send('WRITE FAILED'); // Internal server error
@@ -47,7 +47,7 @@ exports.profile_update_status_put = function(req, res) {
     if (req.user) {
         // user is authenticated
         let result = dbUpdate.updateMessage(req.session.passport, 'status', req.body.status);
-        if (result) {
+        if (result.matchedCount) {
             res.sendStatus(200); // OK
         } else {
             res.status(500).send('WRITE FAILED'); // Internal server error
@@ -60,8 +60,8 @@ exports.profile_update_status_put = function(req, res) {
 exports.profile_update_ACS_put = function(req, res) {
     if (req.user) {
         // user is authenticated
-        let result = dbUpdate.updateMessage(req.session.passport, 'ACS', req.body.status);
-        if (result) {
+        let result = dbUpdate.updateMessage(req.session.passport, 'ACS', req.body.ACS);
+        if (result.matchedCount) {
             res.sendStatus(200); // OK
         } else {
             res.status(500).send('WRITE FAILED'); // Internal server error
@@ -79,7 +79,7 @@ exports.profile_update_tracker_put = function(req, res) {
     if (req.user) {
         // user is authenticated
         let result = dbUpdate.addUserToTracker(req.session.passport, req.body.username);
-        if (result) {
+        if (result.matchedCount) {
             res.sendStatus(200); // OK
         } else {
             res.status(500).send('WRITE FAILED'); // Internal server error
@@ -97,7 +97,7 @@ exports.profile_tracker_del = function(req, res) {
     if (req.user) {
         // user is authenticated
         let result = dbDelete.removeUserFromTracker(req.session.passport, req.body.username);
-        if (result) {
+        if (result.matchedCount) {
             res.sendStatus(200); // OK
         } else {
             res.status(500).send('WRITE FAILED'); // Internal server error
