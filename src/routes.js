@@ -8,7 +8,7 @@ const loginController = require('./back-end/controller/LoginController');
 const profileController = require('./back-end/controller/ProfileController');
 const pickspredictionsController = require('./back-end/controller/PicksPredictionsController');
 const debateController = require('./back-end/controller/DebateController');
-const opencourtController = require('./back-end/controller/OpencourtController');
+const thezoneController = require('./back-end/controller/TheZoneController');
 const triviaController = require('./back-end/controller/TriviaController');
 
 /* USER */
@@ -124,19 +124,19 @@ router.delete('/debates', debateController.debate_topics_del);
 
 /* OPEN COURT */
 
-// Create open court comment
-router.put('/opencourt', opencourtController.open_court_comment_put);
+// Create the zone post
+router.put('/thezone', thezoneController.the_zone_post_put);
 
-// Get open court comment
-router.get('/opencourt', opencourtController.open_court_comment_get);
+// Get the zone post
+router.get('/thezone', thezoneController.the_zone_post_get);
 
-// Update open court comment
-router.put('/opencourt', opencourtController.open_court_update_comment_put);
+// Update the zone post
+router.put('/thezone', thezoneController.the_zone_update_post_put);
 
-// Update open court comment likes
-router.put('/opencourt/likes', opencourtController.open_court_update_likes_put);
+// Update the zone post likes
+router.put('/thezone/likes', thezoneController.the_zone_update_likes_put);
 
-// Delete open court comment
-router.delete('/opencourt', opencourtController.open_court_comment_del);
+// Delete the zone post
+router.delete('/thezone', thezoneController.the_zone_post_del);
 
 module.exports = router;
