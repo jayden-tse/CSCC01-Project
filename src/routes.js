@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-//const router = express();
 const validateUser = require('./validator');
 
 const signupController = require('./back-end/controller/SignupController');
@@ -16,8 +15,14 @@ const triviaController = require('./back-end/controller/TriviaController');
 // Create user
 router.put('/user', validateUser.validateUser, signupController.user_put);
 
-// Get user
-router.get('/user', signupController.user_get);
+// Check existing username
+router.get('/user/check/username', signupController.user_check_username_get);
+
+// Check existing email address
+router.get('/user/check/email', signupController.user_check_email_get);
+
+// Check existing phone number
+router.get('/user/check/phonenum', signupController.user_check_phonenum_get);
 
 // Update user password
 router.put('/user/update/password', signupController.user_update_password_put);
