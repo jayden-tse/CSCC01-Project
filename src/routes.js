@@ -40,6 +40,7 @@ router.get('/login', loginController.auth_get);
 // Logout
 router.put('/logout', loginController.auth_put);
 
+
 /* PROFILE */
 
 // Create profile
@@ -51,6 +52,9 @@ router.get('/profile', profileController.profile_get);
 // Get profile picks
 router.get('/profile/picks', profileController.profile_picks_get);
 
+// Get profile tracker
+router.get('profile/tracker', profileController.profile_tracker_get);
+
 // Update profile picture
 router.put('/profile/update/picture', profileController.profile_update_picture_put);
 
@@ -60,11 +64,20 @@ router.put('/profile/update/about', profileController.profile_update_about_put);
 // Update profile status
 router.put('/profile/update/status', profileController.profile_update_status_put);
 
+// Update profile picks
+router.put('/profile/update/picks', profileController.profile_update_picks_put);
+
+// Update profile tracker
+router.put('/profile/update/tracker', profileController.profile_update_tracker_put);
+
 // Update profile ACS
 router.put('/profile/update/ACS', profileController.profile_update_ACS_put);
 
 // Delete profile
-router.delete('/profile', profileController.profile_del);
+router.delete('/profile/delete', profileController.profile_del);
+
+// Delete profile tracker
+router.delete('/profile/delete/tracker', profileController.profile_tracker_del);
 
 
 /* TRIVIA */
