@@ -1,4 +1,5 @@
 import React from "react";
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 class TheZoneCreateComment extends React.Component {
   constructor(props) {
@@ -27,12 +28,12 @@ class TheZoneCreateComment extends React.Component {
         <div>
           <label> Comment: </label>
         </div>
-        <textarea
+        <TextareaAutosize
+          rowsMin={3}
           name="body"
           value={this.state.body}
           onChange={this.handleChange}
-        >              
-        </textarea>
+        />        
         <div>
         <button onClick={this.handleSubmit}> Submit Comment </button>
         </div>

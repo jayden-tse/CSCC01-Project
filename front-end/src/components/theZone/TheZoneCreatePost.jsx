@@ -1,4 +1,5 @@
 import React from "react";
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 class TheZoneCreatePost extends React.Component {
   constructor(props) {
@@ -40,12 +41,12 @@ class TheZoneCreatePost extends React.Component {
         <div>
           <label> Post Body: </label>
         </div>
-        <textarea
+        <TextareaAutosize
+          rowsMin={3}  
           name="body"
           value={this.state.body}
           onChange={this.handleChange}
-        >              
-        </textarea>
+        />              
         <div>
         <button onClick={this.handleSubmit}> Submit Post </button>
         </div>
