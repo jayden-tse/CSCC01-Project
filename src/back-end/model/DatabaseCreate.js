@@ -1,8 +1,8 @@
 var mongoConnect = require('../../mongoConnect');
 
 const nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
+// const bcrypt = require('bcrypt');
+// const saltRounds = 10;
 
 const Profile = require('./Profile.js');
 
@@ -17,14 +17,16 @@ const transporter = nodemailer.createTransport({
         pass: 'projectyes'
     }
 });
+
 class DatabaseCreate {
+
     // Turn the data into a new User object with their Profile.
     // Store the User into the database. Also check for unique contact info and send
     // the user confirmation when their account has been successfully created.
     async createUser(user, questionnaire) {
         // Only store this user in the database if there exists no other accounts with
         // the same phone numbers and email.
-        let userProfile = new Profile('', '', '', questionnaire, 100);
+        let userProfile = new Profile('', '', '', questionnaire, [], [], 100);
         user.profile = userProfile;
         let newNum = await dbRead.findPhoneNum(user.phoneNum);
         let newEmail = await dbRead.findEmail(user.email);
