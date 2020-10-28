@@ -4,6 +4,7 @@ const router = express.Router();
 //const router = express();
 const validateUser = require("./validator");
 
+<<<<<<< HEAD
 const signupController = require("./back-end/controller/SignupController");
 const loginController = require("./back-end/controller/LoginController");
 const profileController = require("./back-end/controller/ProfileController");
@@ -11,6 +12,15 @@ const pickspredictionsController = require("./back-end/controller/PicksPredictio
 const debateController = require("./back-end/controller/DebateController");
 const opencourtController = require("./back-end/controller/OpencourtController");
 const triviaController = require("./back-end/controller/TriviaController");
+=======
+const signupController = require('./back-end/controller/SignupController');
+const loginController = require('./back-end/controller/LoginController');
+const profileController = require('./back-end/controller/ProfileController');
+const pickspredictionsController = require('./back-end/controller/PicksPredictionsController');
+const debateController = require('./back-end/controller/DebateController');
+const thezoneController = require('./back-end/controller/TheZoneController');
+const triviaController = require('./back-end/controller/TriviaController');
+>>>>>>> e49ad93cc95d707e8ac2ea3e81ecda0b0eac6c2d
 
 /* USER */
 
@@ -140,6 +150,7 @@ router.delete("/debates", debateController.debate_topics_del);
 
 /* OPEN COURT */
 
+<<<<<<< HEAD
 // Create open court comment
 router.put("/opencourt", opencourtController.open_court_comment_put);
 
@@ -154,5 +165,21 @@ router.put("/opencourt/likes", opencourtController.open_court_update_likes_put);
 
 // Delete open court comment
 router.delete("/opencourt", opencourtController.open_court_comment_del);
+=======
+// Create the zone post
+router.put('/thezone', thezoneController.the_zone_post_put);
+
+// Get the zone post
+router.get('/thezone', thezoneController.the_zone_post_get);
+
+// Update the zone post
+router.put('/thezone', thezoneController.the_zone_update_post_put);
+
+// Update the zone post likes
+router.put('/thezone/likes', thezoneController.the_zone_update_likes_put);
+
+// Delete the zone post
+router.delete('/thezone', thezoneController.the_zone_post_del);
+>>>>>>> e49ad93cc95d707e8ac2ea3e81ecda0b0eac6c2d
 
 module.exports = router;

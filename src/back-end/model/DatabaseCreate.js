@@ -54,6 +54,13 @@ class DatabaseCreate {
             }
         });
     }
+
+    // for backend testing ONLY
+    // passwordHasher(password) {
+    //     let salt = bcrypt.genSaltSync(saltRounds);
+    //     let hashedPassword = bcrypt.hashSync(password, salt);
+    //     return hashedPassword;
+    // }
 }
 
 module.exports = DatabaseCreate;

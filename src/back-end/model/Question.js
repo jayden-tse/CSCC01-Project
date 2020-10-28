@@ -5,3 +5,5 @@ class Question {
         this.other = other;
     }
 }
+
+module.exports = Question;
