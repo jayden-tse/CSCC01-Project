@@ -30,6 +30,7 @@ class TheZoneCreatePost extends React.Component {
         </div>
         <div>
           <input
+            className="postTitle"
             type="text"
             name="title"
             value={this.state.title}

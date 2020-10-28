@@ -15,13 +15,13 @@ class TheZone extends React.Component{
   render() {
     return (
       <div>
-        <OpenCourtCreatePost />
-        <OpenCourtPostList />
         <div className="TheZoneContainer"> 
           <button className="redirect" onClick={this.props.redirectToTrivia}>Trivia</button>
           <button className="redirect" onClick={this.props.redirectToPicksAndPredictions}>Picks & Predictions</button>
           <button className="redirect" onClick={this.props.redirectToDebate}>Debate</button>
         </div>
+        <TheZoneCreatePost />
+        <TheZonePostList />
       </div>
     )
   }

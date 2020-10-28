@@ -23,6 +23,9 @@ class TheZoneAgreeScale extends React.Component {
     return(
       <div>
         <div>
+          <div>
+            <span>{this.state.agreePercentage}</span>
+          </div>
           <input 
             name="agreePercentage"
             type="range"
@@ -33,7 +36,7 @@ class TheZoneAgreeScale extends React.Component {
             onChange={this.handleChange}
           >
           </input>
-          <span>{this.state.agreePercentage}</span>
+          
         </div>
         <button onClick={this.handleSubmit}>Agree</button>
       </div>
