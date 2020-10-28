@@ -1,7 +1,8 @@
 const DatabaseCreate = require('../model/DatabaseCreate.js');
+const DatabaseRead = require('../model/DatabaseRead.js');
 const dbCreate = new DatabaseCreate();
+const dbRead = new DatabaseRead();
 const User = require('../model/User.js');
-// const DatabaseRead = require('../model/DatabaseRead.js');
 // const DatabaseUpdate = require('../model/DatabaseUpdate.js');
 // const DatabaseDelete = require('../model/DatabaseDelete.js');
 
@@ -18,12 +19,24 @@ exports.user_put = async function(req, res) {
     // 1st line is for backend testing ONLY, swap comment to test for backend and uncomment passwordHasher.
     // let user = new User(req.body.username, dbCreate.passwordHasher(req.body.password), req.body.email, req.body.phoneNum, null);
     let user = new User(req.body.username, req.body.password, req.body.email, req.body.phoneNum, null);
-
-    // Pass this data into DatabaseCreate where it will be created into a new User and Store the user.
-    if (await dbCreate.createUser(user, questionnaireAnswers)) {
-        res.sendStatus(200);
+    let newUsername = await dbRead.findUsername(user.username);
+    let newEmail = await dbRead.findEmail(user.email);
+    let newNum = await dbRead.findPhoneNum(user.phoneNum);
+    console.log(newUsername + " " + newNum + " " + newEmail)
+    if (newUsername != null) {
+        res.status(400).send('This username already exists.');
+    } else if (newEmail != null) {
+        res.status(400).send('This email address already exists.');
+    } else if (newNum != null) {
+        res.status(400).send('This phone number already exists.');
     } else {
-        res.status(400).send('An existing user has this email and/or phone number.');
+        // Pass this data into DatabaseCreate where it will be created into a new User and Store the user.
+        try {
+            await dbCreate.createUser(user, questionnaireAnswers);
+            res.sendStatus(200);
+        } catch {
+            res.status(500).send('WRITE FAILED');
+        }
     }
 };
 

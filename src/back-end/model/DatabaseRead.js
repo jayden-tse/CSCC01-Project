@@ -29,6 +29,11 @@ passport.deserializeUser(function(username, done) {
     done(null, mongoConnect.getDBCollection("Users").findOne({ "username": username }));
 });
 class DatabaseRead {
+
+    async findUsername(username) {
+        return await mongoConnect.getDBCollection("Users").findOne({ "username": username });
+    }
+    
     async findEmail(email) {
         return await mongoConnect.getDBCollection("Users").findOne({ "email": email });
     }

@@ -28,16 +28,10 @@ class DatabaseCreate {
         // the same phone numbers and email.
         let userProfile = new Profile('', '', '', questionnaire, [], [], 100);
         user.profile = userProfile;
-        let newNum = await dbRead.findPhoneNum(user.phoneNum);
-        let newEmail = await dbRead.findEmail(user.email);
-        console.log(newNum + " " + newEmail);
-        if (newNum === null && newEmail === null) {
-            this.notifyUserForNewAccount(user);
-            let result = await mongoConnect.getDBCollection("Users").insertOne(user);
-            return true;
-        } else {
-            return false;
-        }
+        // let hashedPassword = this.passwordHasher(user.password);
+        // user.password = hashedPassword;
+        this.notifyUserForNewAccount(user);
+        let result = await mongoConnect.getDBCollection("Users").insertOne(user);
     }
 
     notifyUserForNewAccount(user) {
