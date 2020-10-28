@@ -17,6 +17,7 @@ class TheZoneCreatePost extends React.Component {
   }
   
   //TODO: call backend api and submit post with state values
+  // and update PostList on success add to re-render the comments
   handleSubmit() {
     if (this.state.title!==""&&this.state.body!=="") {
         this.setState({ title:"", body:"" })

@@ -10,7 +10,8 @@ class TheZoneAgreeScale extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
   
-  //TODO :CALL BACKEND APIS FOR SUBMIT
+  //TODO :call backend API to submit user agree percent
+  // maybe update user agree percent if there is already a record?
   handleSubmit() {
     
   }

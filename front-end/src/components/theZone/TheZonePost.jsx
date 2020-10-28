@@ -18,7 +18,8 @@ class TheZonePost extends React.Component {
     };
   }
   
-  //TODO: GET POST DATA FROM BACKEND API
+  //TODO: get post data from back end api given the post id
+  // and set the post data with state
   componentDidMount() {
     
   }
@@ -33,7 +34,6 @@ class TheZonePost extends React.Component {
           <div className="agree">
             <TheZoneAgreeScale postid={this.props.postid} />
           </div>
-
           <h1>{this.state.title}</h1>
           <p>Posted by:<span>{this.state.poster}</span></p>
         </div>

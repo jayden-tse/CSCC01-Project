@@ -13,7 +13,7 @@ class TheZonePostList extends React.Component {
     };
   }
   
-  //TODO: GET POSTS FROM BACKEND API
+  //TODO: get list of all posts from the backend api to display
   componentDidMount() {
     
   }

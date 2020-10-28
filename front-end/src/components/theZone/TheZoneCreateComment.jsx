@@ -15,7 +15,8 @@ class TheZoneCreateComment extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   }
   
-  //TODO: call backend api and submit comment with state values
+  //TODO: call backend api and submit comment with state values 
+  // and update parent post comment on success to rerender the comments
   handleSubmit() {
     if (this.state.title!==""&&this.state.body!=="") {
        this.setState({ body:"" })
