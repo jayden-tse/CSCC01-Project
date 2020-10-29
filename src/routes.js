@@ -12,6 +12,9 @@ const debateController = require("./back-end/controller/DebateController");
 const thezoneController = require("./back-end/controller/TheZoneController");
 const triviaController = require("./back-end/controller/TriviaController");
 
+//cors necessary for calling from different port/url
+router.use(cors());
+
 /* USER */
 
 // Create user

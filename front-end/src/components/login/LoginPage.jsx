@@ -18,14 +18,15 @@ class LoginPage extends Component {
 
   handleLoginSubmit() {
     var utils = new Utilities();
+    var currentUser = this.state.Username;
     const hashed = utils.passwordHasher(this.state.Password);
-    login(this.state.Username, hashed)
+    login(currentUser, hashed)
       .then((response) => {
         //      console.log(response);
         if (response.ok) {
           //confirm login
           //handle route if good login
-          this.props.onLoginSuccess();
+          this.props.onLoginSuccess(currentUser);
           this.props.onTheZoneRedirect();
         } else {
           //on login error ~400
