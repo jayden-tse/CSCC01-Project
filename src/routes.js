@@ -35,10 +35,7 @@ router.put('/user/update/password', signupController.user_update_password_put);
 router.put('/user/update/email', signupController.user_update_email_put);
 
 // Update user phone number
-router.put(
-  '/user/update/phonenumber',
-  signupController.user_update_phone_number_put
-);
+router.put('/user/update/phonenumber', signupController.user_update_phone_number_put);
 
 // Delete user
 router.delete('/user', signupController.user_del);
@@ -66,28 +63,19 @@ router.get('/profile/picks', profileController.profile_picks_get);
 router.get('profile/tracker', profileController.profile_tracker_get);
 
 // Update profile picture
-router.put(
-  '/profile/update/picture',
-  profileController.profile_update_picture_put
-);
+router.put('/profile/update/picture', profileController.profile_update_picture_put);
 
 // Update profile about
 router.put('/profile/update/about', profileController.profile_update_about_put);
 
 // Update profile status
-router.put(
-  '/profile/update/status',
-  profileController.profile_update_status_put
-);
+router.put('/profile/update/status', profileController.profile_update_status_put);
 
 // Update profile picks
 router.put('/profile/update/picks', profileController.profile_update_picks_put);
 
 // Update profile tracker
-router.put(
-  '/profile/update/tracker',
-  profileController.profile_update_tracker_put
-);
+router.put('/profile/update/tracker', profileController.profile_update_tracker_put);
 
 // Update profile ACS
 router.put('/profile/update/ACS', profileController.profile_update_ACS_put);
@@ -121,10 +109,7 @@ router.put('/picksandpredictions', pickspredictionsController.matches_put);
 router.get('/picksandpredictions', pickspredictionsController.matches_get);
 
 // Update matches
-router.put(
-  '/picksandpredictions',
-  pickspredictionsController.matches_update_put
-);
+router.put('/picksandpredictions', pickspredictionsController.matches_update_put);
 
 // Delete matches
 router.delete('/picksandpredictions', pickspredictionsController.matches_del);
@@ -144,19 +129,13 @@ router.get('/debates', debateController.debate_topics_get);
 router.get('/debates/submission', debateController.debate_submission_get);
 
 // Get debate submission time limit
-router.get(
-  '/debates/submission/time',
-  debateController.debate_submission_time_limit_get
-);
+router.get('/debates/submission/time', debateController.debate_submission_time_limit_get);
 
 // Update debate topics
 router.put('/debates', debateController.debate_update_topics_put);
 
 // Update debate submission score
-router.put(
-  '/debates/submission/score',
-  debateController.debate_submission_update_score_put
-);
+router.put('/debates/submission/score', debateController.debate_submission_update_score_put);
 
 // Delete debate topics
 router.delete('/debates', debateController.debate_topics_del);
