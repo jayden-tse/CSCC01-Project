@@ -68,6 +68,8 @@
 
 .LoginToSignup {
   position: relative;
+  height: fit-content;
+  width: fit-content;
   /* Components / Link */
   font-size: 16px;
   line-height: 22px;
@@ -81,6 +83,9 @@
   align-self: center;
   flex-grow: 0;
   margin: 10px 0px;
+  border: none;
+  background: none;
+  padding: 0;
 }
 
 .LoginSubmit {

@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import logo from "../../resources/sportcredLogo2.png";
-import "./LoginPage.css";
-import { login } from "./LoginCalls";
-import Utilities from "../../util/Utilities.js";
+import React, { Component } from 'react';
+import logo from '../../resources/sportcredLogo2.png';
+import './LoginPage.css';
+import { login } from './LoginCalls';
+import Utilities from '../../util/Utilities.js';
 
 class LoginPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { LoginError: false, Username: "", Password: "" };
+    this.state = { LoginError: false, Username: '', Password: '' };
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
@@ -34,7 +34,7 @@ class LoginPage extends Component {
       })
       .catch((error) => {
         console.log(error);
-        console.log("Error with login response");
+        console.log('Error with login response');
         this.setState({ LoginError: true });
       });
   }
@@ -99,9 +99,9 @@ function LoginSubmit(props) {
 
 function LoginToSignup(props) {
   return (
-    <a className="LoginToSignup" href="#" onClick={props.onClick}>
+    <button className="LoginToSignup" onClick={props.onClick}>
       {props.message}
-    </a>
+    </button>
   );
 }
 
