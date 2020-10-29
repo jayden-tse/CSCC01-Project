@@ -22,7 +22,6 @@ class LoginPage extends Component {
     const hashed = utils.passwordHasher(this.state.Password);
     login(currentUser, hashed)
       .then((response) => {
-        //      console.log(response);
         if (response.ok) {
           //confirm login
           //handle route if good login
@@ -30,7 +29,6 @@ class LoginPage extends Component {
           this.props.onTheZoneRedirect();
         } else {
           //on login error ~400
-          //console.log(response.status);
           this.setState({ LoginError: true });
         }
       })
