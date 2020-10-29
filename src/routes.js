@@ -1,8 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const router = express.Router();
+<<<<<<< HEAD
 //const router = express();
 const validateUser = require("./validator");
+=======
+const validateUser = require('./validator');
+>>>>>>> 8469f99c2ee0f3401807d9524853a030a4712a8f
 
 const signupController = require("./back-end/controller/SignupController");
 const loginController = require("./back-end/controller/LoginController");
@@ -20,8 +24,19 @@ router.use(cors());
 // Create user
 router.put("/user", validateUser.validateUser, signupController.user_put);
 
+<<<<<<< HEAD
 // Get user
 router.get("/user", signupController.user_get);
+=======
+// Check existing username
+router.get('/user/check/username', signupController.user_check_username_get);
+
+// Check existing email address
+router.get('/user/check/email', signupController.user_check_email_get);
+
+// Check existing phone number
+router.get('/user/check/phonenum', signupController.user_check_phonenum_get);
+>>>>>>> 8469f99c2ee0f3401807d9524853a030a4712a8f
 
 // Update user password
 router.put("/user/update/password", signupController.user_update_password_put);

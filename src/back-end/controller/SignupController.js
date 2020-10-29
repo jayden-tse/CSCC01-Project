@@ -23,13 +23,16 @@ exports.user_put = async function(req, res) {
     let newEmail = await dbRead.findEmail(user.email);
     let newNum = await dbRead.findPhoneNum(user.phoneNum);
     console.log(newUsername + " " + newNum + " " + newEmail)
-    if (newUsername != null) {
+    if (newUsername !== null) {
         res.status(400).send('This username already exists.');
-    } else if (newEmail != null) {
+    } 
+    if (newEmail !== null) {
         res.status(400).send('This email address already exists.');
-    } else if (newNum != null) {
+    } 
+    if (newNum !== null) {
         res.status(400).send('This phone number already exists.');
-    } else {
+    } 
+    if (newUsername === null && newEmail === null && newNum === null) {
         // Pass this data into DatabaseCreate where it will be created into a new User and Store the user.
         try {
             await dbCreate.createUser(user, questionnaireAnswers);
@@ -40,8 +43,31 @@ exports.user_put = async function(req, res) {
     }
 };
 
-exports.user_get = function(req, res) {
-    res.send('NOT IMPLEMENTED');
+exports.user_check_username_get = function(req, res) {
+    let newUsername = await dbRead.findUsername(req.body.username);
+    if (newUsername !== null) {
+        res.status(400).send('This username already exists.');
+    } else {
+        res.sendStatus(200);
+    }
+};
+
+exports.user_check_email_get = function(req, res) {
+    let newEmail = await dbRead.findEmail(req.body.email);
+    if (newEmail !== null) {
+        res.status(400).send('This email already exists.');
+    } else {
+        res.sendStatus(200);
+    }
+};
+
+exports.user_check_phonenum_get = function(req, res) {
+    let newNum = await dbRead.findPhoneNum(req.body.phoneNum);
+    if (newNum !== null) {
+        res.status(400).send('This phone number already exists.');
+    } else {
+        res.sendStatus(200);
+    }
 };
 
 exports.user_update_password_put = function(req, res) {
