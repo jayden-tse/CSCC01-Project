@@ -4,9 +4,10 @@
   border:1px solid black;
   list-style:none;
   background-color:#474B4F;
-  margin-top:-0.1vh;
+  margin-top:1px;
+  margin-right:2px;
   height:100%;
-  width:16vw;
+  width:100px;
 }
 .dropdown{
   width:15vw;
@@ -14,7 +15,7 @@
   float:right;
 }
 a{
-  font-size:3vh;
+  font-size:20px;
   color:#86C232;
 }
 .dropdownItem {

@@ -1,13 +1,11 @@
 import React from "react";
 import DropdownButton from "./DropdownButton";
+import Avatar from '@material-ui/core/Avatar';
 import "./CurrentUser.css";
 
 class CurrentUser extends React.Component{
   constructor(props) {
       super(props);
-      this.state = {
-          user: {}
-      }
     }
 
    /* TODO : GET DATA FROM BACKEND API 
@@ -23,10 +21,15 @@ class CurrentUser extends React.Component{
   render() {
     return (
       <div className="CurrentUserContainer">
-        <DropdownButton name={this.state.user.name}
+        <DropdownButton name={this.props.currentUser}
           handleLogout={this.props.handleLogout}
           redirectToProfile={this.props.redirectToProfile}/>
-        <img className="profilePic" src={this.state.user.picture} />
+        <Avatar className="profilePic"
+          style={{
+            width: 64,
+            height: 64
+          }}
+        />
        </div>
     )
   }

@@ -1,8 +1,8 @@
 var mongoConnect = require('../../mongoConnect');
 
 const nodemailer = require('nodemailer');
-// const bcrypt = require('bcrypt');
-// const saltRounds = 10;
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const Profile = require('./Profile.js');
 
@@ -28,8 +28,8 @@ class DatabaseCreate {
         // the same phone numbers and email.
         let userProfile = new Profile('', '', '', questionnaire, [], [], 100);
         user.profile = userProfile;
-        // let hashedPassword = this.passwordHasher(user.password);
-        // user.password = hashedPassword;
+        let hashedPassword = this.passwordHasher(user.password);
+        user.password = hashedPassword;
         this.notifyUserForNewAccount(user);
         let result = await mongoConnect.getDBCollection("Users").insertOne(user);
     }
@@ -51,12 +51,11 @@ class DatabaseCreate {
         });
     }
 
-    // for backend testing ONLY
-    // passwordHasher(password) {
-    //     let salt = bcrypt.genSaltSync(saltRounds);
-    //     let hashedPassword = bcrypt.hashSync(password, salt);
-    //     return hashedPassword;
-    // }
+    passwordHasher(password) {
+        let salt = bcrypt.genSaltSync(saltRounds);
+        let hashedPassword = bcrypt.hashSync(password, salt);
+        return hashedPassword;
+    }
 }
 
 module.exports = DatabaseCreate;
