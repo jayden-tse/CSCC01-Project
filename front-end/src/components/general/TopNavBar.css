@@ -19,14 +19,15 @@ button {
   width:20vw;
 }
 .logo {
-  float:left;
-  height:100%;
-  max-width:40vw;
+  float: left;
+  height: 100%;
+  overflow: hidden;
 }
 .logoContainer {
-  float:left;
-  height:100%;
-  width:40vw;
+  float: left;
+  height: 100%;
+  width: 40vw;
+  overflow: hidden;
 }
 .CurrentUser{
   height:100%;
