@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from '../../resources/sportcredLogo2.png';
 import './LoginPage.css';
-import { login } from './LoginCalls';
+import { login } from '../../api/LoginCalls.js';
 import Utilities from '../../util/Utilities.js';
 
 class LoginPage extends Component {
