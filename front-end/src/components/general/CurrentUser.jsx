@@ -29,7 +29,7 @@ class CurrentUser extends React.Component{
             width: 64,
             height: 64
           }}
-          src={"../../resources/sportcredLogo.png"} />
+        />
        </div>
     )
   }
