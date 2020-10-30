@@ -33,6 +33,7 @@ export async function signUp(username, password, email, phone, q1, q2, q3, q4, q
     };
     return fetch(BASE_URL + '/user', {
         method: 'PUT',
+        mode: 'cors',
         headers: {
             'Content-Type': 'application/json'
         },
