@@ -17,8 +17,16 @@ class TheZonePost extends React.Component {
         "third comment"
       ]
     };
+    this.addComment = this.addComment.bind(this);
   }
-  
+
+  // add a new comment to the comments list with its message = data
+  addComment(data) {
+    const newComments = this.state.comments.concat(data);
+    this.setState({
+      comments: newComments
+		})
+	}
   //TODO: get post data from back end api given the post id
   // and set the post data with state
   componentDidMount() {
@@ -44,6 +52,7 @@ class TheZonePost extends React.Component {
             comment => <p>{comment}</p>
           )}
           <TheZoneCreateComment 
+            addComment={this.addComment}
             postid={this.props.postid} 
           />
         </div>
