@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import { getUserAbout, setUserAbout } from "./ProfileAboutCalls";
-import "./ProfileAbout.css";
+import React, { Component } from 'react';
+import { getUserAbout, setUserAbout } from './ProfileAboutCalls';
+import './ProfileAbout.css';
 
-const VIEW = "View",
-  EDIT = "Edit",
-  SAVE = "Save",
-  CANCEL = "Cancel";
+const VIEW = 'View',
+  EDIT = 'Edit',
+  SAVE = 'Save',
+  CANCEL = 'Cancel';
 
 class ProfileAbout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: "",
-      editMessage: "",
+      message: '',
+      editMessage: '',
       mode: VIEW,
     };
     this.handleEdit = this.handleEdit.bind(this);
@@ -22,19 +22,29 @@ class ProfileAbout extends Component {
   }
 
   componentWillMount() {
-    var mes = getUserAbout(this.props.username);
+    var mes = getUserAbout(this.props.wantedUser);
     this.setState({ message: mes, editMessage: mes });
   }
 
   handleEdit() {
-    console.log("Profile About edit");
-    this.setState({ mode: EDIT });
+    if (this.props.editable) {
+      console.log('Profile About edit');
+      this.setState({ mode: EDIT });
+    } else {
+      console.log('Edit not authorised');
+    }
   }
 
   handleSave() {
-    console.log("Profile About save");
+    console.log('Profile About save');
+    //not your profile
+    if (!this.props.editable) {
+      console.log('Save not authorized');
+      this.handleCancel();
+      return;
+    }
     //change message in database
-    setUserAbout(this.props.username, this.state.editMessage);
+    setUserAbout(this.props.currentUser, this.state.editMessage);
 
     //if successful, change message in state
     this.setState({ message: this.state.editMessage });
@@ -43,7 +53,7 @@ class ProfileAbout extends Component {
   }
 
   handleCancel() {
-    console.log("Profile About cancel");
+    console.log('Profile About cancel');
 
     //reset editMessage
     this.setState({ editMessage: this.state.message });
@@ -59,7 +69,9 @@ class ProfileAbout extends Component {
     return (
       <React.Fragment>
         <ProfileAboutView message={this.state.message} />
-        <ProfileAboutEditButton name="Edit" onClick={this.handleEdit} />
+        {this.props.editable && (
+          <ProfileAboutEditButton name="Edit" onClick={this.handleEdit} />
+        )}
       </React.Fragment>
     );
   }

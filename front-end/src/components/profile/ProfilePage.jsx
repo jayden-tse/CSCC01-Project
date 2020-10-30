@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import ProfileAbout from "./ProfileAbout";
-import ProfileACS from "./ProfileACS";
-import ProfilePicture from "./ProfilePicture";
-import ProfileStatus from "./ProfileStatus";
-import "./ProfilePage.css";
+import React, { Component } from 'react';
+import ProfileAbout from './ProfileAbout';
+import ProfileACS from './ProfileACS';
+import ProfilePicture from './ProfilePicture';
+import ProfileStatus from './ProfileStatus';
+import './ProfilePage.css';
 
 class ProfilePage extends Component {
   constructor(props) {
@@ -12,12 +12,28 @@ class ProfilePage extends Component {
   }
 
   render() {
+    const editable = this.props.currentUser === this.props.wantedUser;
     return (
       <div className="ProfilePage">
-        <ProfilePicture username={this.props.username} />
-        <ProfileAbout username={this.props.username} />
-        <ProfileStatus username={this.props.username} />
-        <ProfileACS username={this.props.username} />
+        <ProfilePicture
+          currentUser={this.props.currentUser}
+          wantedUser={this.props.wantedUser}
+          editable={editable}
+        />
+        <ProfileAbout
+          currentUser={this.props.currentUser}
+          wantedUser={this.props.wantedUser}
+          editable={editable}
+        />
+        <ProfileStatus
+          currentUser={this.props.currentUser}
+          wantedUser={this.props.wantedUser}
+          editable={editable}
+        />
+        <ProfileACS
+          currentUser={this.props.currentUser}
+          wantedUser={this.props.wantedUser}
+        />
       </div>
     );
   }
