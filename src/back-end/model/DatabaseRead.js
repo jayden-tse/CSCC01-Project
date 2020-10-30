@@ -47,13 +47,13 @@ class DatabaseRead {
     async findUsername(username) {
         return await mongoConnect.getDBCollection("Users").findOne({ "username": username });
     }
-    
+
     async findEmail(email) {
         return await mongoConnect.getDBCollection("Users").findOne({ "email": email });
     }
 
     async findPhoneNum(num) {
-        return await mongoConnect.getDBCollection("Users").findOne({ "phoneNum": num });
+        return await mongoConnect.getDBCollection("Users").findOne({ "phonenum": num });
     }
 
     passwordChecker(password, hashedPassword) {
