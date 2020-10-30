@@ -43,7 +43,9 @@ class TheZonePost extends React.Component {
           <div className="agree">
             <TheZoneAgreeScale postid={this.props.postid} />
           </div>
-          <h1 className="title">{this.state.title}</h1>
+          <div className="titleContainer">
+            <h1 className="title">{this.state.title}</h1>
+          </div>
           <p>Posted by:<span>{this.state.poster}</span></p>
         </div>
         <p>{this.state.body}</p>
