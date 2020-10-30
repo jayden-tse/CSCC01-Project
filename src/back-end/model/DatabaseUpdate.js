@@ -2,11 +2,21 @@ var mongoConnect = require('../../mongoConnect');
 
 class DatabaseUpdate {
 
-    async addUserToTracker(req, username) {
-        let user = { 'username': req.user }
-        let result = await mongoConnect.getDBCollection("Users").updateOne(user, {
+    async addMatchToHistory(req, match) {
+        let username = { 'username': req.user }
+        let result = await mongoConnect.getDBCollection("Users").updateOne(username, {
             $addToSet: {
-                "profile.tracker": username
+               "profile.picks":  match
+            }
+        });
+        return result;
+    }
+
+    async addUserToTracker(req, addUsername) {
+        let username = { 'username': req.user }
+        let result = await mongoConnect.getDBCollection("Users").updateOne(username, {
+            $addToSet: {
+                "profile.tracker": addUsername
             }
         });
         return result;
@@ -14,9 +24,9 @@ class DatabaseUpdate {
 
     async updateMessage(req, type, message) {
         let messageType = 'profile.' + type;
-        let user = { 'username': req.user };
-        console.log(await mongoConnect.getDBCollection("Users").findOne(user));
-        let result = await mongoConnect.getDBCollection("Users").updateOne(user, {
+        let username = { 'username': req.user };
+        console.log(await mongoConnect.getDBCollection("Users").findOne(username));
+        let result = await mongoConnect.getDBCollection("Users").updateOne(username, {
             $set: {
                 [messageType]: message
             }

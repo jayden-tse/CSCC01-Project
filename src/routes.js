@@ -48,17 +48,11 @@ router.put('/logout', loginController.deauth);
 
 /* PROFILE */
 
-// Create profile
-router.put('/profile', profileController.profile_put);
-
-// Get profile
-router.get('/profile', profileController.profile_get);
-
 // Get profile picks
 router.get('/profile/picks', profileController.profile_picks_get);
 
 // Get profile tracker
-router.get('profile/tracker', profileController.profile_tracker_get);
+router.get('/profile/tracker', profileController.profile_tracker_get);
 
 // Update profile picture
 router.put('/profile/update/picture', profileController.profile_update_picture_put);
