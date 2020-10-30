@@ -9,7 +9,9 @@
   width: calc(100% - 10px);
   margin: 2px;
 }
-
+p {
+  overflow-wrap: break-word;
+}
 .post {
   border: 1px solid black;
   margin: 5px;
