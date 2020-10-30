@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import { getUserPicture, setUserPicture } from "./ProfilePictureCalls";
-import "./ProfilePicture.css";
+import React, { Component } from 'react';
+import { getUserPicture, setUserPicture } from './ProfilePictureCalls';
+import './ProfilePicture.css';
 
-const VIEW = "View",
-  EDIT = "Edit",
-  SAVE = "Save",
-  CANCEL = "Cancel";
+const VIEW = 'View',
+  EDIT = 'Edit',
+  SAVE = 'Save',
+  CANCEL = 'Cancel';
 
 class ProfilePicture extends Component {
   constructor(props) {
     super(props);
     this.state = {
       mode: VIEW,
-      org: "",
-      src: "",
+      org: '',
+      src: '',
     };
     this.handleEdit = this.handleEdit.bind(this);
     this.handleSave = this.handleSave.bind(this);
@@ -23,7 +23,7 @@ class ProfilePicture extends Component {
 
   componentWillMount() {
     //get user picture from storage before render
-    var image = getUserPicture(this.props.username);
+    var image = getUserPicture(this.props.wantedUser);
     this.setState({
       org: image,
       src: image,
@@ -31,14 +31,25 @@ class ProfilePicture extends Component {
   }
 
   handleEdit() {
-    console.log("Profile Picture edit");
-    this.setState({ mode: EDIT });
+    if (this.props.editable) {
+      console.log('Profile Picture edit');
+      this.setState({ mode: EDIT });
+    } else {
+      console.log('Edit not authorised');
+    }
   }
 
   handleSave() {
-    console.log("Profile About save");
-    //change message in database
-    setUserPicture(this.state.username, this.state.src);
+    console.log('Profile About save');
+    //not your profile
+    if (!this.props.editable) {
+      console.log('Save not authorized');
+      this.handleCancel();
+      return;
+    }
+
+    //change picture in database
+    setUserPicture(this.props.currentUser, this.state.src);
     //if successful, change message in state
     this.setState({ org: this.state.src });
 
@@ -46,7 +57,7 @@ class ProfilePicture extends Component {
   }
 
   handleCancel() {
-    console.log("Profile About cancel");
+    console.log('Profile About cancel');
 
     //reset editMessage
     this.setState({ src: this.state.org });
@@ -58,22 +69,25 @@ class ProfilePicture extends Component {
     this.setState({ src: e.target.value });
   }
 
+  renderEditables() {
+    return this.state.mode === EDIT ? (
+      <ProfilePictureSubmit
+        name="Profile Picture Submit"
+        value={this.state.src}
+        onSave={this.handleSave}
+        onCancel={this.handleCancel}
+        onChange={this.handleChange}
+      />
+    ) : (
+      <ProfilePictureEdit name="Edit" onClick={this.handleEdit} />
+    );
+  }
+
   render() {
     return (
       <div className="ProfilePicture">
         <ProfilePictureDisplay src={this.state.src} />
-
-        {this.state.mode === EDIT ? (
-          <ProfilePictureSubmit
-            name="Profile Picture Submit"
-            value={this.state.src}
-            onSave={this.handleSave}
-            onCancel={this.handleCancel}
-            onChange={this.handleChange}
-          />
-        ) : (
-          <ProfilePictureEdit name="Edit" onClick={this.handleEdit} />
-        )}
+        {this.props.editable && this.renderEditables()}
       </div>
     );
   }
