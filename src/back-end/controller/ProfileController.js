@@ -40,7 +40,6 @@ exports.profile_update_picture_put = function(req, res) {
 exports.profile_update_about_put = async function(req, res) {
     if (req.user) {
         // user is authenticated
-        console.log(req.session.passport);
         let result = await dbUpdate.updateMessage(req.session.passport, 'about', req.body.about);
         if (result.matchedCount) {
             res.sendStatus(200); // OK
