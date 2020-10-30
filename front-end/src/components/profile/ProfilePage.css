@@ -5,43 +5,49 @@
   background-color: #222629;
   display: grid;
   grid-gap: 5px;
-  grid-template-columns: repeat(auto-fill, minmax(25%, 1fr));
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas:
+    'picture about about radar'
+    'status about about radar'
+    'social social acs acs ';
 }
 
 .ProfileAbout {
   border-style: solid;
   border-color: #61892f;
   border-width: 4px;
-  grid-column-start: 2;
-  grid-column-end: 4;
-  grid-row-start: 1;
-  grid-row-end: 3;
+  grid-area: about;
 }
 .ProfileStatus {
   border-style: solid;
   border-color: #61892f;
   border-width: 4px;
-  grid-column-start: 3;
-  grid-column-end: 4;
-  grid-row-start: 3;
-  grid-row-end: 4;
+  grid-area: status;
 }
 
 .ProfileACS {
   border-style: solid;
   border-color: #86c232;
   border-width: 4px;
-  grid-column-start: 1;
-  grid-column-end: 3;
-  grid-row-start: 3;
-  grid-row-end: 4;
+  grid-area: acs;
 }
 .ProfilePicture {
   border-style: solid;
   border-color: #86c232;
   border-width: 4px;
-  grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: 1;
-  grid-row-end: 3;
+  grid-area: picture;
+}
+
+.ProfileRadar {
+  border-style: solid;
+  border-color: #86c232;
+  border-width: 4px;
+  grid-area: radar;
+}
+.ProfileSocial {
+  border-style: solid;
+  border-color: #86c232;
+  border-width: 4px;
+  grid-area: social;
 }

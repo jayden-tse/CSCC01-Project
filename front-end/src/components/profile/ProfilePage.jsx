@@ -3,6 +3,8 @@ import ProfileAbout from './ProfileAbout';
 import ProfileACS from './ProfileACS';
 import ProfilePicture from './ProfilePicture';
 import ProfileStatus from './ProfileStatus';
+import ProfileRadar from './ProfileRadar';
+import ProfileSocial from './ProfileSocial';
 import './ProfilePage.css';
 
 class ProfilePage extends Component {
@@ -33,6 +35,16 @@ class ProfilePage extends Component {
         <ProfileACS
           currentUser={this.props.currentUser}
           wantedUser={this.props.wantedUser}
+        />
+        <ProfileRadar
+          currentUser={this.props.currentUser}
+          wantedUser={this.props.wantedUser}
+          editable={editable}
+        />
+        <ProfileSocial
+          currentUser={this.props.currentUser}
+          wantedUser={this.props.wantedUser}
+          editable={editable}
         />
       </div>
     );

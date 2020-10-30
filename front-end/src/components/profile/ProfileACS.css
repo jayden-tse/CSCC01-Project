@@ -1,7 +1,11 @@
+.ProfileACS {
+  display: grid;
+}
+
 .ProfileACSLabel {
-  font-size: 300%;
+  font-size: 250%;
   font-weight: bold;
-  display: block;
-  text-align: center;
   color: #6b6e70;
+  line-height: 100%;
+  text-align: center;
 }
