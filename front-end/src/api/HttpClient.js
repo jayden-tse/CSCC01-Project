@@ -1,4 +1,6 @@
-// The URL of the server
-const baseUrl = 'http://localhost:8080';
+/** 
+ * Contains common information for making HTTP requests to the backend server.
+ */
 
-/** Makes HTTP requests to the back end server for the front end. */
+/** The URL of the server */
+export const BASE_URL = 'http://localhost:8080';
