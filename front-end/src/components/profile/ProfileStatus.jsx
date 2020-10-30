@@ -21,11 +21,6 @@ class ProfileStatus extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentWillMount() {
-    var mes = getUserStatus(this.props.wantedUser);
-    this.setState({ message: mes, editMessage: mes });
-  }
-
   handleEdit() {
     if (this.props.editable) {
       console.log('Profile Status edit');
@@ -45,12 +40,24 @@ class ProfileStatus extends Component {
     }
 
     //change message in database
-    setUserStatus(this.props.currentUser, this.state.editMessage);
+    setUserStatus(this.state.editMessage)
+      .then((response) => {
+        if (response.ok) {
+          //if successful, change message in state
+          this.setState({ message: this.state.editMessage });
 
-    //if successful, change message in state
-    this.setState({ message: this.state.editMessage });
-
-    this.setState({ mode: VIEW });
+          this.setState({ mode: VIEW });
+        } else {
+          //on error ~500 error writing, or 401 unauthorized
+          console.log('Error writing Status');
+          this.handleCancel();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log('Error with backend response');
+        this.handleCancel();
+      });
   }
 
   handleCancel() {

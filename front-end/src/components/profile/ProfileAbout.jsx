@@ -19,11 +19,23 @@ class ProfileAbout extends Component {
     this.handleSave = this.handleSave.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleChange = this.handleChange.bind(this);
-  }
 
-  componentWillMount() {
-    var mes = getUserAbout(this.props.wantedUser);
-    this.setState({ message: mes, editMessage: mes });
+    //initialize about with users about
+    // getUserAbout(this.props.wantedUser)
+    //   .then((response) => {
+    //     if (response.ok) {
+    //       //get about message from response here
+    //       const mes = 'dsds';
+    //       this.setState({ message: mes, editMessage: mes });
+    //     } else {
+    //       //on error ~400
+    //       console.log('Error getting About');
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     console.log('Error with Backend response');
+    //   });
   }
 
   handleEdit() {
@@ -44,12 +56,24 @@ class ProfileAbout extends Component {
       return;
     }
     //change message in database
-    setUserAbout(this.props.currentUser, this.state.editMessage);
+    setUserAbout(this.state.editMessage)
+      .then((response) => {
+        if (response.ok) {
+          //if successful, change message in state
+          this.setState({ message: this.state.editMessage });
 
-    //if successful, change message in state
-    this.setState({ message: this.state.editMessage });
-
-    this.setState({ mode: VIEW });
+          this.setState({ mode: VIEW });
+        } else {
+          //on error ~500 error writing, or 401 unauthorized
+          console.log('Error writing About');
+          this.handleCancel();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log('Error with backend response');
+        this.handleCancel();
+      });
   }
 
   handleCancel() {
