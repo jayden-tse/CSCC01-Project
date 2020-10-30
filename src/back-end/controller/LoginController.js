@@ -1,6 +1,6 @@
 const passport = require('passport');
 
-exports.auth_get = function(req, res, next) {
+exports.auth = function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
         if (err) {
             return next(err);
@@ -19,7 +19,7 @@ exports.auth_get = function(req, res, next) {
 
 };
 
-exports.auth_put = function(req, res, next) {
+exports.deauth = function(req, res, next) {
     if (req.user) {
         req.logout();
         res.sendStatus(200);

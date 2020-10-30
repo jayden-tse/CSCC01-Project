@@ -3,6 +3,8 @@
 import React from "react";
 import "./TheZone.css";
 import ScoreTicker from './ScoreTicker';
+import TheZoneCreatePost from './TheZoneCreatePost';
+import TheZonePostList from './TheZonePostList';
 
 
 class TheZone extends React.Component{
@@ -13,23 +15,13 @@ class TheZone extends React.Component{
   render() {
     return (
       <div>
-        <ScoreTicker/>
         <div className="TheZoneContainer"> 
-          <button onClick={this.props.redirectToTrivia}>Trivia</button>
-          <h3>Description for Trivia</h3>
+          <button className="redirect" onClick={this.props.redirectToTrivia}>Trivia</button>
+          <button className="redirect" onClick={this.props.redirectToPicksAndPredictions}>Picks & Predictions</button>
+          <button className="redirect" onClick={this.props.redirectToDebate}>Debate</button>
         </div>
-        <div className="TheZoneContainer"> 
-          <button onClick={this.props.redirectToDebate}>Debate</button>
-          <h3>Description for Debate</h3>
-        </div>
-        <div className="TheZoneContainer"> 
-          <button onClick={this.props.redirectToOpenCourt}>Open Court</button>
-          <h3>Description for Open Court</h3>
-        </div>
-        <div className="TheZoneContainer"> 
-          <button onClick={this.props.redirectToPicksAndPredictions}>Picks & Predictions</button>
-          <h3>Description for Picks and Predictions</h3>
-        </div>
+        <TheZoneCreatePost />
+        <TheZonePostList />
       </div>
     )
   }

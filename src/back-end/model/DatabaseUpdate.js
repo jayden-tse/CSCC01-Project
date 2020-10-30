@@ -1,12 +1,22 @@
 var mongoConnect = require('../../mongoConnect');
-const dbRead = require('./DatabaseRead');
 
 class DatabaseUpdate {
-    async updateMessage(user, type, message) {
+
+    async addUserToTracker(req, username) {
+        let user = { 'username': req.user }
+        let result = await mongoConnect.getDBCollection("Users").updateOne(user, {
+            $addToSet: {
+                "profile.tracker": username
+            }
+        });
+        return result;
+    }
+
+    async updateMessage(req, type, message) {
         let messageType = 'profile.' + type;
-        let userJson = { 'username': user.user };
-        console.log(await mongoConnect.getDBCollection("Users").findOne(userJson));
-        let result = await mongoConnect.getDBCollection("Users").updateOne(userJson, {
+        let user = { 'username': req.user };
+        console.log(await mongoConnect.getDBCollection("Users").findOne(user));
+        let result = await mongoConnect.getDBCollection("Users").updateOne(user, {
             $set: {
                 [messageType]: message
             }
@@ -14,4 +24,5 @@ class DatabaseUpdate {
         return result;
     }
 }
+
 module.exports = DatabaseUpdate;
