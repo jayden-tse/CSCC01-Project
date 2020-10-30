@@ -10,7 +10,6 @@ const expressValidator = require('express-validator');
 const router = require('./routes');
 
 var passport = require('passport');
-const { body } = require('express-validator/check');
 
 async function main() {
     try {
