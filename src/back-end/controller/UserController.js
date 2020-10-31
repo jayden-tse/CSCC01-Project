@@ -24,7 +24,7 @@ exports.user_check_email_get = async function(req, res) {
 };
 
 exports.user_check_phonenum_get = async function(req, res) {
-    let newNum = await dbRead.findPhoneNum(req.body.phoneNum);
+    let newNum = await dbRead.findPhoneNum(req.body.phonenum);
     if (newNum !== null) {
         res.status(400).send('This phone number already exists.');
     } else {
@@ -69,9 +69,9 @@ exports.user_update_email_put = async function(req, res) {
 exports.user_update_phonenum_put = async function(req, res) {
     if (req.user) {
         // user is authenticated
-        let newNum = await dbRead.findPhoneNum(req.body.phoneNum);
+        let newNum = await dbRead.findPhoneNum(req.body.phonenum);
         if (newNum === null) {
-            let result = await dbUpdate.updateUser(req.session.passport, 'phoneNum', req.body.phoneNum);
+            let result = await dbUpdate.updateUser(req.session.passport, 'phonenum', req.body.phonenum);
             if (result.matchedCount) {
                 res.sendStatus(200); // OK
             } else {

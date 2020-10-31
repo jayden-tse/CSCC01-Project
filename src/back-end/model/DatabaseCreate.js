@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const Profile = require('./Profile.js');
+const Post = require('./Post.js');
 
 const DatabaseRead = require('./DatabaseRead.js');
 const dbRead = new DatabaseRead();
@@ -55,6 +56,12 @@ class DatabaseCreate {
         let salt = bcrypt.genSaltSync(saltRounds);
         let hashedPassword = bcrypt.hashSync(password, salt);
         return hashedPassword;
+    }
+
+    // the Zone
+    async createPost(user, date, content, likes, dislikes, comments) {
+        let post = new Post(user, date, content, likes, dislikes, comments);
+        let result = await mongoConnect.getDBCollection("Posts").insertOne(post);
     }
 }
 
