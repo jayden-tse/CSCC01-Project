@@ -3,8 +3,8 @@ import { BASE_URL } from "./HttpClient.js"
 /**
  * Creates a new user using the information from the sign up form.
  * Returns an object for the status of the request with the properties:
- * - success: `true` if successful, `false` if there was an error
- * - reason: the reason for the error; one of the following values
+ * - `success`: `true` if successful, `false` if there was an error
+ * - `reason`: the reason for the error; one of the following values
  *  - `''` default value for no errors
  *  - `'invalid'` invalid username, email, or password
  *  - `'unexpected'` an unexpected error from the database
@@ -39,36 +39,27 @@ export async function signUp(username, password, email, phone, q1, q2, q3, q4, q
         },
         body: JSON.stringify(body)
     }).then(response => {
-        // Fetch only rejects on a network error. Response.ok is still true
-        // when there's status codes not between 200-299
-        if (!response.ok) {
-            throw new Error('Network error');
-        }
-        return response;
-    }).then(response => {
-        // Convert server response to appropriate return object
-        let ret = {
-            success: true,
+        // Convert server response to appropriate status object
+        let status = {
+            success: false,
             reason: ''
         };
         switch(response.status) {
             // Sign up successful
             case 200:
+                status.success = true;
                 break;
             // Invalid username, email, or password
             case 400:
-                ret.success = false;
-                ret.reason = 'invalid';
+                status.reason = 'invalid';
                 break;
             // Unexpected error with database
             case 500:
-                ret.success = false;
-                ret.reason = 'unexpected';
+                status.reason = 'unexpected';
                 break;
             // Some other error
             default:
-                ret.success = false;
-                ret.reason = 'other';
+                status.reason = 'other';
                 // DEBUG ONLY
                 console.error(
                     `Sign Up fetch had unexpected response code: ${response.status}
@@ -76,8 +67,10 @@ export async function signUp(username, password, email, phone, q1, q2, q3, q4, q
                 );
                 break;
         }
-        return ret;
-    }).catch(() => {
+        return status;
+    }).catch((error) => {
+        // DEBUG ONLY
+        console.error(`Sign up fetch rejected with error: ${error}`);
         // Fetch rejects with a TypeError when a network error occurs
         return {success: false, reason: 'network'};
     });
