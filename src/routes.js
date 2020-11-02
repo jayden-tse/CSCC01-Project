@@ -44,12 +44,10 @@ router.put('/user/send/email', userController.user_send_new_email_confirmation_e
 // Send user new phone number sms
 router.put('/user/send/phonenum', userController.user_send_new_phonenum_confirmation_sms);
 
-
 /* SIGNUP */
 
 // Signup user
 router.put('/signup', validateUser.validateUser, signupController.user_put);
-
 
 /* LOGIN */
 
@@ -59,8 +57,10 @@ router.put('/login', loginController.auth);
 // Logout
 router.put('/logout', loginController.deauth);
 
-
 /* PROFILE */
+
+// Get profile
+router.get('/profile', profileController.profile_get);
 
 // Get profile picks
 router.get('/profile/picks', profileController.profile_picks_get);
@@ -89,7 +89,6 @@ router.put('/profile/update/ACS', profileController.profile_update_ACS_put);
 // Delete profile tracker
 router.delete('/profile/delete/tracker', profileController.profile_tracker_del);
 
-
 /* TRIVIA */
 
 // Create questions
@@ -104,7 +103,6 @@ router.put('/trivia/update/question', triviaController.questions_update_put);
 // Delete questions
 router.delete('/trivia/delete/question', triviaController.questions_del);
 
-
 /* PICKS & PREDICTIONS */
 
 // Create matches
@@ -118,7 +116,6 @@ router.put('/picksandpredictions/update/match', pickspredictionsController.match
 
 // Delete matches
 router.delete('/picksandpredictions/delete/match', pickspredictionsController.matches_del);
-
 
 /* DEBATE */
 
@@ -145,7 +142,6 @@ router.put('/debates/submission/update/score', debateController.debate_submissio
 
 // Delete debate topics
 router.delete('/debates/delete/topic', debateController.debate_topics_del);
-
 
 /* THE ZONE */
 

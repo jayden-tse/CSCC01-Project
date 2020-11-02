@@ -1,12 +1,13 @@
-import React, { Component } from "react";
-import logo from "../resources/sportcredLogo2.png";
-import "./LoginPage.css";
-//import LoginCalls from "./LoginCalls";
+import React, { Component } from 'react';
+import logo from '../resources/sportcredLogo2.png';
+import './LoginPage.css';
+import { login } from '../api/LoginCalls.js';
+import Utilities from '../util/Utilities.js';
 
 class LoginPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { LoginError: false, Username: "", Password: "" };
+    this.state = { LoginError: false, Username: '', Password: '' };
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
@@ -16,17 +17,26 @@ class LoginPage extends Component {
   }
 
   handleLoginSubmit() {
-    // var result = LoginCalls.loginAuthenticate(
-    //   this.state.Username,
-    //   this.state.password
-    // );
-    //on login error
-    this.setState({ LoginError: true });
-    //confirm login
-
-    //handle route if good login
-    this.props.onLoginSuccess();
-    this.props.onTheZoneRedirect();
+    var utils = new Utilities();
+    var currentUser = this.state.Username;
+    const hashed = utils.passwordHasher(this.state.Password);
+    login(currentUser, hashed)
+      .then((response) => {
+        if (response.ok) {
+          //confirm login
+          //handle route if good login
+          this.props.onLoginSuccess(currentUser);
+          this.props.onTheZoneRedirect();
+        } else {
+          //on login error ~400
+          this.setState({ LoginError: true });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log('Error with login response');
+        this.setState({ LoginError: true });
+      });
   }
 
   render() {
@@ -44,7 +54,6 @@ class LoginPage extends Component {
           name="Password"
           value={this.state.Password}
           onChange={this.handleChange}
-          hidden={true}
         />
         {this.state.LoginError && (
           <LoginInputError message="Error Logging In" />
@@ -90,9 +99,9 @@ function LoginSubmit(props) {
 
 function LoginToSignup(props) {
   return (
-    <a className="LoginToSignup" href="#" onClick={props.onClick}>
+    <button className="LoginToSignup" onClick={props.onClick}>
       {props.message}
-    </a>
+    </button>
   );
 }
 

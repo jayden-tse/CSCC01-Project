@@ -1,7 +1,7 @@
 const DatabaseCreate = require('../model/DatabaseCreate.js');
 const dbCreate = new DatabaseCreate();
 
-exports.the_zone_post_put = function(req, res) {
+exports.the_zone_post_put = async function(req, res) {
     if (req.user) {
         // user authenticated
         // user, date, content, likes, dislikes, comments
