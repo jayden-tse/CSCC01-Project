@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Grid, Link, MenuItem, TextField } from '@material-ui/core';
 import { signUp } from '../api/SignupCalls.js';
+import './SignupPage.css';
 
 // TODO: refactor form into its own component
 
@@ -114,7 +115,7 @@ class SignupPage extends React.Component {
 
           {/* Form */}
           <Grid container item>
-            <form>
+            <form className='SignupForm'>
               {/* Username */}
               <Grid item>
                 <TextField 
@@ -127,6 +128,7 @@ class SignupPage extends React.Component {
                   required
                   autoFocus
                   variant='filled'
+                  fullWidth
                 >
                 </TextField>
               </Grid>
@@ -142,6 +144,7 @@ class SignupPage extends React.Component {
                   onChange={this.handleInputChange}
                   required
                   variant='filled'
+                  fullWidth
                 >
                 </TextField>
               </Grid>
@@ -173,6 +176,7 @@ class SignupPage extends React.Component {
                   onChange={this.handleInputChange}
                   required
                   variant='filled'
+                  fullWidth
                 >
                 </TextField>
               </Grid>
@@ -187,6 +191,7 @@ class SignupPage extends React.Component {
                   onChange={this.handleInputChange}
                   required
                   variant='filled'
+                  fullWidth
                 >
                 </TextField>
               </Grid>
@@ -202,6 +207,7 @@ class SignupPage extends React.Component {
                   onChange={this.handleInputChange}
                   required
                   variant='filled'
+                  fullWidth
                 >
                 </TextField>
               </Grid>
@@ -233,6 +239,7 @@ class SignupPage extends React.Component {
                   onChange={this.handleInputChange}
                   required
                   variant='filled'
+                  fullWidth
                 >
                   {sportLevels.map((item) => (
                     <MenuItem key={item} value={item}>{item}</MenuItem>
@@ -251,6 +258,7 @@ class SignupPage extends React.Component {
                   onChange={this.handleInputChange}
                   required
                   variant='filled'
+                  fullWidth
                 >
                 </TextField>
               </Grid>
@@ -266,6 +274,7 @@ class SignupPage extends React.Component {
                   onChange={this.handleInputChange}
                   required
                   variant='filled'
+                  fullWidth
                 >
                 </TextField>
               </Grid>
@@ -283,7 +292,7 @@ class SignupPage extends React.Component {
           </Grid> {/* Form container */}
           {/* TODO: Error text for the entire form. Change component later */}
           <Grid>
-            <h2 style={{'color': 'red'}}>{this.state.formHelper}</h2>
+            <h2 className='SignupFormError'>{this.state.formHelper}</h2>
           </Grid>
         </Grid> {/* Page container */}
       </div>
