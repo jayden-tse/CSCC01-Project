@@ -12,7 +12,6 @@ export async function login(username, password) {
   };
   return fetch(BASE_URL + '/login', fetchOptions)
     .then((res) => {
-      console.log('response: ' + res.body.text);
       return res;
     })
     .catch((error) => {
