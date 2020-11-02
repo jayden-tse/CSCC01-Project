@@ -1,4 +1,4 @@
-const startUrl = 'http://localhost:8080/login';
+import { BASE_URL } from './HttpClient.js';
 
 export async function login(username, password) {
   var params = { username: username, password: password };
@@ -10,7 +10,7 @@ export async function login(username, password) {
     },
     body: JSON.stringify(params),
   };
-  return fetch(startUrl, fetchOptions)
+  return fetch(BASE_URL + '/login', fetchOptions)
     .then((res) => {
       console.log('response: ' + res.body.text);
       return res;
