@@ -25,12 +25,23 @@ class DatabaseUpdate {
     async updateMessage(req, type, message) {
         let messageType = 'profile.' + type;
         let username = { 'username': req.user };
-        console.log(await mongoConnect.getDBCollection("Users").findOne(username));
         let result = await mongoConnect.getDBCollection("Users").updateOne(username, {
             $set: {
                 [messageType]: message
             }
         });
+        console.log(await mongoConnect.getDBCollection("Users").findOne(username));
+        return result;
+    }
+
+    async updateUser(req, type, message) {
+        let username = { 'username': req.user };
+        let result = await mongoConnect.getDBCollection("Users").updateOne(username, {
+            $set: {
+                [type]: message
+            }
+        });
+        console.log(await mongoConnect.getDBCollection("Users").findOne(username));
         return result;
     }
 }

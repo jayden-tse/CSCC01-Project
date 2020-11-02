@@ -33,7 +33,7 @@ router.put('/user/update/password', userController.user_update_password_put);
 router.put('/user/update/email', userController.user_update_email_put);
 
 // Update user phone number
-router.put('/user/update/phonenum', userController.user_update_phone_number_put);
+router.put('/user/update/phonenum', userController.user_update_phonenum_put);
 
 // Send user password recovery email
 router.put('/user/send/password', userController.user_send_new_password_recovery_email);
@@ -42,7 +42,7 @@ router.put('/user/send/password', userController.user_send_new_password_recovery
 router.put('/user/send/email', userController.user_send_new_email_confirmation_email);
 
 // Send user new phone number sms
-router.put('/user/send/phonenum', userController.user_send_new_phonenumber_confirmation_sms);
+router.put('/user/send/phonenum', userController.user_send_new_phonenum_confirmation_sms);
 
 /* SIGNUP */
 
