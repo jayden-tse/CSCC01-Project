@@ -114,7 +114,7 @@ class ProfileAbout extends Component {
   render() {
     return (
       <div className="ProfileAbout">
-        <ProfileAboutHeader message="About:" />
+        <ProfileAboutHeader message={`About ${this.props.wantedUser}:`} />
         {this.state.mode === VIEW ? this.renderView() : this.renderEdit()}
       </div>
     );

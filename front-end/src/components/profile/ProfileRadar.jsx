@@ -13,23 +13,43 @@ class ProfileRadar extends Component {
     super(props);
     this.state = {};
   }
+
   render() {
     return (
       <div className="ProfileRadar">
-        <header className="ProfileRadarHeader">aieeeeeee</header>
+        <header className="ProfileRadarHeader">{`${this.props.wantedUser} is following:`}</header>
         <nav>
-          <ul className="ProfileRadarList">{listFollowed(sample)}</ul>
+          <ul className="ProfileRadarList">
+            {ListFollowed(sample, this.props.handleViewProfile)}
+          </ul>
         </nav>
       </div>
     );
   }
 }
 
-function listFollowed(list) {
-  return list.map((user) => (
+function ProfileItem(props) {
+  return (
     <li className="ProfileRadarItem">
-      {user.username} :{user.ACS}
+      <button
+        className="ProfileRadarItemButton"
+        onClick={(e) => props.handleClick(props.username)}
+      >
+        {props.username}, ACS[:{props.ACS}]
+      </button>
     </li>
+  );
+}
+
+function ListFollowed(list, redirect) {
+  return list.map((user) => (
+    <ProfileItem
+      key={user.username}
+      id={user.username}
+      username={user.username}
+      ACS={user.ACS}
+      handleClick={redirect}
+    />
   ));
 }
 

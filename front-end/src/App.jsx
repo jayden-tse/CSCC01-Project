@@ -17,6 +17,7 @@ class App extends React.Component {
       auth: false,
       currentPage: 'Login',
       currentUser: 'hello',
+      profileView: '',
     };
     this.loginSuccess = this.loginSuccess.bind(this);
     this.redirectToLogin = this.redirectToLogin.bind(this);
@@ -30,6 +31,7 @@ class App extends React.Component {
     this.redirectToPicksAndPredictions = this.redirectToPicksAndPredictions.bind(
       this
     );
+    this.handleViewProfile = this.handleViewProfile.bind(this);
   }
 
   loginSuccess(username) {
@@ -67,6 +69,7 @@ class App extends React.Component {
   redirectToProfile() {
     this.setState({
       currentPage: 'Profile',
+      profileView: this.state.currentUser,
     });
   }
 
@@ -91,6 +94,14 @@ class App extends React.Component {
   redirectToOpenCourt() {
     this.setState({
       currentPage: 'OpenCourt',
+    });
+  }
+
+  handleViewProfile(username) {
+    //view any specified profile
+    this.setState({
+      currentPage: 'Profile',
+      profileView: username,
     });
   }
 
@@ -181,7 +192,8 @@ class App extends React.Component {
             />
             <ProfilePage
               currentUser={this.state.currentUser}
-              wantedUser={this.state.currentUser}
+              wantedUser={this.state.profileView}
+              handleViewProfile={this.handleViewProfile}
             />
           </div>
         );
