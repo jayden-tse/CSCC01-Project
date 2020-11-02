@@ -12,11 +12,17 @@ class ProfileRadar extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.handleFollow = this.handleFollow.bind(this);
   }
+
+  handleFollow() {}
 
   render() {
     return (
       <div className="ProfileRadar">
+        {!this.props.editable && (
+          <FollowButton handleClick={this.handleFollow} />
+        )}
         <header className="ProfileRadarHeader">{`${this.props.wantedUser} is following:`}</header>
         <nav>
           <ul className="ProfileRadarList">
@@ -35,7 +41,7 @@ function ProfileItem(props) {
         className="ProfileRadarItemButton"
         onClick={(e) => props.handleClick(props.username)}
       >
-        {props.username}, ACS[:{props.ACS}]
+        {props.username}, ACS:{props.ACS}
       </button>
     </li>
   );
@@ -51,6 +57,14 @@ function ListFollowed(list, redirect) {
       handleClick={redirect}
     />
   ));
+}
+
+function FollowButton(props) {
+  return (
+    <button className="ProfileRadarFollowButton" onClick={props.handleClick}>
+      Follow: x
+    </button>
+  );
 }
 
 export default ProfileRadar;

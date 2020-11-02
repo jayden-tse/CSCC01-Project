@@ -21,7 +21,7 @@ class ProfilePicture extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     //get user picture from storage before render
     var image = getUserPicture(this.props.wantedUser);
     this.setState({

@@ -8,7 +8,7 @@ class ProfileACS extends Component {
     this.state = { ACS: 0, ACSChange: 0 };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({ ACS: getUserACS(this.props.wantedUser) });
     this.setState({
       ACSChange: getUserACSChange(this.props.wantedUser),
