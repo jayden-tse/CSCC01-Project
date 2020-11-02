@@ -19,6 +19,7 @@ class App extends React.Component {
       currentUser: 'hello',
     };
     this.loginSuccess = this.loginSuccess.bind(this);
+    this.redirectToLogin = this.redirectToLogin.bind(this);
     this.redirectToSignup = this.redirectToSignup.bind(this);
     this.redirectToTheZone = this.redirectToTheZone.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
@@ -37,6 +38,13 @@ class App extends React.Component {
       currentUser: username,
     });
   }
+
+  redirectToLogin() {
+    this.setState({
+      currentPage: 'Login',
+    });
+  }
+
   redirectToSignup() {
     this.setState({
       currentPage: 'Signup',
@@ -92,7 +100,7 @@ class App extends React.Component {
     if (!this.state.auth) {
       // logic to determine which page
       if (this.state.currentPage === 'Signup') {
-        page = <SignupPage />;
+        page = <SignupPage onSignup={this.redirectToLogin} />;
       } else {
         page = (
           <LoginPage

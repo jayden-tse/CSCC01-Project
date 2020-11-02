@@ -13,7 +13,7 @@ exports.validateUser = [
     .not().isEmpty()
     .withMessage('Email can not be empty!')
     .isEmail(),
-    check('phoneNum')
+    check('phonenum')
     .not().isEmpty()
     .withMessage('Phone number can not be empty!')
     .isMobilePhone(),

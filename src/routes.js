@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const validateUser = require('./validator');
 
+const userController = require('./back-end/controller/UserController');
 const signupController = require('./back-end/controller/SignupController');
 const loginController = require('./back-end/controller/LoginController');
 const profileController = require('./back-end/controller/ProfileController');
@@ -12,29 +13,38 @@ const triviaController = require('./back-end/controller/TriviaController');
 
 /* USER */
 
-// Create user
-router.put('/user', validateUser.validateUser, signupController.user_put);
-
 // Check existing username
-router.get('/user/check/username', signupController.user_check_username_get);
+router.get('/user/check/username', userController.user_check_username_get);
 
 // Check existing email address
-router.get('/user/check/email', signupController.user_check_email_get);
+router.get('/user/check/email', userController.user_check_email_get);
 
 // Check existing phone number
-router.get('/user/check/phonenum', signupController.user_check_phonenum_get);
+router.get('/user/check/phonenum', userController.user_check_phonenum_get);
 
 // Update user password
-router.put('/user/update/password', signupController.user_update_password_put);
+router.put('/user/update/password', userController.user_update_password_put);
 
 // Update user email
-router.put('/user/update/email', signupController.user_update_email_put);
+router.put('/user/update/email', userController.user_update_email_put);
 
 // Update user phone number
-router.put('/user/update/phonenumber', signupController.user_update_phone_number_put);
+router.put('/user/update/phonenum', userController.user_update_phonenum_put);
 
-// Delete user
-router.delete('/user', signupController.user_del);
+// Send user password recovery email
+router.put('/user/send/password', userController.user_send_new_password_recovery_email);
+
+// Send user new email confirmation email
+router.put('/user/send/email', userController.user_send_new_email_confirmation_email);
+
+// Send user new phone number sms
+router.put('/user/send/phonenum', userController.user_send_new_phonenum_confirmation_sms);
+
+
+/* SIGNUP */
+
+// Signup user
+router.put('/signup', validateUser.validateUser, signupController.user_put);
 
 
 /* LOGIN */
@@ -48,17 +58,11 @@ router.put('/logout', loginController.deauth);
 
 /* PROFILE */
 
-// Create profile
-router.put('/profile', profileController.profile_put);
-
-// Get profile
-router.get('/profile', profileController.profile_get);
-
 // Get profile picks
 router.get('/profile/picks', profileController.profile_picks_get);
 
 // Get profile tracker
-router.get('profile/tracker', profileController.profile_tracker_get);
+router.get('/profile/tracker', profileController.profile_tracker_get);
 
 // Update profile picture
 router.put('/profile/update/picture', profileController.profile_update_picture_put);
@@ -78,9 +82,6 @@ router.put('/profile/update/tracker', profileController.profile_update_tracker_p
 // Update profile ACS
 router.put('/profile/update/ACS', profileController.profile_update_ACS_put);
 
-// Delete profile
-router.delete('/profile/delete', profileController.profile_del);
-
 // Delete profile tracker
 router.delete('/profile/delete/tracker', profileController.profile_tracker_del);
 
@@ -88,41 +89,43 @@ router.delete('/profile/delete/tracker', profileController.profile_tracker_del);
 /* TRIVIA */
 
 // Create questions
-router.put('/trivia', triviaController.questions_put);
+router.put('/trivia/create/question', triviaController.questions_put);
 
 // Get questions
-router.get('/trivia', triviaController.questions_get);
+router.get('/trivia/question', triviaController.questions_get);
 
 // Update questions
-router.put('/trivia', triviaController.questions_update_put);
+router.put('/trivia/update/question', triviaController.questions_update_put);
 
 // Delete questions
-router.delete('/trivia', triviaController.questions_del);
+router.delete('/trivia/delete/question', triviaController.questions_del);
+
 
 /* PICKS & PREDICTIONS */
 
 // Create matches
-router.put('/picksandpredictions', pickspredictionsController.matches_put);
+router.put('/picksandpredictions/create/match', pickspredictionsController.matches_put);
 
 // Get matches
-router.get('/picksandpredictions', pickspredictionsController.matches_get);
+router.get('/picksandpredictions/match', pickspredictionsController.matches_get);
 
 // Update matches
-router.put('/picksandpredictions', pickspredictionsController.matches_update_put);
+router.put('/picksandpredictions/update/match', pickspredictionsController.matches_update_put);
 
 // Delete matches
-router.delete('/picksandpredictions', pickspredictionsController.matches_del);
+router.delete('/picksandpredictions/delete/match', pickspredictionsController.matches_del);
+
 
 /* DEBATE */
 
 // Create debate topics
-router.put('/debates', debateController.debate_topics_put);
+router.put('/debates/create/topic', debateController.debate_topics_put);
 
 // Create debate submission
-router.put('/debates/submission', debateController.debate_submission_put);
+router.put('/debates/create/submission', debateController.debate_submission_put);
 
 // Get debate topics
-router.get('/debates', debateController.debate_topics_get);
+router.get('/debates/topic', debateController.debate_topics_get);
 
 // Get debate submission
 router.get('/debates/submission', debateController.debate_submission_get);
@@ -131,30 +134,30 @@ router.get('/debates/submission', debateController.debate_submission_get);
 router.get('/debates/submission/time', debateController.debate_submission_time_limit_get);
 
 // Update debate topics
-router.put('/debates', debateController.debate_update_topics_put);
+router.put('/debates/update/topic', debateController.debate_update_topics_put);
 
 // Update debate submission score
-router.put('/debates/submission/score', debateController.debate_submission_update_score_put);
+router.put('/debates/submission/update/score', debateController.debate_submission_update_score_put);
 
 // Delete debate topics
-router.delete('/debates', debateController.debate_topics_del);
+router.delete('/debates/delete/topic', debateController.debate_topics_del);
 
 
-/* OPEN COURT */
+/* THE ZONE */
 
 // Create the zone post
-router.put('/thezone', thezoneController.the_zone_post_put);
+router.put('/thezone/create/post', thezoneController.the_zone_post_put);
 
 // Get the zone post
-router.get('/thezone', thezoneController.the_zone_post_get);
+router.get('/thezone/post', thezoneController.the_zone_post_get);
 
 // Update the zone post
-router.put('/thezone', thezoneController.the_zone_update_post_put);
+router.put('/thezone/update/post', thezoneController.the_zone_update_post_put);
 
 // Update the zone post likes
-router.put('/thezone/likes', thezoneController.the_zone_update_likes_put);
+router.put('/thezone/update/likes', thezoneController.the_zone_update_likes_put);
 
 // Delete the zone post
-router.delete('/thezone', thezoneController.the_zone_post_del);
+router.delete('/thezone/delete/post', thezoneController.the_zone_post_del);
 
 module.exports = router;
