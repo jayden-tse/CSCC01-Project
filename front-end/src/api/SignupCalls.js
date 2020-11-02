@@ -1,4 +1,5 @@
-import { BASE_URL } from "./HttpClient.js"
+import { BASE_URL } from './HttpClient.js'
+import Utilities from '../util/Utilities.js';
 
 /**
  * Creates a new user using the information from the sign up form.
@@ -22,7 +23,8 @@ export async function signUp(username, password, email, phone, q1, q2, q3, q4, q
     // Send the request to the server
     const body = {
         username: username,
-        password: password,
+        // Hash password before sending
+        password: (new Utilities()).passwordHasher(password),
         email: email,
         phoneNum: phone,
         q1: q1,
