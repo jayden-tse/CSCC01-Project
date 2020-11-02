@@ -103,6 +103,7 @@ class App extends React.Component {
         page = (
           <SignupPage
             onSignup={this.redirectToLogin}
+            onLoginRedirect={this.redirectToLogin}
           />
         );
       } else {

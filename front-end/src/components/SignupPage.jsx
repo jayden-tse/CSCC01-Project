@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Grid, MenuItem, TextField } from '@material-ui/core';
+import { Button, Grid, Link, MenuItem, TextField } from '@material-ui/core';
 import { signUp } from '../api/SignupCalls.js';
 
+// TODO: refactor form into its own component
 /**
  * The container for the sign up page components and process.
  */
@@ -42,7 +43,7 @@ class SignupPage extends React.Component {
       sportLearnError: false,
       favTeamError: false,
       // Error text for the entire form
-      formError: ''
+      formHelper: ''
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -76,12 +77,12 @@ class SignupPage extends React.Component {
           usernameError: true,
           emailError: true,
           phoneError: true,
-          formError: 'The username, email, or phone number is invalid'
+          formHelper: 'The username, email, or phone number is invalid'
         });
       // TODO: If sign up failed because there was a network error, unexpected
       // error from database, or other, display an error text for now
       } else {
-        this.setState({ formError: 'There was an error with the server. Please try again.'});
+        this.setState({ formHelper: 'There was an error with the server. Please try again.'});
       }
     });
   }
@@ -94,6 +95,18 @@ class SignupPage extends React.Component {
           <Grid item>
             <h1>Sign Up</h1>
           </Grid>
+
+          {/* Navigation back to login */}
+          <Grid item>
+            <Button
+              component={Link}
+              onClick={this.props.onLoginRedirect}
+            >
+              or login with an existing account
+            </Button>
+          </Grid>
+
+          {/* Form */}
           <Grid container item>
             <form>
               {/* Username */}
@@ -265,10 +278,10 @@ class SignupPage extends React.Component {
               </Grid>
             </form>
           </Grid> {/* Form container */}
-        {/* TODO: Error text for the entire form. Change component later */}
-        <Grid>
-          <h2 style={{'color': 'red'}}>{this.state.formError}</h2>
-        </Grid>
+          {/* TODO: Error text for the entire form. Change component later */}
+          <Grid>
+            <h2 style={{'color': 'red'}}>{this.state.formHelper}</h2>
+          </Grid>
         </Grid> {/* Page container */}
       </div>
     );
