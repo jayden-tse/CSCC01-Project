@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getUserACS, getUserACSChange } from './ProfileACSCalls';
+import { getUserACS, getUserACSChange } from '../../api/ProfileCalls.js';
 import './ProfileACS.css';
 
 class ProfileACS extends Component {

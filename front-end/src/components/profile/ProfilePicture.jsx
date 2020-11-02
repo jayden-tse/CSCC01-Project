@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getUserPicture, setUserPicture } from './ProfilePictureCalls';
+import { getUserPicture, setUserPicture } from '../../api/ProfileCalls.js';
 import './ProfilePicture.css';
 
 const VIEW = 'View',

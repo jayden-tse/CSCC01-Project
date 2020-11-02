@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getUserStatus, setUserStatus } from './ProfileStatusCalls';
+import { getUserStatus, setUserStatus } from '../../api/ProfileCalls.js';
 import './ProfileStatus.css';
 
 const VIEW = 'View',
