@@ -3,6 +3,12 @@ import { Button, Grid, Link, MenuItem, TextField } from '@material-ui/core';
 import { signUp } from '../api/SignupCalls.js';
 
 // TODO: refactor form into its own component
+
+// The possible options for 'Highest level of sport play'
+const sportLevels = [
+  'No History', 'Recreational', 'High School', 'University', 'Professional'
+];
+
 /**
  * The container for the sign up page components and process.
  */
@@ -121,7 +127,6 @@ class SignupPage extends React.Component {
                   required
                   autoFocus
                   variant='filled'
-                  margin='normal'
                 >
                 </TextField>
               </Grid>
@@ -229,11 +234,9 @@ class SignupPage extends React.Component {
                   required
                   variant='filled'
                 >
-                  <MenuItem value={'No History'}>No History</MenuItem>
-                  <MenuItem value={'Recreational'}>Recreational</MenuItem>
-                  <MenuItem value={'High School'}>High School</MenuItem>
-                  <MenuItem value={'University'}>University</MenuItem>
-                  <MenuItem value={'Professional'}>Professional</MenuItem>
+                  {sportLevels.map((item) => (
+                    <MenuItem key={item} value={item}>{item}</MenuItem>
+                  ))}
                 </TextField>
               </Grid>
               
