@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const router = express.Router();
 const validateUser = require('./validator');
 
@@ -10,6 +11,9 @@ const pickspredictionsController = require('./back-end/controller/PicksPredictio
 const debateController = require('./back-end/controller/DebateController');
 const thezoneController = require('./back-end/controller/TheZoneController');
 const triviaController = require('./back-end/controller/TriviaController');
+
+//cors necessary for calling from different port/url
+router.use(cors());
 
 /* USER */
 

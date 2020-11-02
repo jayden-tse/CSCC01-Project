@@ -5,7 +5,8 @@
 }
 .redirect {
   width: 33.3%;
-  font-size: 3.5vh;
+  font-size: 20px;
+  white-space: nowrap;
 }
 
 body {
