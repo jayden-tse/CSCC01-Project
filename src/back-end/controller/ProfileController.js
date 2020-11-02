@@ -37,6 +37,10 @@ exports.profile_update_picture_put = function(req, res) {
     res.send('NOT IMPLEMENTED');
 };
 
+exports.profile_get_picture = function(req, res) {
+    res.send('NOT IMPLEMENTED');
+}
+
 exports.profile_update_about_put = async function(req, res) {
     if (req.user) {
         // user is authenticated

@@ -1,6 +1,6 @@
 class Post {
-    constructor(user, date, content, likes, dislikes, comments) {
-        this.user = user;
+    constructor(username, date, content, likes, dislikes, comments) {
+        this.username = username;
         this.date = date;
         this.content = content;
         this.likes = likes;
