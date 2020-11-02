@@ -33,7 +33,8 @@ export async function signUp(username, password, email, phone, q1, q2, q3, q4, q
         q4: q4,
         q5: q5
     };
-    return fetch(BASE_URL + '/user', {
+    console.log('[DEBUG] SignUp: ' + JSON.stringify(body));
+    return fetch(BASE_URL + '/signup', {
         method: 'PUT',
         mode: 'cors',
         headers: {
