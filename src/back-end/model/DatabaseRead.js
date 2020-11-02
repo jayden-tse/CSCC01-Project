@@ -28,7 +28,15 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(username, done) {
     done(null, mongoConnect.getDBCollection("Users").findOne({ "username": username }));
 });
+
 class DatabaseRead {
+
+    async getProfile(req) {
+        let username = { "username": req.user }
+        let result = await mongoConnect.getDBCollection("Users").findOne(username)
+        console.log(result.profile);
+        return result.profile;
+    }
 
     async getPickHistory(req) {
         let username = { "username": req.user }
