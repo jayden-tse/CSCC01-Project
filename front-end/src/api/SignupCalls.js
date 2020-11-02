@@ -32,17 +32,16 @@ export async function signUp(
   // Send the request to the server
   const body = {
     username: username,
-    // Hash password before sending
     password: password,
     email: email,
-    phoneNum: phone,
+    phonenum: phone,
     q1: q1,
     q2: q2,
     q3: q3,
     q4: q4,
     q5: q5,
   };
-  return fetch(BASE_URL + '/user', {
+  return fetch(BASE_URL + '/signup', {
     method: 'PUT',
     mode: 'cors',
     headers: {
