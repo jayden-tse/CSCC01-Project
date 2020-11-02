@@ -14,9 +14,10 @@ class DatabaseUpdate {
 
     async addUserToTracker(req, addUsername) {
         let username = { 'username': req.user }
+        let addUsernameResult = await mongoConnect.getDBCollection("Users").findOne({ 'username': addUsername });
         let result = await mongoConnect.getDBCollection("Users").updateOne(username, {
             $addToSet: {
-                "profile.tracker": addUsername
+                "profile.tracker": [addUsername, addUsernameResult.profile.ACS]
             }
         });
         return result;

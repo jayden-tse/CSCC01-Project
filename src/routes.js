@@ -59,6 +59,9 @@ router.put('/logout', loginController.deauth);
 
 /* PROFILE */
 
+// Get profile
+router.get('/profile', profileController.profile_get);
+
 // Get profile picks
 router.get('/profile/picks', profileController.profile_picks_get);
 
