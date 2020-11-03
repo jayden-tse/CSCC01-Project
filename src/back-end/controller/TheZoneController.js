@@ -4,9 +4,11 @@ const dbCreate = new DatabaseCreate();
 exports.the_zone_post_put = async function(req, res) {
     if (req.user) {
         // user authenticated
-        // user, date, content, likes, dislikes, comments
+        // user, date, content, agree, disagree, comments
         try {
-            await dbCreate.createPost(req.body.user, req.body.date, req.body.content, req.body.likes, req.body.dislikes, req.body.comments);
+            // user/date should be a string, content can be a json that contains img/vid + "text" string, comments should be an array of jsons where
+            // content is replaced by "text".
+            await dbCreate.createPost(req.session.passport.user, new Date(), req.body.content, "0", "0", []);
             res.sendStatus(200);
         } catch (e) {
             console.log(e);
@@ -25,7 +27,7 @@ exports.the_zone_update_post_put = function(req, res) {
     res.send('NOT IMPLEMENTED');
 };
 
-exports.the_zone_update_likes_put = function(req, res) {
+exports.the_zone_update_agree_put = function(req, res) {
     res.send('NOT IMPLEMENTED');
 };
 
