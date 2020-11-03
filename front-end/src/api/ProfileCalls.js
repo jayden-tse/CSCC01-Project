@@ -42,10 +42,10 @@ export async function setUserAbout(message) {
 
 /*ACS*/
 export function getUserACS(username) {
-  return 1;
+  return 657;
 }
 export function getUserACSChange(username) {
-  return 2;
+  return 20;
 }
 
 /*Profile Picture*/

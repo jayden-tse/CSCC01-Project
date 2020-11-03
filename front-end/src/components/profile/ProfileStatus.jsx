@@ -40,24 +40,28 @@ class ProfileStatus extends Component {
     }
 
     //change message in database
-    setUserStatus(this.state.editMessage)
-      .then((response) => {
-        if (response.ok) {
-          //if successful, change message in state
-          this.setState({ message: this.state.editMessage });
+    // setUserStatus(this.state.editMessage)
+    //   .then((response) => {
+    //     if (response.ok) {
+    //       //if successful, change message in state
+    //       this.setState({ message: this.state.editMessage });
 
-          this.setState({ mode: VIEW });
-        } else {
-          //on error ~500 error writing, or 401 unauthorized
-          console.log('Error writing Status');
-          this.handleCancel();
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log('Error with backend response');
-        this.handleCancel();
-      });
+    //       this.setState({ mode: VIEW });
+    //     } else {
+    //       //on error ~500 error writing, or 401 unauthorized
+    //       console.log('Error writing Status');
+    //       this.handleCancel();
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     console.log('Error with backend response');
+    //     this.handleCancel();
+    //   });
+    //if successful, change message in state
+    this.setState({ message: this.state.editMessage });
+
+    this.setState({ mode: VIEW });
   }
 
   handleCancel() {
