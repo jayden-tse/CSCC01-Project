@@ -169,6 +169,10 @@ router.put('/thezone/update/post', thezoneController.the_zone_update_post_put);
 // Update the zone post agree
 router.put('/thezone/update/agree', thezoneController.the_zone_update_agree_put);
 
+// Update the zone post's comment
+router.put('/thezone/update/post/comment', thezoneController.the_zone_comment_put);
+
+
 // Delete the zone post
 router.delete('/thezone/delete/post', thezoneController.the_zone_post_del);
 
