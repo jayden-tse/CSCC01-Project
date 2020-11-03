@@ -67,10 +67,10 @@ export async function signUp(
                 console.error(
                     `Sign Up fetch had unexpected response code: ${response.status}
                     with status text: ${response.statusText}`
-          );
-          break;
-      }
-      return status;
+                );
+                break;
+        }
+        return status;
     })
     .catch((error) => {
       // DEBUG ONLY
@@ -78,4 +78,126 @@ export async function signUp(
       // Fetch rejects with a TypeError when a network error occurs
       return { success: false, reason: 'network' };
     });
+}
+// TODO: talk with backend to fix no body allowed for GET
+export async function isUsernameExists(username) {
+    // const body = { username: username };
+    // fetch(BASE_URL + '/user/check/username', {
+    //     method: 'GET',
+    //     mode: 'cors',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(body)
+    // }).then(response => {
+    //     let exists = false;
+    //     switch(response.status) {
+    //         // Doesn't exist.
+    //         case 200:
+    //             break;
+    //         // Exists
+    //         case 400:
+    //             exists = true;
+    //             break;
+    //         // Some other error. Will assume it doesn't exist so it can be
+    //         // tried again
+    //         default:
+    //             // DEBUG ONLY
+    //             console.error(
+    //                 `Username exists fetch had unexpected response code: ${response.status}
+    //                 with status text: ${response.statusText}`
+    //             );
+    //             break;
+    //     }
+    //     return exists;
+    // })
+    // .catch((error) => {
+    //   // DEBUG ONLY
+    //   console.error(`Username exists fetch rejected with error: ${error}`);
+    //   // Let the user try again until no network error
+    //   return false;
+    // });
+    return false;
+}
+
+// TODO: talk with backend to fix no body allowed for GET
+export async function isEmailExists(email) {
+    // const body = { email: email };
+    // fetch(BASE_URL + '/user/check/email', {
+    //     method: 'GET',
+    //     mode: 'cors',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(body)
+    // }).then(response => {
+    //     let exists = false;
+    //     switch(response.status) {
+    //         // Doesn't exist.
+    //         case 200:
+    //             break;
+    //         // Exists
+    //         case 400:
+    //             exists = true;
+    //             break;
+    //         // Some other error. Will assume it doesn't exist so it can be
+    //         // tried again
+    //         default:
+    //             // DEBUG ONLY
+    //             console.error(
+    //                 `Email exists fetch had unexpected response code: ${response.status}
+    //                 with status text: ${response.statusText}`
+    //             );
+    //             break;
+    //     }
+    //     return exists;
+    // })
+    // .catch((error) => {
+    //   // DEBUG ONLY
+    //   console.error(`Email exists fetch rejected with error: ${error}`);
+    //   // Let the user try again until no network error
+    //   return false;
+    // });
+    return false;
+}
+
+// TODO: talk with backend to fix no body allowed for GET
+export async function isPhoneExists(phone) {
+    // const body = { phonenum: phone };
+    // fetch(BASE_URL + '/user/check/phonenum', {
+    //     method: 'GET',
+    //     mode: 'cors',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(body)
+    // }).then(response => {
+    //     let exists = false;
+    //     switch(response.status) {
+    //         // Doesn't exist.
+    //         case 200:
+    //             break;
+    //         // Exists
+    //         case 400:
+    //             exists = true;
+    //             break;
+    //         // Some other error. Will assume it doesn't exist so it can be
+    //         // tried again
+    //         default:
+    //             // DEBUG ONLY
+    //             console.error(
+    //                 `Phone exists fetch had unexpected response code: ${response.status}
+    //                 with status text: ${response.statusText}`
+    //             );
+    //             break;
+    //     }
+    //     return exists;
+    // })
+    // .catch((error) => {
+    //   // DEBUG ONLY
+    //   console.error(`Phone exists fetch rejected with error: ${error}`);
+    //   // Let the user try again until no network error
+    //   return false;
+    // });
+    return false;
 }

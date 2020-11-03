@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Grid, Link, MenuItem, TextField } from '@material-ui/core';
-import { signUp } from '../api/SignupCalls.js';
+import {
+  isUsernameExists, isEmailExists, isPhoneExists, signUp
+} from '../api/SignupCalls.js';
 import './SignupPage.css';
 
 // TODO: refactor form into its own component
@@ -31,15 +33,15 @@ class SignupPage extends React.Component {
       password: '',
       confirmPassword: '',
       favSport: '',
-      age: '',
+      age: undefined,
       sportLevel: '',
       sportLearn: '',
       favTeam: '',
       // Helper text that could appear under the inputs
       usernameHelper: '',
       emailHelper: '',
-      phoneHelper: '',
-      passwordHelper: '',
+      phoneHelper: 'Can only contain numbers. For example: 6130001234',
+      passwordHelper: 'Must contain at least 8 characters',
       confirmPasswordHelper: '',
       favSportHelper: '',
       ageHelper: '',
@@ -90,13 +92,84 @@ class SignupPage extends React.Component {
     });
   }
 
+  /**
+   * Displays an error message for each of the invalid fields.
+   * @returns {boolean} true if there were any invalid fields; false otherwise
+   */
+  handleInvalidFields() {
+    let hasInvalid = false;
+    // Username cannot exist in the database
+    isUsernameExists(this.state.username)
+    .then(exists => {
+      if (exists) {
+        hasInvalid = true;
+        this.setState({
+          usernameError: true,
+          usernameHelper: 'This username already exists.'
+        });
+      }
+    });
+
+    // Email cannot exist in the database; validity is handled by the server
+    isEmailExists(this.state.email)
+    .then(exists => {
+      if (exists) {
+        hasInvalid = true;
+        this.setState({
+          emailError: true,
+          emailHelper: 'This email is taken.',
+        });
+      }
+    });
+
+    // Phone cannot exist in the database; can only contain numbers. Actual
+    // validity handled by server.
+    if (!(/^\d+$/).test(this.state.phone)) {
+      hasInvalid = true;
+      this.setState({
+        phoneError: true,
+        phoneHelper: 'Can only contain numbers. No spaces. For example: 6130001234'
+      });
+    } else {
+      isPhoneExists(this.state.phone)
+      .then(exists => {
+        if (exists) {
+          hasInvalid = true;
+          this.setState({
+            phoneError: true,
+            phoneHelper: 'This phone number is taken.'
+          });
+        }
+      });
+    }
+
+    // Password has to be at least 8 characters
+    if (this.state.password.length < 8) {
+      hasInvalid = true;
+      this.setState({
+        passwordError: true,
+        confirmPasswordError: true,
+        passwordHelper: 'Must contain at least 8 characters.'
+      });
+    // Confirm password must match password
+    } else if (this.state.password !== this.state.confirmPassword) {
+      hasInvalid = true;
+      this.setState({
+        passwordError: true,
+        confirmPasswordError: true,
+        confirmPasswordHelper: 'The passwords do not match.'
+      });
+    }
+    // Age must be a number. This is handled already by it's component
+    return hasInvalid;
+  }
+
   handleInputChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
 
-  // TODO
   handleSubmit(event) {
     // Prevent default behaviour of form submit (does a GET request with form
     // values in the request URL!)
@@ -109,13 +182,16 @@ class SignupPage extends React.Component {
     // form when using the required props in the input elements, so submit
     // only runs when all required fields are filled in.
 
-    // TODO: Validate the required fields
+    // Validate the required fields. If any are invalid, do not submit.
+    if (this.handleInvalidFields()) {
+      return;
+    }
 
     // Send the sign up request to the server and wait for a response
     const state = this.state;
     signUp(
       state.username, state.password, state.email, state.phone, state.favSport,
-      state.age, state.sportLevel, state.sportLevel, state.favTeam
+      (state.age).toString(), state.sportLevel, state.sportLearn, state.favTeam
     )
     .then(response => {
       // If sign up successful, redirect user to log in
@@ -123,14 +199,18 @@ class SignupPage extends React.Component {
         this.props.onSignup();
       // If sign up failed because invalid fields, prompt user to change it
       } else if (response.reason === 'invalid') {
-        // For now, just highlight the all 3 invalid fields
+        // For now, just prompt the user to check all. It would be better if
+        // the server returned specific error codes.
         this.setState({
           usernameError: true,
+          username: 'Choose another username',
           emailError: true,
+          errorHelper: 'Make sure you entered the right email',
           phoneError: true,
-          formHelper: 'The username, email, or phone number is invalid'
+          phoneHelper: 'Must only contain numbers. No spaces. For example: 6130001234',
+          formHelper: 'The username, email or phone number is invalid'
         });
-      // TODO: If sign up failed because there was a network error, unexpected
+      // If sign up failed because there was a network error, unexpected
       // error from database, or other, display an error text for now
       } else {
         this.setState({ formHelper: 'There was an error with the server. Please try again.'});
@@ -259,6 +339,8 @@ class SignupPage extends React.Component {
               {/* Age */}
               <Grid item>
                 <TextField
+                  type='number'
+                  inputProps={{min: 1, max: 130}}
                   label='Age'
                   name='age'
                   value={this.state.age}
