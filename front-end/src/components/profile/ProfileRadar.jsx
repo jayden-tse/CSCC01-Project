@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './ProfileRadar.css';
 
 const sample = [
   { username: 'user1', ACS: 100 },
@@ -8,20 +9,32 @@ const sample = [
   { username: 'user5', ACS: 500 },
 ];
 
+const FOLY = 'Follow: ✓';
+const FOLN = 'Follow: x';
+
 class ProfileRadar extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { following: FOLN };
     this.handleFollow = this.handleFollow.bind(this);
   }
 
-  handleFollow() {}
+  handleFollow() {
+    if (this.state.following === FOLY) {
+      this.setState({ following: FOLN });
+    } else {
+      this.setState({ following: FOLY });
+    }
+  }
 
   render() {
     return (
       <div className="ProfileRadar">
         {!this.props.editable && (
-          <FollowButton handleClick={this.handleFollow} />
+          <FollowButton
+            handleClick={this.handleFollow}
+            followMessage={this.state.following}
+          />
         )}
         <header className="ProfileRadarHeader">{`${this.props.wantedUser} is following:`}</header>
         <nav>
@@ -62,7 +75,7 @@ function ListFollowed(list, redirect) {
 function FollowButton(props) {
   return (
     <button className="ProfileRadarFollowButton" onClick={props.handleClick}>
-      Follow: x
+      {props.followMessage}
     </button>
   );
 }
