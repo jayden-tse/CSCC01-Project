@@ -26,14 +26,14 @@ export async function signUp(username, password, email, phone, q1, q2, q3, q4, q
         // Hash password before sending
         password: (new Utilities()).passwordHasher(password),
         email: email,
-        phoneNum: phone,
+        phonenum: phone,
         q1: q1,
         q2: q2,
         q3: q3,
         q4: q4,
         q5: q5
     };
-    return fetch(BASE_URL + '/user', {
+    return fetch(BASE_URL + '/signup', {
         method: 'PUT',
         mode: 'cors',
         headers: {
