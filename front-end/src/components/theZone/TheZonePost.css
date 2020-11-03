@@ -35,7 +35,16 @@ p {
   float: right;
   margin-right: 10px;
 }
-
+.agreeOptions {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.agreeText {
+  font-size:20px;
+}
+.agreeButton {
+  max-width:200px;
+}
 .percentageDisplay {
   float: right;
 }
