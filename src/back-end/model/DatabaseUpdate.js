@@ -1,4 +1,6 @@
 var mongoConnect = require('../../mongoConnect');
+const Comment = require('./Comment.js')
+const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
 class DatabaseUpdate {
 
@@ -6,7 +8,7 @@ class DatabaseUpdate {
         let username = { 'username': req.user }
         let result = await mongoConnect.getDBCollection("Users").updateOne(username, {
             $addToSet: {
-               "profile.picks":  match
+                "profile.picks": match
             }
         });
         return result;
@@ -31,7 +33,6 @@ class DatabaseUpdate {
                 [messageType]: message
             }
         });
-        console.log(await mongoConnect.getDBCollection("Users").findOne(username));
         return result;
     }
 
@@ -42,9 +43,21 @@ class DatabaseUpdate {
                 [type]: message
             }
         });
-        console.log(await mongoConnect.getDBCollection("Users").findOne(username));
+        return result;
+    }
+
+    async createComment(post, user, date, text, agrees, disagrees) {
+        let comment = new Comment(user, date, text, agrees, disagrees); // should be in JSON format
+        // post should be a unique ID
+        let newPost = { "_id": ObjectId(post) };
+        let result = await mongoConnect.getDBCollection("Posts").updateOne(
+            newPost, {
+                $push: {
+                    comments: comment
+                }
+            }
+        );
         return result;
     }
 }
-
 module.exports = DatabaseUpdate;

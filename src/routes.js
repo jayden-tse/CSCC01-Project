@@ -68,6 +68,9 @@ router.get('/profile/picks', profileController.profile_picks_get);
 // Get profile tracker
 router.get('/profile/tracker', profileController.profile_tracker_get);
 
+// Get profile picture
+router.get('/profile/picture', profileController.profile_get_picture);
+
 // Update profile picture
 router.put('/profile/update/picture', profileController.profile_update_picture_put);
 
@@ -154,8 +157,12 @@ router.get('/thezone/post', thezoneController.the_zone_post_get);
 // Update the zone post
 router.put('/thezone/update/post', thezoneController.the_zone_update_post_put);
 
-// Update the zone post likes
-router.put('/thezone/update/likes', thezoneController.the_zone_update_likes_put);
+// Update the zone post agree
+router.put('/thezone/update/agree', thezoneController.the_zone_update_agree_put);
+
+// Update the zone post's comment
+router.put('/thezone/update/post/comment', thezoneController.the_zone_comment_put);
+
 
 // Delete the zone post
 router.delete('/thezone/delete/post', thezoneController.the_zone_post_del);

@@ -27,7 +27,8 @@ class DatabaseCreate {
     async createUser(user, questionnaire) {
         // Only store this user in the database if there exists no other accounts with
         // the same phone numbers and email.
-        let userProfile = new Profile('', '', '', questionnaire, [], [], 100);
+        // default image
+        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 100);
         user.profile = userProfile;
         let hashedPassword = this.passwordHasher(user.password);
         user.password = hashedPassword;
@@ -59,10 +60,11 @@ class DatabaseCreate {
     }
 
     // the Zone
-    async createPost(user, date, content, likes, dislikes, comments) {
-        let post = new Post(user, date, content, likes, dislikes, comments);
+    async createPost(user, date, content, agrees, disagrees, comments) {
+        let post = new Post(user, date, content, agrees, disagrees, comments);
         let result = await mongoConnect.getDBCollection("Posts").insertOne(post);
     }
+
 }
 
 module.exports = DatabaseCreate;
