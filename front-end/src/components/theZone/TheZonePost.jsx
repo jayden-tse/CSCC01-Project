@@ -105,8 +105,8 @@ class TheZonePost extends React.Component {
           {agree}
           <div className="titleContainer">
             <h1 className="title">{this.state.title}</h1>
+            <p>Posted by:<span>{this.state.poster}</span></p>
           </div>
-          <p>Posted by:<span>{this.state.poster}</span></p>
         </div>
         <p>{this.state.body}</p>
         <div className="comment">
