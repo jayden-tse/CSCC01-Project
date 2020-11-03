@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import logo from '../resources/sportcredLogo2.png';
 import './LoginPage.css';
 import { login } from '../api/LoginCalls.js';
-import Utilities from '../util/Utilities.js';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -17,15 +16,12 @@ class LoginPage extends Component {
   }
 
   handleLoginSubmit() {
-    var utils = new Utilities();
-    var currentUser = this.state.Username;
-    const hashed = utils.passwordHasher(this.state.Password);
-    login(currentUser, hashed)
+    login(this.state.Username, this.state.Password)
       .then((response) => {
         if (response.ok) {
           //confirm login
           //handle route if good login
-          this.props.onLoginSuccess(currentUser);
+          this.props.onLoginSuccess(this.state.Username);
           this.props.onTheZoneRedirect();
         } else {
           //on login error ~400

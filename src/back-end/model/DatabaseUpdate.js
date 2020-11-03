@@ -6,7 +6,7 @@ class DatabaseUpdate {
         let username = { 'username': req.user }
         let result = await mongoConnect.getDBCollection("Users").updateOne(username, {
             $addToSet: {
-               "profile.picks":  match
+                "profile.picks": match
             }
         });
         return result;
@@ -42,7 +42,6 @@ class DatabaseUpdate {
                 [messageType]: message
             }
         });
-        console.log(await mongoConnect.getDBCollection("Users").findOne(username));
         return result;
     }
 
@@ -53,7 +52,6 @@ class DatabaseUpdate {
                 [type]: message
             }
         });
-        console.log(await mongoConnect.getDBCollection("Users").findOne(username));
         return result;
     }
 }
