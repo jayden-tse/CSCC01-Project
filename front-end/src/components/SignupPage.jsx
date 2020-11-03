@@ -1,11 +1,21 @@
 import React from 'react';
 import { Button, Grid, Link, MenuItem, TextField } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import {
   isUsernameExists, isEmailExists, isPhoneExists, signUp
 } from '../api/SignupCalls.js';
 import './SignupPage.css';
 
 // TODO: refactor form into its own component
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      main: '#86C232'
+    },
+  },
+});
 
 // The property names in this.state that store the form input values.
 // Useful for iterating on each form input property and their corresponding
@@ -220,209 +230,211 @@ class SignupPage extends React.Component {
   
   render() {
     return (
-      <div className='SignupPage'>
-        <Grid container direction='column' justify='flex-start' alignItems='flex-start'>
-          {/* Title */}
-          <Grid item>
-            <h1>Sign Up</h1>
-          </Grid>
+      <ThemeProvider theme={theme}>
+        <div className='SignupPage'>
+          <Grid container direction='column' justify='flex-start' alignItems='flex-start'>
+            {/* Title */}
+            <Grid item>
+              <h1 className='SignupTitle'>Sign Up</h1>
+            </Grid>
 
-          {/* Navigation back to login */}
-          <Grid item>
-            <Button
-              component={Link}
-              onClick={this.props.onLoginRedirect}
-            >
-              or login with an existing account
-            </Button>
-          </Grid>
+            {/* Navigation back to login */}
+            <Grid item>
+              <Button
+                component={Link}
+                onClick={this.props.onLoginRedirect}
+              >
+                or login with an existing account
+              </Button>
+            </Grid>
 
-          {/* Form */}
-          <Grid container item>
-            <form className='SignupForm' onSubmit={this.handleSubmit}>
-              {/* Username */}
-              <Grid item>
-                <TextField 
-                  label='Username'
-                  name='username'
-                  value={this.state.username}
-                  helperText={this.state.usernameHelper}
-                  error={this.state.usernameError}
-                  onChange={this.handleInputChange}
-                  required
-                  autoFocus
-                  variant='filled'
-                  fullWidth
-                >
-                </TextField>
-              </Grid>
+            {/* Form */}
+            <Grid container item>
+              <form className='SignupForm' onSubmit={this.handleSubmit}>
+                {/* Username */}
+                <Grid item>
+                  <TextField 
+                    label='Username'
+                    name='username'
+                    value={this.state.username}
+                    helperText={this.state.usernameHelper}
+                    error={this.state.usernameError}
+                    onChange={this.handleInputChange}
+                    required
+                    autoFocus
+                    variant='filled'
+                    fullWidth
+                  >
+                  </TextField>
+                </Grid>
 
-              {/* Email */}
-              <Grid item>
-                <TextField 
-                  label='Email'
-                  name='email'
-                  value={this.state.email}
-                  helperText={this.state.emailHelper}
-                  error={this.state.emailError}
-                  onChange={this.handleInputChange}
-                  required
-                  variant='filled'
-                  fullWidth
-                >
-                </TextField>
-              </Grid>
+                {/* Email */}
+                <Grid item>
+                  <TextField 
+                    label='Email'
+                    name='email'
+                    value={this.state.email}
+                    helperText={this.state.emailHelper}
+                    error={this.state.emailError}
+                    onChange={this.handleInputChange}
+                    required
+                    variant='filled'
+                    fullWidth
+                  >
+                  </TextField>
+                </Grid>
 
-              {/* Phone */}
-              <Grid item>
-                <TextField
-                  label='Phone'
-                  name='phone'
-                  value={this.state.phone}
-                  helperText={this.state.phoneHelper}
-                  error={this.state.phoneError}
-                  onChange={this.handleInputChange}
-                  required
-                  variant='filled'
-                >
-                </TextField>
-              </Grid>
-              
-              {/* Password */}
-              <Grid item>
-                <TextField
-                  label='Password'
-                  type='password'
-                  name='password'
-                  value={this.state.password}
-                  helperText={this.state.passwordHelper}
-                  error={this.state.passwordError}
-                  onChange={this.handleInputChange}
-                  required
-                  variant='filled'
-                  fullWidth
-                >
-                </TextField>
-              </Grid>
-              <Grid item>
-                <TextField
-                  label='Confirm password'
-                  type='password'
-                  name='confirmPassword'
-                  value={this.state.confirmPassword}
-                  helperText={this.state.confirmPasswordHelper}
-                  error={this.state.confirmPasswordError}
-                  onChange={this.handleInputChange}
-                  required
-                  variant='filled'
-                  fullWidth
-                >
-                </TextField>
-              </Grid>
+                {/* Phone */}
+                <Grid item>
+                  <TextField
+                    label='Phone'
+                    name='phone'
+                    value={this.state.phone}
+                    helperText={this.state.phoneHelper}
+                    error={this.state.phoneError}
+                    onChange={this.handleInputChange}
+                    required
+                    variant='filled'
+                  >
+                  </TextField>
+                </Grid>
+                
+                {/* Password */}
+                <Grid item>
+                  <TextField
+                    label='Password'
+                    type='password'
+                    name='password'
+                    value={this.state.password}
+                    helperText={this.state.passwordHelper}
+                    error={this.state.passwordError}
+                    onChange={this.handleInputChange}
+                    required
+                    variant='filled'
+                    fullWidth
+                  >
+                  </TextField>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    label='Confirm password'
+                    type='password'
+                    name='confirmPassword'
+                    value={this.state.confirmPassword}
+                    helperText={this.state.confirmPasswordHelper}
+                    error={this.state.confirmPasswordError}
+                    onChange={this.handleInputChange}
+                    required
+                    variant='filled'
+                    fullWidth
+                  >
+                  </TextField>
+                </Grid>
 
-              {/* Favourite Sport */}
-              <Grid item>
-                <TextField
-                  label='Favourite sport'
-                  name='favSport'
-                  value={this.state.favSport}
-                  helperText={this.state.favSportHelper}
-                  error={this.state.favSportError}
-                  onChange={this.handleInputChange}
-                  required
-                  variant='filled'
-                  fullWidth
-                >
-                </TextField>
-              </Grid>
-              
-              {/* Age */}
-              <Grid item>
-                <TextField
-                  type='number'
-                  inputProps={{min: 1, max: 130}}
-                  label='Age'
-                  name='age'
-                  value={this.state.age}
-                  helperText={this.state.ageHelper}
-                  error={this.state.ageError}
-                  onChange={this.handleInputChange}
-                  required
-                  variant='filled'
-                >
-                </TextField>
-              </Grid>
-              
-              {/* Highest level of sport play */}
-              <Grid item>
-                <TextField
-                  select
-                  label='Highest level of sport play'
-                  name='sportLevel'
-                  value={this.state.sportLevel}
-                  helperText={this.state.sportLevelHelper}
-                  error={this.state.sportLevelError}
-                  onChange={this.handleInputChange}
-                  required
-                  variant='filled'
-                  fullWidth
-                >
-                  {SPORT_LEVELS.map((item) => (
-                    <MenuItem key={item} value={item}>{item}</MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              
-              {/* What sport do you want to know/learn about? */}
-              <Grid item>
-                <TextField
-                  label='What sport do you want to know/learn about?'
-                  name='sportLearn'
-                  value={this.state.sportLearn}
-                  helperText={this.state.sportLearnHelper}
-                  error={this.state.sportLearnError}
-                  onChange={this.handleInputChange}
-                  required
-                  variant='filled'
-                  fullWidth
-                >
-                </TextField>
-              </Grid>
-              
-              {/* Favourite sports team */}
-              <Grid item>
-                <TextField
-                  label='Favourite sports team'
-                  name='favTeam'
-                  value={this.state.favTeam}
-                  helperText={this.state.favTeamHelper}
-                  error={this.state.favTeamError}
-                  onChange={this.handleInputChange}
-                  required
-                  variant='filled'
-                  fullWidth
-                >
-                </TextField>
-              </Grid>
+                {/* Favourite Sport */}
+                <Grid item>
+                  <TextField
+                    label='Favourite sport'
+                    name='favSport'
+                    value={this.state.favSport}
+                    helperText={this.state.favSportHelper}
+                    error={this.state.favSportError}
+                    onChange={this.handleInputChange}
+                    required
+                    variant='filled'
+                    fullWidth
+                  >
+                  </TextField>
+                </Grid>
+                
+                {/* Age */}
+                <Grid item>
+                  <TextField
+                    type='number'
+                    inputProps={{min: 1, max: 130}}
+                    label='Age'
+                    name='age'
+                    value={this.state.age}
+                    helperText={this.state.ageHelper}
+                    error={this.state.ageError}
+                    onChange={this.handleInputChange}
+                    required
+                    variant='filled'
+                  >
+                  </TextField>
+                </Grid>
+                
+                {/* Highest level of sport play */}
+                <Grid item>
+                  <TextField
+                    select
+                    label='Highest level of sport play'
+                    name='sportLevel'
+                    value={this.state.sportLevel}
+                    helperText={this.state.sportLevelHelper}
+                    error={this.state.sportLevelError}
+                    onChange={this.handleInputChange}
+                    required
+                    variant='filled'
+                    fullWidth
+                  >
+                    {SPORT_LEVELS.map((item) => (
+                      <MenuItem key={item} value={item}>{item}</MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                
+                {/* What sport do you want to know/learn about? */}
+                <Grid item>
+                  <TextField
+                    label='What sport do you want to know/learn about?'
+                    name='sportLearn'
+                    value={this.state.sportLearn}
+                    helperText={this.state.sportLearnHelper}
+                    error={this.state.sportLearnError}
+                    onChange={this.handleInputChange}
+                    required
+                    variant='filled'
+                    fullWidth
+                  >
+                  </TextField>
+                </Grid>
+                
+                {/* Favourite sports team */}
+                <Grid item>
+                  <TextField
+                    label='Favourite sports team'
+                    name='favTeam'
+                    value={this.state.favTeam}
+                    helperText={this.state.favTeamHelper}
+                    error={this.state.favTeamError}
+                    onChange={this.handleInputChange}
+                    required
+                    variant='filled'
+                    fullWidth
+                  >
+                  </TextField>
+                </Grid>
 
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  value="Submit"
-                >
-                  Submit
-                </Button>
-              </Grid>
-            </form>
-          </Grid> {/* Form container */}
-          {/* TODO: Error text for the entire form. Change component later */}
-          <Grid>
-            <h2 className='SignupFormError'>{this.state.formHelper}</h2>
-          </Grid>
-        </Grid> {/* Page container */}
-      </div>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    value="Submit"
+                  >
+                    Submit
+                  </Button>
+                </Grid>
+              </form>
+            </Grid> {/* Form container */}
+            {/* TODO: Error text for the entire form. Change component later */}
+            <Grid>
+              <h2 className='SignupFormError'>{this.state.formHelper}</h2>
+            </Grid>
+          </Grid> {/* Page container */}
+        </div>
+      </ThemeProvider>
     );
   }
 }
