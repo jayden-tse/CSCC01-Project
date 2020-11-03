@@ -52,6 +52,13 @@ class DatabaseRead {
         return result.profile.tracker;
     }
 
+    async getProfilePicture(req) {
+        let username = { "username": req.user };
+        let result = await mongoConnect.getDBCollection("Users").findOne(username);
+        console.log(result.profile.picture);
+        return result.profile.picture; // should be a URL
+    }
+
     async findUsername(username) {
         return await mongoConnect.getDBCollection("Users").findOne({ "username": username });
     }
