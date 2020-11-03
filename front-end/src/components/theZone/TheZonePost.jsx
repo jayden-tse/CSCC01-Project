@@ -1,26 +1,28 @@
 import React from "react";
 import "./TheZonePost.css";
 import TheZoneCreateComment from "./TheZoneCreateComment";
-import TheZoneAgreeScale from "./TheZoneAgreeScale";
 
 class TheZonePost extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       title: "POST TITLE",
       poster: "Poster",
       body: "POST BODY",
-      agreePercent: 56, 
+      agreePercent: 56,
       comments: [
         "first comment",
         "second comment",
         "third comment"
       ],
-      agreeHidden:false
+      agreeHidden: false,
+      selectedOption: "Agree"
     };
     this.addComment = this.addComment.bind(this);
     this.hideAgree = this.hideAgree.bind(this);
     this.showAgree = this.showAgree.bind(this);
+    this.onValueChange = this.onValueChange.bind(this);
+    this.handleAgreeSubmit = this.handleAgreeSubmit.bind(this);
   }
 
   // add a new comment to the comments list with its message = data
@@ -28,12 +30,12 @@ class TheZonePost extends React.Component {
     const newComments = this.state.comments.concat(data);
     this.setState({
       comments: newComments
-		})
-	}
+    })
+  }
   //TODO: get post data from back end api given the post id
   // and set the post data with state
   componentDidMount() {
-    
+
   }
 
   hideAgree() {
@@ -47,7 +49,19 @@ class TheZonePost extends React.Component {
       agreeHidden: false
     })
   }
-  
+
+  onValueChange(event) {
+    this.setState({
+      selectedOption: event.target.value
+    });
+    
+  }
+
+  //Debug message for now 
+  handleAgreeSubmit() {
+    console.log(this.state.selectedOption)
+  }
+
   render() {
     const isHidden = this.state.agreeHidden;
     let agree = null;
@@ -59,7 +73,27 @@ class TheZonePost extends React.Component {
             <h2 className="percentageText">{this.state.agreePercent}% Agree</h2>
           </div>
           <div className="agree">
-            <TheZoneAgreeScale postid={this.props.postid} />
+            <input
+              className="agreeOptions"
+              type="radio"
+              value="Agree"
+              checked={this.state.selectedOption === "Agree"}
+              onChange={this.onValueChange}
+            /> 
+            <label className="agreeText"> Agree </label>
+            <input
+              className="agreeOptions"
+              type="radio"
+              value="Disagree"
+              checked={this.state.selectedOption === "Disagree"}
+              onChange={this.onValueChange}
+            /> 
+            <label className="agreeText"> Disagree </label>
+            <button
+              className="agreeButton"
+              onClick={this.handleAgreeSubmit}
+            >Submit</button>
+  
           </div>
          </div>);
     } else {
@@ -68,7 +102,6 @@ class TheZonePost extends React.Component {
     return (
       <div className="post">        
         <div className="postHeader">
-       
           {agree}
           <div className="titleContainer">
             <h1 className="title">{this.state.title}</h1>
