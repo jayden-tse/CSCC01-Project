@@ -111,7 +111,12 @@ class App extends React.Component {
     if (!this.state.auth) {
       // logic to determine which page
       if (this.state.currentPage === 'Signup') {
-        page = <SignupPage onSignup={this.redirectToLogin} />;
+        page = (
+          <SignupPage
+            onSignup={this.redirectToLogin}
+            onLoginRedirect={this.redirectToLogin}
+          />
+        );
       } else {
         page = (
           <LoginPage
