@@ -5,8 +5,16 @@ import './SignupPage.css';
 
 // TODO: refactor form into its own component
 
+// The property names in this.state that store the form input values.
+// Useful for iterating on each form input property and their corresponding
+// properties for other purposes.
+const INPUT_PROPERTIES = [
+  'username', 'email', 'phone', 'password', 'confirmPassword', 'favSport',
+  'age', 'sportLevel', 'sportLearn', 'favTeam'
+];
+
 // The possible options for 'Highest level of sport play'
-const sportLevels = [
+const SPORT_LEVELS = [
   'No History', 'Recreational', 'High School', 'University', 'Professional'
 ];
 
@@ -57,6 +65,31 @@ class SignupPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  /**
+   * Removes the helper text for each form input.
+   */
+  resetHelperText() {
+    // The properties for helper text follow the naming convention:
+    // <input property>Helper
+    INPUT_PROPERTIES.forEach(property => {
+      this.setState({[property + 'Helper']: ''});
+    });
+    // The form helper isn't part of the input properties
+    this.setState({formHelper: ''});
+  }
+
+  /**
+   * Removes the error state of each form input. Visually, they are no longer
+   * highlighted with red.
+   */
+  resetErrors() {
+    // Error property names follow the same naming convention:
+    // <input property>Error
+    INPUT_PROPERTIES.forEach(property => {
+      this.setState({[property + 'Error']: false});
+    });
+  }
+
   handleInputChange(event) {
     this.setState({
       [event.target.name]: event.target.value
@@ -65,8 +98,19 @@ class SignupPage extends React.Component {
 
   // TODO
   handleSubmit(event) {
-    // TODO: Make sure required fields are filled in
+    // Prevent default behaviour of form submit (does a GET request with form
+    // values in the request URL!)
+    event.preventDefault();
+    // Reset previous errors since it needs to be checked again
+    this.resetHelperText();
+    this.resetErrors();
+
+    // Required fields must be filled in. This is actually built-in to the
+    // form when using the required props in the input elements, so submit
+    // only runs when all required fields are filled in.
+
     // TODO: Validate the required fields
+
     // Send the sign up request to the server and wait for a response
     const state = this.state;
     signUp(
@@ -115,7 +159,7 @@ class SignupPage extends React.Component {
 
           {/* Form */}
           <Grid container item>
-            <form className='SignupForm'>
+            <form className='SignupForm' onSubmit={this.handleSubmit}>
               {/* Username */}
               <Grid item>
                 <TextField 
@@ -241,7 +285,7 @@ class SignupPage extends React.Component {
                   variant='filled'
                   fullWidth
                 >
-                  {sportLevels.map((item) => (
+                  {SPORT_LEVELS.map((item) => (
                     <MenuItem key={item} value={item}>{item}</MenuItem>
                   ))}
                 </TextField>
@@ -281,9 +325,10 @@ class SignupPage extends React.Component {
 
               <Grid item>
                 <Button
-                  onClick={this.handleSubmit}
                   variant="contained"
                   color="primary"
+                  type="submit"
+                  value="Submit"
                 >
                   Submit
                 </Button>
