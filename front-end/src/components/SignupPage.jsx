@@ -43,7 +43,7 @@ class SignupPage extends React.Component {
       password: '',
       confirmPassword: '',
       favSport: '',
-      age: undefined,
+      age: '',
       sportLevel: '',
       sportLearn: '',
       favTeam: '',
@@ -213,9 +213,9 @@ class SignupPage extends React.Component {
         // the server returned specific error codes.
         this.setState({
           usernameError: true,
-          username: 'Choose another username',
+          usernameHelper: 'Choose another username',
           emailError: true,
-          errorHelper: 'Make sure you entered the right email',
+          emailHelper: 'Make sure you entered the right email',
           phoneError: true,
           phoneHelper: 'Must only contain numbers. No spaces. For example: 6130001234',
           formHelper: 'The username, email or phone number is invalid'
