@@ -60,10 +60,11 @@ class DatabaseCreate {
     }
 
     // the Zone
-    async createPost(user, date, content, agree, disagree, comments) {
-        let post = new Post(user, date, content, agree, disagree, comments);
+    async createPost(user, date, content, agrees, disagrees, comments) {
+        let post = new Post(user, date, content, agrees, disagrees, comments);
         let result = await mongoConnect.getDBCollection("Posts").insertOne(post);
     }
+
 }
 
 module.exports = DatabaseCreate;
