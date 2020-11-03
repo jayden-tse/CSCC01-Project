@@ -126,6 +126,7 @@ class App extends React.Component {
         page = (
           <div>
             <TopNavBar
+              currentUser={this.state.currentUser}
               handleLogout={this.handleLogout}
               redirectToTheZone={this.redirectToTheZone}
               redirectToProfile={this.redirectToProfile}
@@ -142,6 +143,7 @@ class App extends React.Component {
         page = (
           <div>
             <TopNavBar
+              currentUser={this.state.currentUser}
               handleLogout={this.handleLogout}
               redirectToTheZone={this.redirectToTheZone}
               redirectToProfile={this.redirectToProfile}
@@ -153,6 +155,7 @@ class App extends React.Component {
         page = (
           <div>
             <TopNavBar
+              currentUser={this.state.currentUser}
               handleLogout={this.handleLogout}
               redirectToTheZone={this.redirectToTheZone}
               redirectToProfile={this.redirectToProfile}
@@ -164,6 +167,7 @@ class App extends React.Component {
         page = (
           <div>
             <TopNavBar
+              currentUser={this.state.currentUser}
               handleLogout={this.handleLogout}
               redirectToTheZone={this.redirectToTheZone}
               redirectToProfile={this.redirectToProfile}
@@ -175,6 +179,7 @@ class App extends React.Component {
         page = (
           <div>
             <TopNavBar
+              currentUser={this.state.currentUser}
               handleLogout={this.handleLogout}
               redirectToTheZone={this.redirectToTheZone}
               redirectToProfile={this.redirectToProfile}
@@ -186,6 +191,7 @@ class App extends React.Component {
         page = (
           <div>
             <TopNavBar
+              currentUser={this.state.currentUser}
               handleLogout={this.handleLogout}
               redirectToTheZone={this.redirectToTheZone}
               redirectToProfile={this.redirectToProfile}
