@@ -23,6 +23,17 @@ class DatabaseUpdate {
         return result;
     }
 
+    async addSocialMediaLink(req, type, link) {
+        let linkType = 'profile.links.' + type;
+        let username = { 'username': req.user };
+        let result = await mongoConnect.getDBCollection("Users").updateOne(username, {
+            $set: {
+                [linkType]: link
+            }
+        });
+        return result;
+    }
+
     async updateMessage(req, type, message) {
         let messageType = 'profile.' + type;
         let username = { 'username': req.user };

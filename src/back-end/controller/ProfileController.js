@@ -122,6 +122,48 @@ exports.profile_update_tracker_put = async function(req, res) {
     }
 };
 
+exports.profile_update_links_facebook_put = async function(req, res) {
+    if (req.user) {
+        // user is authenticated
+        try {
+            await dbUpdate.addSocialMediaLink(req.session.passport, 'facebook', req.body.links);
+            res.sendStatus(200); // OK
+        } catch {
+            res.status(500).send('WRITE FAILED'); // Internal server error
+        }
+    } else {
+        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+    }
+};
+
+exports.profile_update_links_instagram_put = async function(req, res) {
+    if (req.user) {
+        // user is authenticated
+        try {
+            await dbUpdate.addSocialMediaLink(req.session.passport, 'instagram', req.body.links);
+            res.sendStatus(200); // OK
+        } catch {
+            res.status(500).send('WRITE FAILED'); // Internal server error
+        }
+    } else {
+        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+    }
+};
+
+exports.profile_update_links_twitter_put = async function(req, res) {
+    if (req.user) {
+        // user is authenticated
+        try {
+            await dbUpdate.addSocialMediaLink(req.session.passport, 'twitter', req.body.links);
+            res.sendStatus(200); // OK
+        } catch {
+            res.status(500).send('WRITE FAILED'); // Internal server error
+        }
+    } else {
+        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+    }
+};
+
 exports.profile_tracker_del = async function(req, res) {
     if (req.user) {
         // user is authenticated
