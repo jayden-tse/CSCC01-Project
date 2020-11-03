@@ -1,8 +1,10 @@
 .title {
   font-size: 35px;
   white-space: nowrap;
+  margin-bottom:-5px;
 }
 .titleContainer {
+  margin-top:-20px;
   overflow:hidden;
 }
 .postTitle {
