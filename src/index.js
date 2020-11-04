@@ -2,8 +2,10 @@ var mongoConnect = require('./mongoConnect');
 var session = require('express-session');
 
 const express = require('express');
+const cookieParser = require('cookie-parser')
 const app = express();
 const port = 8080;
+const cors = require('cors');
 
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
@@ -15,10 +17,17 @@ async function main() {
     try {
         mongoConnect.connectToServer(function(err, client) {
             if (err) console.log(err);
+            app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
             app.use(bodyParser.json());
+            app.use(cookieParser('scprojectyes'));
             app.use(expressValidator());
             app.use(express.static("public"));
-            app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+            app.use(session({
+                name: 'cookie',
+                secret: 'keyboard cat',
+                resave: true,
+                saveUninitialized: false,
+            }));
             app.use(passport.initialize());
             app.use(passport.session());
             app.use("", router);

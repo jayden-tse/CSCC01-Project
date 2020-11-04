@@ -17,7 +17,7 @@ class TopNavBar extends React.Component{
         </div>
         <button className="TheZoneButton" onClick={this.props.redirectToTheZone}>The Zone</button>
         <CurrentUser
-          currentUser="Dave"
+          currentUser={this.props.currentUser}
           handleLogout={this.props.handleLogout}
           redirectToProfile={this.props.redirectToProfile}
         />
