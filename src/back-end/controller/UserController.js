@@ -6,9 +6,9 @@ const dbCreate = new DatabaseCreate();
 const dbRead = new DatabaseRead();
 const dbUpdate = new DatabaseUpdate();
 
-exports.user_check_username_get = async function(req, res) {
+exports.user_check_username_get = async function (req, res) {
     try {
-        let newUsername = await dbRead.findUsername(req.body.username);
+        let newUsername = await dbRead.findUsername(req.query.username);
         if (newUsername !== null) {
             res.status(400).send('This username already exists.');
         } else {
@@ -19,9 +19,9 @@ exports.user_check_username_get = async function(req, res) {
     }
 };
 
-exports.user_check_email_get = async function(req, res) {
+exports.user_check_email_get = async function (req, res) {
     try {
-        let newEmail = await dbRead.findEmail(req.body.email);
+        let newEmail = await dbRead.findEmail(req.query.email);
         if (newEmail !== null) {
             res.status(400).send('This email already exists.');
         } else {
@@ -32,9 +32,9 @@ exports.user_check_email_get = async function(req, res) {
     }
 };
 
-exports.user_check_phonenum_get = async function(req, res) {
+exports.user_check_phonenum_get = async function (req, res) {
     try {
-        let newNum = await dbRead.findPhoneNum(req.body.phonenum);
+        let newNum = await dbRead.findPhoneNum(req.query.phonenum);
         if (newNum !== null) {
             res.status(400).send('This phone number already exists.');
         } else {
@@ -45,7 +45,7 @@ exports.user_check_phonenum_get = async function(req, res) {
     }
 };
 
-exports.user_update_password_put = async function(req, res) {
+exports.user_update_password_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
@@ -64,7 +64,7 @@ exports.user_update_password_put = async function(req, res) {
     }
 };
 
-exports.user_update_email_put = async function(req, res) {
+exports.user_update_email_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
@@ -87,7 +87,7 @@ exports.user_update_email_put = async function(req, res) {
     }
 };
 
-exports.user_update_phonenum_put = async function(req, res) {
+exports.user_update_phonenum_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
@@ -110,14 +110,14 @@ exports.user_update_phonenum_put = async function(req, res) {
     }
 };
 
-exports.user_send_new_password_recovery_email = async function(req, res) {
+exports.user_send_new_password_recovery_email = async function (req, res) {
     res.send('NOT IMPLEMENETED');
 };
 
-exports.user_send_new_email_confirmation_email = async function(req, res) {
+exports.user_send_new_email_confirmation_email = async function (req, res) {
     res.send('NOT IMPLEMENETED');
 };
 
-exports.user_send_new_phonenum_confirmation_sms = async function(req, res) {
+exports.user_send_new_phonenum_confirmation_sms = async function (req, res) {
     res.send('NOT IMPLEMENETED');
 };
