@@ -1,8 +1,10 @@
 .title {
   font-size: 35px;
   white-space: nowrap;
+  margin-bottom:-5px;
 }
 .titleContainer {
+  margin-top:-20px;
   overflow:hidden;
 }
 .postTitle {
@@ -35,7 +37,16 @@ p {
   float: right;
   margin-right: 10px;
 }
-
+.agreeOptions {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.agreeText {
+  font-size:20px;
+}
+.agreeButton {
+  max-width:200px;
+}
 .percentageDisplay {
   float: right;
 }
