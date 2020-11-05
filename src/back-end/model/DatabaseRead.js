@@ -38,6 +38,12 @@ class DatabaseRead {
         return result.profile;
     }
 
+    async getProfileOther(req) {
+        let result = await mongoConnect.getDBCollection("Users").findOne({ "username": req.username })
+        console.log(result.profile);
+        return result.profile;
+    }
+
     async getPickHistory(req) {
         let username = { "username": req.user }
         let result = await mongoConnect.getDBCollection("Users").findOne(username)

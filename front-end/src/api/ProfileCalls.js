@@ -1,7 +1,7 @@
 import { BASE_URL } from './HttpClient.js';
 
 /*ABOUT*/
-export async function getUserAbout(username) {
+export async function getUserAbout() {
   const newUrl = BASE_URL + '/profile';
   var fetchOptions = {
     method: 'GET',

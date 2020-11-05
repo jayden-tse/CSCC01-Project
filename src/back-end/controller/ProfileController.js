@@ -19,6 +19,20 @@ exports.profile_get = async function(req, res) {
     }
 };
 
+exports.profile_other_get = async function(req, res) {
+    if (req.user) {
+        // user is authenticated
+        try {
+            await dbRead.getProfileOther(req.body.username);
+            res.sendStatus(200); // OK
+        } catch {
+            res.status(500).send('WRITE FAILED'); // Internal server error
+        }
+    } else {
+        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+    }
+};
+
 exports.profile_picks_get = async function(req, res) {
     if (req.user) {
         // user is authenticated

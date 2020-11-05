@@ -62,6 +62,9 @@ router.put('/logout', loginController.deauth);
 // Get profile
 router.get('/profile', profileController.profile_get);
 
+// Get other user profile
+router.get('/profile/other', profileController.profile_other_get);
+
 // Get profile picks
 router.get('/profile/picks', profileController.profile_picks_get);
 
