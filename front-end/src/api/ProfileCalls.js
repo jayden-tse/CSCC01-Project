@@ -42,7 +42,28 @@ export async function setUserAbout(message) {
 
 /*ACS*/
 export function getUserACS(username) {
-  return 657;
+  var newUrl = new URL(BASE_URL + '/profile');
+  var params = { username: username };
+  newUrl.search = new URLSearchParams(params).toString();
+  console.log(newUrl);
+  var fetchOptions = {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Origin': newUrl,
+    },
+    withCredentials: true,
+    credentials: 'include',
+  };
+  return fetch(newUrl, fetchOptions)
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      console.log('Error connecting to backend service: ' + error);
+    });
 }
 export function getUserACSChange(username) {
   return 20;

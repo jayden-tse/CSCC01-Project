@@ -5,174 +5,197 @@ const dbDelete = new DatabaseDelete();
 const dbUpdate = new DatabaseUpdate();
 const dbRead = new DatabaseRead();
 
-exports.profile_get = async function(req, res) {
-    if (req.user) {
-        // user is authenticated
-        try {
-            await dbRead.getProfile(req.session.passport);
-            res.sendStatus(200); // OK
-        } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
-        }
-    } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+exports.profile_get = async function (req, res) {
+  console.log(req.query);
+  res.set({
+    'Access-Control-Allow-Credentials': true,
+    'Access-Control-Allow-Origin': 'http://localhost:3000',
+  });
+  res.set({
+    'Access-Control-Allow-Credentials': true,
+    'Access-Control-Allow-Origin': 'http://localhost:3000',
+  });
+  if (req.user) {
+    // user is authenticated
+    try {
+      await dbRead.getProfile(req.session.passport);
+      res.sendStatus(200); // OK
+    } catch {
+      res.status(500).send('WRITE FAILED'); // Internal server error
     }
+  } else {
+    res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+  }
 };
 
-exports.profile_other_get = async function(req, res) {
-    if (req.user) {
-        // user is authenticated
-        try {
-            await dbRead.getProfileOther(req.body.username);
-            res.sendStatus(200); // OK
-        } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
-        }
-    } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+exports.profile_other_get = async function (req, res) {
+  if (req.user) {
+    // user is authenticated
+    try {
+      await dbRead.getProfileOther(req.body.username);
+      res.sendStatus(200); // OK
+    } catch {
+      res.status(500).send('WRITE FAILED'); // Internal server error
     }
+  } else {
+    res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+  }
 };
 
-exports.profile_picks_get = async function(req, res) {
-    if (req.user) {
-        // user is authenticated
-        try {
-            await dbRead.getPickHistory(req.session.passport);
-            res.sendStatus(200); // OK
-        } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
-        }
-    } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+exports.profile_picks_get = async function (req, res) {
+  if (req.user) {
+    // user is authenticated
+    try {
+      await dbRead.getPickHistory(req.session.passport);
+      res.sendStatus(200); // OK
+    } catch {
+      res.status(500).send('WRITE FAILED'); // Internal server error
     }
+  } else {
+    res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+  }
 };
 
-exports.profile_tracker_get = async function(req, res) {
-    if (req.user) {
-        // user is authenticated
-        try {
-            await dbRead.getTracker(req.session.passport);
-            res.sendStatus(200); // OK
-        } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
-        }
-    } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+exports.profile_tracker_get = async function (req, res) {
+  if (req.user) {
+    // user is authenticated
+    try {
+      await dbRead.getTracker(req.session.passport);
+      res.sendStatus(200); // OK
+    } catch {
+      res.status(500).send('WRITE FAILED'); // Internal server error
     }
+  } else {
+    res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+  }
 };
 
-exports.profile_update_picture_put = function(req, res) {
-    res.send('NOT IMPLEMENTED');
+exports.profile_update_picture_put = function (req, res) {
+  res.send('NOT IMPLEMENTED');
 };
 
-exports.profile_get_picture = async function(req, res) {
-    if (req.user) {
-        try {
-            let url = await dbRead.getProfilePicture(req.session.passport);
-            res.status(200).json({ picture: url }); // OK
-        } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
-        }
-    } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+exports.profile_get_picture = async function (req, res) {
+  if (req.user) {
+    try {
+      let url = await dbRead.getProfilePicture(req.session.passport);
+      res.status(200).json({ picture: url }); // OK
+    } catch {
+      res.status(500).send('WRITE FAILED'); // Internal server error
     }
-
-}
-
-exports.profile_update_about_put = async function(req, res) {
-    if (req.user) {
-        // user is authenticated
-        try {
-            await dbUpdate.updateMessage(req.session.passport, 'about', req.body.about);
-            res.sendStatus(200); // OK
-        } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
-        }
-    } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
-    }
+  } else {
+    res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+  }
 };
 
-exports.profile_update_status_put = async function(req, res) {
-    if (req.user) {
-        // user is authenticated
-        try {
-            await dbUpdate.updateMessage(req.session.passport, 'status', req.body.status);
-            res.sendStatus(200); // OK
-        } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
-        }
-    } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+exports.profile_update_about_put = async function (req, res) {
+  if (req.user) {
+    // user is authenticated
+    try {
+      await dbUpdate.updateMessage(
+        req.session.passport,
+        'about',
+        req.body.about
+      );
+      res.sendStatus(200); // OK
+    } catch {
+      res.status(500).send('WRITE FAILED'); // Internal server error
     }
+  } else {
+    res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+  }
 };
 
-exports.profile_update_ACS_put = async function(req, res) {
-    if (req.user) {
-        // user is authenticated
-        try {
-            await dbUpdate.updateMessage(req.session.passport, 'ACS', req.body.ACS);
-            res.sendStatus(200); // OK
-        } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
-        }
-    } else {
-        res.status(401).send('NOT AUTHENTICATED');
+exports.profile_update_status_put = async function (req, res) {
+  if (req.user) {
+    // user is authenticated
+    try {
+      await dbUpdate.updateMessage(
+        req.session.passport,
+        'status',
+        req.body.status
+      );
+      res.sendStatus(200); // OK
+    } catch {
+      res.status(500).send('WRITE FAILED'); // Internal server error
     }
+  } else {
+    res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+  }
 };
 
-exports.profile_update_picture_put = async function(req, res) {
-    if (req.user) {
-        // user is authenticated
-        try {
-            await dbUpdate.updateMessage(req.session.passport, 'picture', req.body.picture);
-            res.sendStatus(200); // OK
-        } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
-        }
-    } else {
-        res.status(401).send('NOT AUTHENTICATED');
+exports.profile_update_ACS_put = async function (req, res) {
+  if (req.user) {
+    // user is authenticated
+    try {
+      await dbUpdate.updateMessage(req.session.passport, 'ACS', req.body.ACS);
+      res.sendStatus(200); // OK
+    } catch {
+      res.status(500).send('WRITE FAILED'); // Internal server error
     }
+  } else {
+    res.status(401).send('NOT AUTHENTICATED');
+  }
 };
 
-exports.profile_update_picks_put = async function(req, res) {
-    if (req.user) {
-        // user is authenticated
-        try {
-            await dbUpdate.addMatchToHistory(req.session.passport, req.body.match);
-            res.sendStatus(200); // OK
-        } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
-        }
-    } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+exports.profile_update_picture_put = async function (req, res) {
+  if (req.user) {
+    // user is authenticated
+    try {
+      await dbUpdate.updateMessage(
+        req.session.passport,
+        'picture',
+        req.body.picture
+      );
+      res.sendStatus(200); // OK
+    } catch {
+      res.status(500).send('WRITE FAILED'); // Internal server error
     }
+  } else {
+    res.status(401).send('NOT AUTHENTICATED');
+  }
 };
 
-exports.profile_update_tracker_put = async function(req, res) {
-    if (req.user) {
-        // user is authenticated
-        try {
-            await dbUpdate.addUserToTracker(req.session.passport, req.body.username);
-            res.sendStatus(200); // OK
-        } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
-        }
-    } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+exports.profile_update_picks_put = async function (req, res) {
+  if (req.user) {
+    // user is authenticated
+    try {
+      await dbUpdate.addMatchToHistory(req.session.passport, req.body.match);
+      res.sendStatus(200); // OK
+    } catch {
+      res.status(500).send('WRITE FAILED'); // Internal server error
     }
+  } else {
+    res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+  }
 };
 
-exports.profile_tracker_del = async function(req, res) {
-    if (req.user) {
-        // user is authenticated
-        try {
-            await dbDelete.removeUserFromTracker(req.session.passport, req.body.username);
-            res.sendStatus(200); // OK
-        } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
-        }
-    } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+exports.profile_update_tracker_put = async function (req, res) {
+  if (req.user) {
+    // user is authenticated
+    try {
+      await dbUpdate.addUserToTracker(req.session.passport, req.body.username);
+      res.sendStatus(200); // OK
+    } catch {
+      res.status(500).send('WRITE FAILED'); // Internal server error
     }
+  } else {
+    res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+  }
+};
+
+exports.profile_tracker_del = async function (req, res) {
+  if (req.user) {
+    // user is authenticated
+    try {
+      await dbDelete.removeUserFromTracker(
+        req.session.passport,
+        req.body.username
+      );
+      res.sendStatus(200); // OK
+    } catch {
+      res.status(500).send('WRITE FAILED'); // Internal server error
+    }
+  } else {
+    res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+  }
 };
