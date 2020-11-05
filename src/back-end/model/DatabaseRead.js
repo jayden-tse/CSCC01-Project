@@ -66,7 +66,6 @@ class DatabaseRead {
         await cursor.forEach(function(doc) {
             posts.push(doc);
         });
-        console.log(posts);
         return posts;
     }
 
