@@ -1,6 +1,8 @@
 const DatabaseCreate = require('../model/DatabaseCreate.js');
+const DatabaseRead = require('../model/DatabaseRead.js');
 const DatabaseUpdate = require('../model/DatabaseUpdate.js');
 const dbCreate = new DatabaseCreate();
+const dbRead = new DatabaseRead();
 const dbUpdate = new DatabaseUpdate();
 exports.the_zone_post_put = async function(req, res) {
     if (req.user) {
@@ -18,8 +20,30 @@ exports.the_zone_post_put = async function(req, res) {
     }
 };
 
-exports.the_zone_post_get = function(req, res) {
-    res.send('NOT IMPLEMENTED');
+exports.the_zone_post_get = async function(req, res) {
+    if (req.user) {
+        try {
+            res.status(200).json(await dbRead.getPost(req.query.post));
+        } catch (e) {
+            console.log(e);
+            res.status(500).send('WRITE FAILED');
+        }
+    } else {
+        res.status(401).send('NOT AUTHORIZED');
+    }
+};
+
+exports.the_zone_all_posts_get = async function(req, res) {
+    if (req.user) {
+        try {
+            res.status(200).json(await dbRead.getAllPosts({}));
+        } catch (e) {
+            console.log(e);
+            res.status(500).send('WRITE FAILED');
+        }
+    } else {
+        res.status(401).send('NOT AUTHORIZED');
+    }
 };
 
 exports.the_zone_update_post_put = function(req, res) {

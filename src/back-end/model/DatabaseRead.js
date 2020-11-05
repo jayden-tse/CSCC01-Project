@@ -4,6 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 var passport = require('passport');
 
+const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
 passport.use(new LocalStrategy(
     async function(username, password, done) {
@@ -57,6 +58,25 @@ class DatabaseRead {
         let result = await mongoConnect.getDBCollection("Users").findOne(username);
         console.log(result.profile.picture);
         return result.profile.picture; // should be a URL
+    }
+
+    async getAllPosts(req) {
+        const posts = [];
+        const cursor = await mongoConnect.getDBCollection("Posts").find(req);
+        await cursor.forEach(function(doc) {
+            posts.push(doc);
+        });
+        console.log(posts);
+        return posts;
+    }
+
+    async getPost(req) {
+        const posts = [];
+        const cursor = await mongoConnect.getDBCollection("Posts").find({ "_id": ObjectId(req) });
+        await cursor.forEach(function(doc) {
+            posts.push(doc);
+        });
+        return posts;
     }
 
     async findUsername(username) {
