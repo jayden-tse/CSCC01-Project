@@ -18,13 +18,13 @@ router.use(cors());
 /* USER */
 
 // Check existing username
-router.get('/user/check/username', userController.user_check_username_get);
+router.put('/user/check/username', userController.user_check_username_get);
 
 // Check existing email address
-router.get('/user/check/email', userController.user_check_email_get);
+router.put('/user/check/email', userController.user_check_email_get);
 
 // Check existing phone number
-router.get('/user/check/phonenum', userController.user_check_phonenum_get);
+router.put('/user/check/phonenum', userController.user_check_phonenum_get);
 
 // Update user password
 router.put('/user/update/password', userController.user_update_password_put);
