@@ -12,7 +12,11 @@ exports.auth = function(req, res, next) {
                 if (err) {
                     return next(err);
                 }
-                res.sendStatus(200);
+                // res.sendStatus(200);
+                res.set({
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Allow-Origin': 'http://localhost:3000'
+                }).sendStatus(200);
             });
         }
     })(req, res, next);
@@ -21,6 +25,7 @@ exports.auth = function(req, res, next) {
 
 exports.deauth = function(req, res, next) {
     if (req.user) {
+        res.clearCookie('cookie');
         req.logout();
         res.sendStatus(200);
     } else {

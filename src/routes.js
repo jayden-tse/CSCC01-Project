@@ -18,13 +18,13 @@ router.use(cors());
 /* USER */
 
 // Check existing username
-router.get('/user/check/username', userController.user_check_username_get);
+router.put('/user/check/username', userController.user_check_username_get);
 
 // Check existing email address
-router.get('/user/check/email', userController.user_check_email_get);
+router.put('/user/check/email', userController.user_check_email_get);
 
 // Check existing phone number
-router.get('/user/check/phonenum', userController.user_check_phonenum_get);
+router.put('/user/check/phonenum', userController.user_check_phonenum_get);
 
 // Update user password
 router.put('/user/update/password', userController.user_update_password_put);
@@ -161,7 +161,10 @@ router.delete('/debates/delete/topic', debateController.debate_topics_del);
 router.put('/thezone/create/post', thezoneController.the_zone_post_put);
 
 // Get the zone post
-router.get('/thezone/post', thezoneController.the_zone_post_get);
+router.get('/thezone/post', thezoneController.the_zone_post_get); // PUT request to accept input
+
+// Get all zone posts
+router.get('/thezone/post/all', thezoneController.the_zone_all_posts_get);
 
 // Update the zone post
 router.put('/thezone/update/post', thezoneController.the_zone_update_post_put);
