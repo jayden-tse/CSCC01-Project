@@ -1,5 +1,19 @@
-﻿Sprint goal: Connecting front-end and back-end for login, signup, profile and the zone
-Stories: 
+﻿# Sprint goal
+ Connecting front-end and back-end for login, signup, profile and the zone
+ 
+# Participants
+* Our team: Yes
+* TA: Swarup Srini
+* Product Owners: Jacob, Warren Ward
+ 
+# Team capacity (max amount of user story points the team can take on)
+78
+
+# Decisions about user stories to be implemented
+* Prioritize integration of software and connecting front-end and back-end part of code together
+* Continue to work on user story for signup, login, profile and the zone until they are fully integrated
+
+# Stories to be completed
 * As a registered user, I want to recover my password so that I can access my account again if I forget
    * YES-15
    * Description:
@@ -89,15 +103,8 @@ Stories:
    * YES-114
    * Description:
       * Allow users to update their email, password, or phone number.
-Team capacity (max amount of user story points the team can take on): 78
-Participants:
-* Our team: Yes
-* TA: Swarup Srini
-* Product Owners: Jacob, Warren Ward
-Decisions about user stories to be implemented: 
-* Prioritize integration of software and connecting front-end and back-end part of code together
-* Continue to work on user story for signup, login, profile and the zone until they are fully integrated
-Task breakdowns: Broken down into multiple subtasks on Jira.
+
+# Task breakdowns: broken down into multiple subtasks on Jira
 * YES-15 Password Recovery
    * YES-18 Link account to email/phone num
    * YES-19 Reset password
