@@ -1,9 +1,13 @@
 import React, { Component } from "react";
+import "./ProfilePicture.css";
 
 class ProfilePicture extends Component {
   constructor(props) {
     super(props);
-    this.state = { src: "" };
+    this.state = {
+      src:
+        "https://www.ikea.com/ca/en/images/products/klappa-soft-toy-ball-multicolor__0873092_PE682669_S5.JPG",
+    };
     this.handleEdit = this.handleEdit.bind(this);
   }
 
