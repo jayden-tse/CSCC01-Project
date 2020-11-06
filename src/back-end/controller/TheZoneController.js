@@ -9,7 +9,7 @@ exports.the_zone_post_put = async function(req, res) {
         // user authenticated
         // user, date, content, agree, disagree, comments
         try {
-            await dbCreate.createPost(req.session.passport.user, new Date(), req.body.content, 0, 0, []);
+            await dbCreate.createPost(req.session.passport.user, new Date(), req.body.content, 0, 0, [], []);
             res.sendStatus(200);
         } catch (e) {
             console.log(e);
@@ -51,7 +51,14 @@ exports.the_zone_update_post_put = function(req, res) {
 };
 
 exports.the_zone_update_agree_put = function(req, res) {
-    res.send('NOT IMPLEMENTED');
+    if (req.user) {
+        try {
+            // update likes here
+
+        } catch {
+
+        }
+    }
 };
 
 exports.the_zone_comment_put = async function(req, res) {

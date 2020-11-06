@@ -46,6 +46,31 @@ class DatabaseUpdate {
         return result;
     }
 
+    async updatePost(postid, type, message) {
+        let post = { '_id': ObjectId(postid) };
+        let result = await mongoConnect.getDBCollection("Posts").updateOne(post, {
+            $set: {
+                [type]: message
+            }
+        });
+        return result;
+    }
+
+    async updateVote(req, postid) {
+        let username = { 'username': req.session.passport.user };
+        console.log(username);
+        let post = { '_id': ObjectId(postid) };
+        let postDoc = await mongoConnect.getDBCollection("Posts").findOne(post);
+        if (postDoc !== null) {
+            let agreed = postDoc.agreeusers;
+            let disagreed = postDoc.disagreed;
+            if (agreed.find(username)) {
+                // user already liked it, set it back to neutral
+            }
+        }
+        return result;
+    }
+
     async createComment(post, user, date, text, agrees, disagrees) {
         let comment = new Comment(user, date, text, agrees, disagrees); // should be in JSON format
         // post should be a unique ID
