@@ -155,7 +155,10 @@ router.delete('/debates/delete/topic', debateController.debate_topics_del);
 router.put('/thezone/create/post', thezoneController.the_zone_post_put);
 
 // Get the zone post
-router.get('/thezone/post', thezoneController.the_zone_post_get);
+router.get('/thezone/post', thezoneController.the_zone_post_get); // PUT request to accept input
+
+// Get all zone posts
+router.get('/thezone/post/all', thezoneController.the_zone_all_posts_get);
 
 // Update the zone post
 router.put('/thezone/update/post', thezoneController.the_zone_update_post_put);

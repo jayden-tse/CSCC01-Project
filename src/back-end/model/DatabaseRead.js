@@ -4,10 +4,11 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 var passport = require('passport');
 
+const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
 passport.use(new LocalStrategy(
     async function (username, password, done) {
-        Users = mongoConnect.getDBCollection("Users");
+        Users = mongoConnect.getDBCollection(USERS);
         Users.findOne({ username: username },
             function (err, user) {
                 if (err) { return done(err); }
@@ -26,45 +27,67 @@ passport.serializeUser(function (user, done) {
     done(null, user.username);
 });
 passport.deserializeUser(function (username, done) {
-    done(null, mongoConnect.getDBCollection("Users").findOne({ "username": username }));
+    done(null, mongoConnect.getDBCollection(USERS).findOne({ "username": username }));
 });
 
 class DatabaseRead {
 
-    async getProfile(username) {
-        let result = await mongoConnect.getDBCollection("Users").findOne({ "username": username })
+    async getProfile(req) {
+        let username = { "username": req.user }
+        let result = await mongoConnect.getDBCollection(USERS).findOne(username)
         console.log(result.profile);
         return result.profile;
     }
 
-    async getPickHistory(username) {
-        let result = await mongoConnect.getDBCollection("Users").findOne({ "username": username })
+    async getPickHistory(req) {
+        let username = { "username": req.user }
+        let result = await mongoConnect.getDBCollection(USERS).findOne(username)
         console.log(result.profile.picks);
         return result.profile.picks;
     }
 
-    async getTracker(username) {
-        let result = await mongoConnect.getDBCollection("Users").findOne({ "username": username })
+    async getTracker(req) {
+        let username = { "username": req.user }
+        let result = await mongoConnect.getDBCollection(USERS).findOne(username)
         console.log(result.profile.tracker);
         return result.profile.tracker;
     }
 
-    async getProfilePicture(username) {
-        let result = await mongoConnect.getDBCollection("Users").findOne({ "username": username });
+    async getProfilePicture(req) {
+        let username = { "username": req.user };
+        let result = await mongoConnect.getDBCollection(USERS).findOne(username);
         console.log(result.profile.picture);
         return result.profile.picture; // should be a URL
     }
 
+    async getAllPosts(req) {
+        const posts = [];
+        const cursor = await mongoConnect.getDBCollection(POSTS).find(req);
+        await cursor.forEach(function (doc) {
+            posts.push(doc);
+        });
+        return posts;
+    }
+
+    async getPost(req) {
+        const posts = [];
+        const cursor = await mongoConnect.getDBCollection(POSTS).find({ "_id": ObjectId(req) });
+        await cursor.forEach(function (doc) {
+            posts.push(doc);
+        });
+        return posts;
+    }
+
     async findUsername(username) {
-        return await mongoConnect.getDBCollection("Users").findOne({ "username": username });
+        return await mongoConnect.getDBCollection(USERS).findOne({ "username": username });
     }
 
     async findEmail(email) {
-        return await mongoConnect.getDBCollection("Users").findOne({ "email": email });
+        return await mongoConnect.getDBCollection(USERS).findOne({ "email": email });
     }
 
     async findPhoneNum(num) {
-        return await mongoConnect.getDBCollection("Users").findOne({ "phonenum": num });
+        return await mongoConnect.getDBCollection(USERS).findOne({ "phonenum": num });
     }
 
     passwordChecker(password, hashedPassword) {

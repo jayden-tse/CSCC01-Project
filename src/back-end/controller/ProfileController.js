@@ -1,61 +1,50 @@
 const DatabaseDelete = require('../model/DatabaseDelete');
 const DatabaseUpdate = require('../model/DatabaseUpdate');
 const DatabaseRead = require('../model/DatabaseRead');
+const { WRITE_FAILED, NOT_AUTHENTICATED } = require('./StatusMessages');
 const dbDelete = new DatabaseDelete();
 const dbUpdate = new DatabaseUpdate();
 const dbRead = new DatabaseRead();
 
 exports.profile_get = async function (req, res) {
-    res.set({
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
-    });
     if (req.user) {
         // user is authenticated
         try {
             await dbRead.getProfile(req.query.username);
             res.sendStatus(200); // OK
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
     }
 };
 
 exports.profile_picks_get = async function (req, res) {
-    res.set({
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
-    });
     if (req.user) {
         // user is authenticated
         try {
             await dbRead.getPickHistory(req.query.username);
             res.sendStatus(200); // OK
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
     }
 };
 
 exports.profile_tracker_get = async function (req, res) {
-    res.set({
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
-    });
     if (req.user) {
         // user is authenticated
         try {
             await dbRead.getTracker(req.query.username);
             res.sendStatus(200); // OK
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
     }
 };
 
@@ -64,19 +53,15 @@ exports.profile_update_picture_put = function (req, res) {
 };
 
 exports.profile_get_picture = async function (req, res) {
-    res.set({
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
-    });
     if (req.user) {
         try {
             let url = await dbRead.getProfilePicture(req.query.username);
             res.status(200).json({ picture: url }); // OK
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
     }
 };
 
@@ -91,10 +76,10 @@ exports.profile_update_about_put = async function (req, res) {
             );
             res.sendStatus(200); // OK
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
     }
 };
 
@@ -109,10 +94,10 @@ exports.profile_update_status_put = async function (req, res) {
             );
             res.sendStatus(200); // OK
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
     }
 };
 
@@ -123,10 +108,10 @@ exports.profile_update_ACS_put = async function (req, res) {
             await dbUpdate.updateMessage(req.session.passport, 'ACS', req.body.ACS);
             res.sendStatus(200); // OK
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED');
+        res.status(401).send(NOT_AUTHENTICATED);
     }
 };
 
@@ -141,10 +126,10 @@ exports.profile_update_picture_put = async function (req, res) {
             );
             res.sendStatus(200); // OK
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED');
+        res.status(401).send(NOT_AUTHENTICATED);
     }
 };
 
@@ -155,10 +140,10 @@ exports.profile_update_picks_put = async function (req, res) {
             await dbUpdate.addMatchToHistory(req.session.passport, req.body.match);
             res.sendStatus(200); // OK
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
     }
 };
 
@@ -169,10 +154,10 @@ exports.profile_update_tracker_put = async function (req, res) {
             await dbUpdate.addUserToTracker(req.session.passport, req.body.username);
             res.sendStatus(200); // OK
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
     }
 };
 
@@ -186,9 +171,9 @@ exports.profile_tracker_del = async function (req, res) {
             );
             res.sendStatus(200); // OK
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
     }
 };

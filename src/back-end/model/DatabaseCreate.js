@@ -8,6 +8,7 @@ const Profile = require('./Profile.js');
 const Post = require('./Post.js');
 
 const DatabaseRead = require('./DatabaseRead.js');
+const { Users } = require('./DatabaseHelper');
 const dbRead = new DatabaseRead();
 
 // Business email from which users will get the confirmation.
@@ -33,7 +34,7 @@ class DatabaseCreate {
         let hashedPassword = this.passwordHasher(user.password);
         user.password = hashedPassword;
         this.notifyUserForNewAccount(user);
-        let result = await mongoConnect.getDBCollection("Users").insertOne(user);
+        let result = await mongoConnect.getDBCollection(USERS).insertOne(user);
     }
 
     notifyUserForNewAccount(user) {
@@ -44,7 +45,7 @@ class DatabaseCreate {
             text: 'Your SportCred account has been created successfully.'
         };
 
-        transporter.sendMail(mailOptions, function(error, info) {
+        transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.log(error);
             } else {
@@ -62,7 +63,7 @@ class DatabaseCreate {
     // the Zone
     async createPost(user, date, content, agrees, disagrees, comments) {
         let post = new Post(user, date, content, agrees, disagrees, comments);
-        let result = await mongoConnect.getDBCollection("Posts").insertOne(post);
+        let result = await mongoConnect.getDBCollection(POSTS).insertOne(post);
     }
 
 }
