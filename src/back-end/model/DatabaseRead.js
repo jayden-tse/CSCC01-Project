@@ -4,6 +4,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 var passport = require('passport');
 
+const { USERS, POSTS} = require('./DatabaseHelper');
+
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
 passport.use(new LocalStrategy(

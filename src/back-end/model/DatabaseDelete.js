@@ -1,5 +1,7 @@
 var mongoConnect = require('../../mongoConnect');
 
+const { USERS } = require('./DatabaseHelper');
+
 class DatabaseDelete {
 
     async removeUserFromTracker(req, username) {
