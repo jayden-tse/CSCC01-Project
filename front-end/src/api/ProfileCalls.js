@@ -1,8 +1,20 @@
 import { BASE_URL } from './HttpClient.js';
+//get
+const PROFILE = '/profile',
+  PICKS = '/profile/picks',
+  TRACKER = '/profile/tracker',
+  PICTURE = '/profile/picture',
+  //update
+  UPDATEPICTURE = '/profile/update/picture',
+  UPDATEABOUT = '/profile/update/about',
+  UPDATESTATUS = '/profile/update/status',
+  UPDATEPICKS = '/profile/update/picks',
+  UPDATETRACKER = '/profile/update/tracker',
+  DELETETRACKER = '/profile/delete/tracker';
 
 /*ABOUT*/
 export async function getUserAbout() {
-  const newUrl = BASE_URL + '/profile';
+  const newUrl = BASE_URL + PROFILE;
   var fetchOptions = {
     method: 'GET',
     mode: 'cors',
@@ -42,7 +54,7 @@ export async function setUserAbout(message) {
 
 /*ACS*/
 export function getUserACS(username) {
-  var newUrl = new URL(BASE_URL + '/profile');
+  var newUrl = new URL(BASE_URL + PROFILE);
   var params = { username: username };
   newUrl.search = new URLSearchParams(params).toString();
   console.log(newUrl);
