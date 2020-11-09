@@ -2,6 +2,7 @@ const e = require('express');
 const DatabaseCreate = require('../model/DatabaseCreate.js');
 const DatabaseRead = require('../model/DatabaseRead');
 const DatabaseUpdate = require('../model/DatabaseUpdate');
+const { SEARCH_FAILED, USERNAME_EXISTS, EMAIL_EXISTS, PHONENUM_EXISTS, NOT_AUTHENTICATED } = require('./StatusMessages.js');
 const dbCreate = new DatabaseCreate();
 const dbRead = new DatabaseRead();
 const dbUpdate = new DatabaseUpdate();
@@ -10,12 +11,12 @@ exports.user_check_username_get = async function(req, res) {
     try {
         let newUsername = await dbRead.findUsername(req.body.username);
         if (newUsername !== null) {
-            res.status(400).send('This username already exists.');
+            res.status(400).send(USERNAME_EXISTS);
         } else {
             res.sendStatus(200);
         }
     } catch {
-        res.status(500).send('SEARCH FAILED'); // Internal server error
+        res.status(500).send(SEARCH_FAILED); // Internal server error
     }
 };
 
@@ -23,12 +24,12 @@ exports.user_check_email_get = async function(req, res) {
     try {
         let newEmail = await dbRead.findEmail(req.body.email);
         if (newEmail !== null) {
-            res.status(400).send('This email already exists.');
+            res.status(400).send(EMAIL_EXISTS);
         } else {
             res.sendStatus(200);
         }
     } catch {
-        res.status(500).send('SEARCH FAILED'); // Internal server error
+        res.status(500).send(SEARCH_FAILED); // Internal server error
     }
 };
 
@@ -36,12 +37,12 @@ exports.user_check_phonenum_get = async function(req, res) {
     try {
         let newNum = await dbRead.findPhoneNum(req.body.phonenum);
         if (newNum !== null) {
-            res.status(400).send('This phone number already exists.');
+            res.status(400).send(PHONENUM_EXISTS);
         } else {
             res.sendStatus(200);
         }
     } catch {
-        res.status(500).send('SEARCH FAILED'); // Internal server error
+        res.status(500).send(SEARCH_FAILED); // Internal server error
     }
 };
 
@@ -57,10 +58,10 @@ exports.user_update_password_put = async function(req, res) {
                 res.sendStatus(404); // NOT FOUND
             }
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
     }
 };
 
@@ -77,13 +78,13 @@ exports.user_update_email_put = async function(req, res) {
                     res.sendStatus(404); // NOT FOUND
                 }
             } else {
-                res.status(400).send('Email address already exists.');
+                res.status(400).send(EMAIL_EXISTS);
             }
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
     }
 };
 
@@ -100,13 +101,13 @@ exports.user_update_phonenum_put = async function(req, res) {
                     res.sendStatus(404); // NOT FOUND
                 }
             } else {
-                res.status(400).send('Phone number already exists.');
+                res.status(400).send(PHONENUM_EXISTS);
             }
         } catch {
-            res.status(500).send('WRITE FAILED'); // Internal server error
+            res.status(500).send(WRITE_FAILED); // Internal server error
         }
     } else {
-        res.status(401).send('NOT AUTHENTICATED'); // Unauthorized (not logged in)
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
     }
 };
 
