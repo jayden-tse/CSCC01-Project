@@ -8,6 +8,7 @@ const Profile = require('./Profile.js');
 const Post = require('./Post.js');
 
 const DatabaseRead = require('./DatabaseRead.js');
+const { Users } = require('./DatabaseHelper');
 const dbRead = new DatabaseRead();
 
 // Business email from which users will get the confirmation.
@@ -33,7 +34,7 @@ class DatabaseCreate {
         let hashedPassword = this.passwordHasher(user.password);
         user.password = hashedPassword;
         this.notifyUserForNewAccount(user);
-        let result = await mongoConnect.getDBCollection("Users").insertOne(user);
+        let result = await mongoConnect.getDBCollection(USERS).insertOne(user);
     }
 
     notifyUserForNewAccount(user) {
