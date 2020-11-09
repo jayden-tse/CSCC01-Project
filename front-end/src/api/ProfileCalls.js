@@ -33,7 +33,7 @@ export async function getUserAbout() {
 
 export async function setUserAbout(message) {
   //user stored in backend
-  const newUrl = BASE_URL + '/profile/update/about';
+  const newUrl = BASE_URL + UPDATEABOUT;
   var params = { about: message };
   var fetchOptions = {
     method: 'PUT',
@@ -101,7 +101,7 @@ export function getUserStatus(username) {
 
 export async function setUserStatus(message) {
   //user stored in backend
-  const newUrl = BASE_URL + '/profile/update/status';
+  const newUrl = BASE_URL + UPDATESTATUS;
   var params = { about: message };
   var fetchOptions = {
     method: 'PUT',
