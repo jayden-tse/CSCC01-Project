@@ -71,6 +71,9 @@ router.get('/profile/tracker', profileController.profile_tracker_get);
 // Get profile picture
 router.get('/profile/picture', profileController.profile_get_picture);
 
+// Get profile's links
+router.get('/profile/links', profileController.profile_links_get);
+
 // Update profile picture
 router.put('/profile/update/picture', profileController.profile_update_picture_put);
 

@@ -69,6 +69,13 @@ class DatabaseRead {
         return posts;
     }
 
+    async getLinks(req) {
+        let username = { "username": req.user };
+        let result = await mongoConnect.getDBCollection("Users").findOne(username)
+        console.log(result.profile.links);
+        return result.profile.links;
+    }
+
     async getPost(req) {
         const posts = [];
         const cursor = await mongoConnect.getDBCollection("Posts").find({ "_id": ObjectId(req) });

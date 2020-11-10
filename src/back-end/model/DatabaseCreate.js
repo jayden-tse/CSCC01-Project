@@ -28,7 +28,7 @@ class DatabaseCreate {
         // Only store this user in the database if there exists no other accounts with
         // the same phone numbers and email.
         // default image
-        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 100, {facebook: '', instagram: '', twitter: ''});
+        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 200, {facebook: '', instagram: '', twitter: ''});
         user.profile = userProfile;
         let hashedPassword = this.passwordHasher(user.password);
         user.password = hashedPassword;
