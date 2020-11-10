@@ -1,4 +1,4 @@
-import { BASE_URL } from './HttpClient.js';
+import { BASE_URL, ORIGIN } from './HttpClient.js';
 //get
 const PROFILE = '/profile',
   PICKS = '/profile/picks',
@@ -54,22 +54,10 @@ export async function setUserAbout(message) {
 
 /*ACS*/
 export function getUserACS(username) {
-  var newUrl = new URL(BASE_URL + PROFILE);
-  var params = { username: username };
+  let newUrl = new URL(BASE_URL + PROFILE);
+  const params = { username: username };
   newUrl.search = new URLSearchParams(params).toString();
-  console.log(newUrl);
-  var fetchOptions = {
-    method: 'GET',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Credentials': true,
-      'Access-Control-Allow-Origin': newUrl,
-    },
-    withCredentials: true,
-    credentials: 'include',
-  };
-  return fetch(newUrl, fetchOptions)
+  return fetch(newUrl, fetchOptionsGet())
     .then((res) => {
       return res;
     })
@@ -100,22 +88,52 @@ export function getUserStatus(username) {
 }
 
 export async function setUserStatus(message) {
-  //user stored in backend
-  const newUrl = BASE_URL + UPDATESTATUS;
-  var params = { about: message };
-  var fetchOptions = {
-    method: 'PUT',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  };
-  return fetch(newUrl, fetchOptions)
-    .then((res) => {
-      return res;
-    })
-    .catch((error) => {
-      console.log('Error connecting to backend service: ' + error);
-    });
+    //user stored in backend
+    const newUrl = BASE_URL + UPDATESTATUS;
+        var params = { about: message };
+    var fetchOptions = {
+        method: 'PUT',
+        mode: 'cors',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params),
+    };
+    return fetch(newUrl, fetchOptions)
+        .then((res) => {
+            return res;
+        })
+        .catch((error) => {
+        console.log('Error connecting to backend service: ' + error);
+        });
 }
+
+function fetchOptionsGet(){
+    return {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Origin': ORIGIN,
+        },
+        withCredentials: true,
+        credentials: 'include',
+      };
+}
+
+function fetchOptionsWithBody(method, body){
+    return {
+        method: method,
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Origin': ORIGIN,
+        },
+        withCredentials: true,
+        credentials: 'include',
+        body: JSON.stringify(body),
+      };
+}
+
