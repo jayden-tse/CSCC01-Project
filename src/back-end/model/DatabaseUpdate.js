@@ -2,6 +2,8 @@ var mongoConnect = require('../../mongoConnect');
 const Comment = require('./Comment.js')
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
+const { USERS, POSTS} = require('./DatabaseHelper');
+
 class DatabaseUpdate {
 
     async addMatchToHistory(req, match) {
