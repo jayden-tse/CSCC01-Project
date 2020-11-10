@@ -55,7 +55,7 @@ router.put('/signup', validateUser.validateUser, signupController.user_put);
 router.put('/login', loginController.auth);
 
 // Logout
-router.get('/logout', loginController.deauth);
+router.put('/logout', loginController.deauth);
 
 /* PROFILE */
 
