@@ -8,7 +8,7 @@ const Profile = require('./Profile.js');
 const Post = require('./Post.js');
 
 const DatabaseRead = require('./DatabaseRead.js');
-const { USERS, POSTS} = require('./DatabaseHelper');
+const { USERS, POSTS } = require('./DatabaseHelper');
 const dbRead = new DatabaseRead();
 
 // Business email from which users will get the confirmation.
@@ -63,7 +63,7 @@ class DatabaseCreate {
     // the Zone
     async createPost(user, date, content, agrees, disagrees, comments, agreeusers, disagreeusers) {
         let post = new Post(user, date, content, agrees, disagrees, comments, agreeusers, disagreeusers);
-        let result = await mongoConnect.getDBCollection("Posts").insertOne(post);
+        let result = await mongoConnect.getDBCollection(POSTS).insertOne(post);
     }
 
 }

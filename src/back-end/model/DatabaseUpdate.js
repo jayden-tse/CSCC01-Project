@@ -2,7 +2,7 @@ var mongoConnect = require('../../mongoConnect');
 const Comment = require('./Comment.js')
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
-const { USERS, POSTS} = require('./DatabaseHelper');
+const { USERS, POSTS } = require('./DatabaseHelper');
 
 class DatabaseUpdate {
 
@@ -50,7 +50,7 @@ class DatabaseUpdate {
 
     async updatePost(postid, type, message) {
         let post = { '_id': ObjectId(postid) };
-        let result = await mongoConnect.getDBCollection("Posts").updateOne(post, {
+        let result = await mongoConnect.getDBCollection(POSTS).updateOne(post, {
             $set: {
                 [type]: message
             }
@@ -59,14 +59,12 @@ class DatabaseUpdate {
     }
 
     async updateVote(username, vote, postid) {
-        console.log(username);
         let post = { '_id': ObjectId(postid) };
-        let postDoc = await mongoConnect.getDBCollection("Posts").findOne(post);
-        console.log(postDoc);
+        let postDoc = await mongoConnect.getDBCollection(POSTS).findOne(post);
         if (postDoc !== null) {
             let agreed = postDoc.usersagreed; // should be an array of usernames in json
             let disagreed = postDoc.usersdisagreed;
-            if (vote > 0) {
+            if (vote > 0) { // agree
                 if (agreed.indexOf(username) !== -1) {
                     agreed = agreed.filter(function(e) {
                         return e !== agreed.find(username);
@@ -74,9 +72,8 @@ class DatabaseUpdate {
                 } else {
                     agreed.splice(agreed.length, 0, username);
                 }
-                console.log("agreed " + agreed);
                 return this.updatePost(postid, "usersagreed", agreed); // either way update usersagreed on the post
-            } else if (vote < 0) {
+            } else if (vote < 0) { // disagree
                 if (disagreed.indexOf(username) !== -1) {
                     disagreed = disagreed.filter(function(e) {
                         return e !== disagreed.find(username);
@@ -84,10 +81,10 @@ class DatabaseUpdate {
                 } else {
                     disagreed.splice(disagreed.length, 0, username);
                 }
-                console.log("disagreed " + disagreed);
                 return this.updatePost(postid, "usersdisagreed", disagreed); // either way update usersdisagreed on the post
-            } else return null;
-        } else return null;
+            }
+        }
+        return null;
     }
 
     async createComment(post, user, date, text, agrees, disagrees) {
@@ -96,10 +93,10 @@ class DatabaseUpdate {
         let newPost = { "_id": ObjectId(post) };
         let result = await mongoConnect.getDBCollection(POSTS).updateOne(
             newPost, {
-            $push: {
-                comments: comment
+                $push: {
+                    comments: comment
+                }
             }
-        }
         );
         return result;
     }
