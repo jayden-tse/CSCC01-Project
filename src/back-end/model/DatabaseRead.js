@@ -35,7 +35,7 @@ passport.deserializeUser(function (username, done) {
 class DatabaseRead {
 
     async getProfile(req) {
-        let username = { "username": req.user }
+        let username = { "username": req }
         let result = await mongoConnect.getDBCollection(USERS).findOne(username)
         console.log(result.profile);
         return result.profile;
