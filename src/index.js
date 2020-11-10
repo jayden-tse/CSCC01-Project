@@ -15,7 +15,7 @@ var passport = require('passport');
 
 async function main() {
     try {
-        mongoConnect.connectToServer(function (err, client) {
+        mongoConnect.connectToServer(function(err, client) {
             if (err) console.log(err);
             app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
             app.use(bodyParser.json());
