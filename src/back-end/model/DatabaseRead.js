@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 var passport = require('passport');
 
-const { USERS, POSTS} = require('./DatabaseHelper');
+const { USERS, POSTS } = require('./DatabaseHelper');
 
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
@@ -34,30 +34,26 @@ passport.deserializeUser(function (username, done) {
 
 class DatabaseRead {
 
-    async getProfile(req) {
-        let username = { "username": req }
-        let result = await mongoConnect.getDBCollection(USERS).findOne(username)
+    async getProfile(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
         console.log(result.profile);
         return result.profile;
     }
 
-    async getPickHistory(req) {
-        let username = { "username": req.user }
-        let result = await mongoConnect.getDBCollection(USERS).findOne(username)
+    async getPickHistory(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
         console.log(result.profile.picks);
         return result.profile.picks;
     }
 
-    async getTracker(req) {
-        let username = { "username": req.user }
-        let result = await mongoConnect.getDBCollection(USERS).findOne(username)
+    async getTracker(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
         console.log(result.profile.tracker);
         return result.profile.tracker;
     }
 
-    async getProfilePicture(req) {
-        let username = { "username": req.user };
-        let result = await mongoConnect.getDBCollection(USERS).findOne(username);
+    async getProfilePicture(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username });
         console.log(result.profile.picture);
         return result.profile.picture; // should be a URL
     }
