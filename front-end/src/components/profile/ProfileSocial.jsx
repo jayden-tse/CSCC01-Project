@@ -1,65 +1,20 @@
 import React, { Component } from 'react';
 
+const EDIT = 'Edit',
+  SAVE = 'Save',
+  CANCEL = 'Cancel';
+
 class ProfileSocial extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      links: [
-        'https://www.facebook.com',
-        'https://twitter.com',
-        'https://www.instagram.com/',
-      ],
-      linksEdit: [
-        'https://www.facebook.com',
-        'https://twitter.com',
-        'https://www.instagram.com/',
-      ],
-      edit: false,
-    };
-    this.handleEdit = this.handleEdit.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleEdit(e) {
-    if (this.props.editable) {
-      console.log('Profile Social edit');
-      this.setState({ edit: true });
-    } else {
-      console.log('Edit not authorised');
-    }
-  }
-
-  handleSave() {
-    console.log('Profile Social save');
-    //not your profile
-    if (!this.props.editable) {
-      console.log('Save not authorized');
-      this.handleCancel();
-      return;
-    }
-
-    //if successful, change message in state
-    this.setState({ links: this.state.linksEdit });
-
-    this.setState({ edit: false });
-  }
-
-  handleChange(e, id) {
-    var tempLinks = this.state.linksEdit;
-    tempLinks[id] = e.target.value;
-    this.setState({ linksEdit: tempLinks });
-  }
 
   renderLink(i) {
     //edit mode
-    if (this.state.edit) {
+    if (this.props.mode === EDIT) {
       return (
         <SocialEditable
           key={i.toString()}
           id={i.toString()}
-          link={this.state.linksEdit[i]}
-          onChange={this.handleChange}
+          link={this.props.links[i]}
+          onChange={this.props.handleChange}
         />
       );
     }
@@ -68,17 +23,17 @@ class ProfileSocial extends Component {
       <SocialLink
         key={i.toString()}
         id={i.toString()}
-        link={this.state.links[i]}
+        link={this.props.links[i]}
       />
     );
   }
 
   renderButton() {
     if (this.props.editable)
-      return this.state.edit ? (
-        <SocialSave onSave={this.handleSave} />
+      return this.props.mode===EDIT ? (
+        <SocialSaveCancel onSave={this.props.handleSave} onCancel={this.props.handleCancel}/>
       ) : (
-        <SocialEdit onClick={this.handleEdit} />
+        <SocialEdit onClick={this.props.handleEdit} />
       );
     return null;
   }
@@ -117,16 +72,21 @@ function SocialEditable(props) {
   );
 }
 
-function SocialSave(props) {
+function SocialSaveCancel(props) {
   return (
-    <button className="ProfileSociableEditableSave" onClick={props.onSave}>
-      save
-    </button>
+      <React.Fragment>
+        <button className="ProfileSociableEditableSave" onClick={props.onSave}>
+            {SAVE}
+        </button>
+        <button className="ProfileSociableEditableCancel" onClick={props.onCancel}>
+            {CANCEL}
+        </button>
+    </React.Fragment>
   );
 }
 
 function SocialEdit(props) {
-  return <button onClick={props.onClick}>edit</button>;
+    return <button onClick={props.onClick}>{EDIT}</button>;
 }
 
 export default ProfileSocial;
