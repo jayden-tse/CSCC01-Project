@@ -5,7 +5,7 @@ import ProfilePicture from './ProfilePicture';
 import ProfileStatus from './ProfileStatus';
 import ProfileRadar from './ProfileRadar';
 import ProfileSocial from './ProfileSocial';
-import { getUserACS, getUserPicture, setUserPicture } from '../../api/ProfileCalls.js';
+import { getProfile, getUserPicture, setUserPicture } from '../../api/ProfileCalls.js';
 import './ProfilePage.css';
 
 /*note: currentUser is the user logged in currently
@@ -16,8 +16,8 @@ const VIEW = 'View',
   CANCEL = 'Cancel';
 
   var SAMPLE = [
-    { username: 'user1', ACS: 100 },
-    { username: 'user2', ACS: 200 },
+    { username: 'demouser', ACS: 100 },
+    { username: 'demouser25', ACS: 200 },
     { username: 'user3', ACS: 300 },
     { username: 'user4', ACS: 400 },
     { username: 'user5', ACS: 500 },
@@ -79,23 +79,52 @@ class ProfilePage extends Component {
     this.RadarHandleFollow = this.RadarHandleFollow.bind(this);
 }
 
-componentDidMount() {
+updateShownUser(){
     //expect to get json object with ACS, acs change later
-  getUserACS(this.props.wantedUser).then((profile)=>{
-      this.setState({ ACS: profile.ACS });
-      //this.setState({ ACSChange: profile.ACSChange });
-  }).catch((error) => {
-      //will throw if somethings missing
-          console.log(error);
-          console.log('Error with profile response');
-          this.setState({ ACSError: true });
+    getProfile(this.props.wantedUser).then((profile)=>{
+        this.setState({
+            ACS: profile.ACS,
+            ACSChange: 0,
+            ACSError:false,
+            About: profile.about,
+            AboutEdit: profile.about,
+            AboutMode: VIEW,
+            Picture: profile.picture,
+            PictureEdit: profile.picture,
+            PictureMode: VIEW,
+            Status: profile.status,
+            StatusEdit: profile.status,
+            StatusMode: VIEW,
+            Social: [
+                'https://www.facebook.com',
+                'https://twitter.com',
+                'https://www.instagram.com/',
+            ],
+            SocialEdit: [
+                'https://www.facebook.com',
+                'https://twitter.com',
+                'https://www.instagram.com/',
+            ],
+            SocialMode: VIEW,
+            CurrentIsFollowing:false,
+            WantedFollowList: [...SAMPLE]
         });
-    //get user picture from storage before render
-    const image = getUserPicture(this.props.wantedUser);
-    this.setState({
-      Picture: image,
-      PictureEdit: image,
-    });
+    }).catch((error) => {
+        //will throw if somethings missing
+            console.log(error);
+            console.log('Error with profile response');
+            this.setState({ ACSError: true });
+            });
+}
+
+componentDidMount() {
+    this.updateShownUser();
+}
+
+componentDidUpdate(prevProps) {
+    if(this.props.wantedUser !== prevProps.wantedUser){
+        this.updateShownUser();
+    }
 }
 
   AboutHandleEdit() {
