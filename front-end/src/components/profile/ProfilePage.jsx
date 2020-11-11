@@ -5,7 +5,8 @@ import ProfilePicture from './ProfilePicture';
 import ProfileStatus from './ProfileStatus';
 import ProfileRadar from './ProfileRadar';
 import ProfileSocial from './ProfileSocial';
-import { getProfile, getUserPicture, setUserPicture } from '../../api/ProfileCalls.js';
+import { getProfile, updateUserAbout, updateUserPicture, addProfileTracker, 
+    deleteProfileTracker, updateUserStatus } from '../../api/ProfileCalls.js';
 import './ProfilePage.css';
 
 /*note: currentUser is the user logged in currently
@@ -13,7 +14,11 @@ wantedUser is the user whose page is shown*/
 const VIEW = 'View',
   EDIT = 'Edit',
   SAVE = 'Save',
-  CANCEL = 'Cancel';
+  CANCEL = 'Cancel',
+  ABOUT = 'About',
+  STATUS = 'Status',
+  PICTURE = 'Picture',
+  SOCIAL = 'Social';
 
   var SAMPLE = [
     { username: 'demouser', ACS: 100 },
@@ -184,7 +189,7 @@ componentDidUpdate(prevProps) {
     }
 
     //change picture in database
-    setUserPicture(this.props.currentUser, this.state.PictureEdit);
+    
     //if successful, change message in state
     this.setState({ Picture: this.state.PictureEdit });
 
