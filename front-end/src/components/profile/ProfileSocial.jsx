@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 
-const VIEW = 'View',
-  EDIT = 'Edit',
+const EDIT = 'Edit',
   SAVE = 'Save',
   CANCEL = 'Cancel';
 
 class ProfileSocial extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   renderLink(i) {
     //edit mode

@@ -5,9 +5,6 @@ const FOLY = 'Follow: ✓';
 const FOLN = 'Follow: x';
 
 class ProfileRadar extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (

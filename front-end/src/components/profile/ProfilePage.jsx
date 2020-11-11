@@ -13,8 +13,7 @@ import './ProfilePage.css';
 wantedUser is the user whose page is shown*/
 const VIEW = 'View',
   EDIT = 'Edit',
-  SAVE = 'Save',
-  CANCEL = 'Cancel',
+  MODE = 'Mode',
   ABOUT = 'About',
   STATUS = 'Status',
   PICTURE = 'Picture',
@@ -60,27 +59,19 @@ class ProfilePage extends Component {
         WantedFollowList: SAMPLE
     };
 
-    //a lot of bloat rn, refactor later
-    this.AboutHandleEdit = this.AboutHandleEdit.bind(this);
+    //generic functions
+    this.GenericHandleEdit = this.GenericHandleEdit.bind(this);
+    this.GenericHandleCancel = this.GenericHandleCancel.bind(this);
+    this.GenericHandleChange = this.GenericHandleChange.bind(this);
+
+    //save functions (call handles might be different)
     this.AboutHandleSave = this.AboutHandleSave.bind(this);
-    this.AboutHandleCancel = this.AboutHandleCancel.bind(this);
-    this.AboutHandleChange = this.AboutHandleChange.bind(this);
-
-    this.PictureHandleEdit = this.PictureHandleEdit.bind(this);
     this.PictureHandleSave = this.PictureHandleSave.bind(this);
-    this.PictureHandleCancel = this.PictureHandleCancel.bind(this);
-    this.PictureHandleChange = this.PictureHandleChange.bind(this);
-    
-    this.StatusHandleEdit = this.StatusHandleEdit.bind(this);
     this.StatusHandleSave = this.StatusHandleSave.bind(this);
-    this.StatusHandleCancel = this.StatusHandleCancel.bind(this);
-    this.StatusHandleChange = this.StatusHandleChange.bind(this);
-
-    this.SocialHandleEdit = this.SocialHandleEdit.bind(this);
     this.SocialHandleSave = this.SocialHandleSave.bind(this);
-    this.SocialHandleCancel = this.SocialHandleCancel.bind(this);
-    this.SocialHandleChange = this.SocialHandleChange.bind(this);
 
+    //non-generic functions
+    this.SocialHandleChange = this.SocialHandleChange.bind(this);
     this.RadarHandleFollow = this.RadarHandleFollow.bind(this);
 }
 
@@ -135,14 +126,26 @@ componentDidUpdate(prevProps) {
     }
 }
 
-  AboutHandleEdit() {
-    if (this.props.editable) {
-      console.log('Profile About edit');
-      this.setState({ AboutMode: EDIT });
-    } else {
-      console.log('Edit not authorised');
+    GenericHandleEdit(caller){
+        if (this.props.editable) {
+            console.log(`Profile ${caller} edit`);
+            this.setState({ [`${caller}${MODE}`]: EDIT });
+          } else {
+            console.log('Edit not authorised');
+          }
     }
-  }
+
+    GenericHandleCancel(caller){
+        console.log(`Profile ${caller} cancel`);
+        //reset editable field in tate
+        //example: {AboutEdit: this.state.About} for updating About
+        this.setState({ [`${caller}${EDIT}`]: this.state[`${caller}`]});
+        this.setState({ [`${caller}${MODE}`]: VIEW });
+    }
+
+    GenericHandleChange(e, caller){
+        this.setState({ [`${caller}${EDIT}`]: e.target.value });
+    }
 
   AboutHandleSave() {
     console.log('Profile About save');
@@ -157,26 +160,6 @@ componentDidUpdate(prevProps) {
     //if successful, change message in state
     this.setState({ About: this.state.AboutEdit });
     this.setState({ AboutMode: VIEW });
-  }
-
-  AboutHandleCancel() {
-    console.log('Profile About cancel');
-    //reset editMessage
-    this.setState({ AboutEdit: this.state.AboutEdit });
-    this.setState({ AboutMode: VIEW });
-  }
-
-  AboutHandleChange(e) {
-    this.setState({ AboutEdit: e.target.value });
-  }
-
-  PictureHandleEdit() {
-    if (this.props.editable) {
-      console.log('Profile Picture edit');
-      this.setState({ PictureMode: EDIT });
-    } else {
-      console.log('Edit not authorised');
-    }
   }
 
   PictureHandleSave() {
@@ -196,28 +179,6 @@ componentDidUpdate(prevProps) {
     this.setState({ PictureMode: VIEW });
   }
 
-  PictureHandleCancel() {
-    console.log('Profile Picture cancel');
-
-    //reset editMessage
-    this.setState({ PictureEdit: this.state.Picture });
-
-    this.setState({ PictureMode: VIEW });
-  }
-
-  PictureHandleChange(e) {
-    this.setState({ PictureEdit: e.target.value });
-  }
-
-  StatusHandleEdit() {
-    if (this.props.editable) {
-      console.log('Profile Status edit');
-      this.setState({ StatusMode: EDIT });
-    } else {
-      console.log('Edit not authorised');
-    }
-  }
-
   StatusHandleSave() {
     console.log('Profile Status save');
     //not your profile
@@ -228,18 +189,6 @@ componentDidUpdate(prevProps) {
     }
     this.setState({ Status: this.state.StatusEdit });
     this.setState({ StatusMode: VIEW });
-  }
-
-  StatusHandleCancel() {
-    console.log('Profile Status cancel');
-
-    //reset editMessage
-    this.setState({ StatusEdit: this.state.Status });
-    this.setState({ StatusMode: VIEW });
-  }
-
-  StatusHandleChange(e) {
-    this.setState({ StatusEdit: e.target.value });
   }
 
   SocialHandleEdit(e) {
@@ -264,14 +213,6 @@ componentDidUpdate(prevProps) {
     this.setState({ SocialMode: VIEW });
   }
 
-  SocialHandleCancel() {
-    console.log('Profile Social cancel');
-
-    //reset editMessage
-    this.setState({ SocialEdit: this.state.Social });
-    this.setState({ SocialMode: VIEW });
-  }
-
   SocialHandleChange(e, id) {
     var tempLinks = [...this.state.SocialEdit]; //clone array
     tempLinks[id] = e.target.value;
@@ -292,10 +233,10 @@ componentDidUpdate(prevProps) {
           editable={this.props.editable}
           mode={this.state.PictureMode}
           picture={this.state.Picture}
-          handleEdit={this.PictureHandleEdit}
+          handleEdit={() => this.GenericHandleEdit(PICTURE)}
           handleSave={this.PictureHandleSave}
-          handleCancel={this.PictureHandleCancel}
-          handleChange={this.PictureHandleChange}
+          handleCancel={() => this.GenericHandleCancel(PICTURE)}
+          handleChange={(e) => this.GenericHandleChange(e, PICTURE)}
         />
         <ProfileAbout
           currentUser={this.props.currentUser}
@@ -303,10 +244,10 @@ componentDidUpdate(prevProps) {
           editable={this.props.editable}
           mode={this.state.AboutMode}
           message={this.state.About}
-          handleEdit={this.AboutHandleEdit}
+          handleEdit={() => this.GenericHandleEdit(ABOUT)}
           handleSave={this.AboutHandleSave}
-          handleCancel={this.AboutHandleCancel}
-          handleChange={this.AboutHandleChange}
+          handleCancel={() => this.GenericHandleCancel(ABOUT)}
+          handleChange={(e) => this.GenericHandleChange(e, ABOUT)}
         />
         <ProfileStatus
           currentUser={this.props.currentUser}
@@ -314,10 +255,10 @@ componentDidUpdate(prevProps) {
           editable={this.props.editable}
           mode={this.state.StatusMode}
           message={this.state.Status}
-          handleEdit={this.StatusHandleEdit}
+          handleEdit={() => this.GenericHandleEdit(STATUS)}
           handleSave={this.StatusHandleSave}
-          handleCancel={this.StatusHandleCancel}
-          handleChange={this.StatusHandleChange}
+          handleCancel={() => this.GenericHandleCancel(STATUS)}
+          handleChange={(e) => this.GenericHandleChange(e, STATUS)}
         />
         <ProfileACS
           currentUser={this.props.currentUser}
@@ -341,9 +282,9 @@ componentDidUpdate(prevProps) {
           editable={this.props.editable}
           mode={this.state.SocialMode}
           links={this.state.Social}
-          handleEdit={this.SocialHandleEdit}
+          handleEdit={() => this.GenericHandleEdit(SOCIAL)}
           handleSave={this.SocialHandleSave}
-          handleCancel={this.SocialHandleCancel}
+          handleCancel={() => this.GenericHandleCancel(SOCIAL)}
           handleChange={this.SocialHandleChange}
         />
       </div>

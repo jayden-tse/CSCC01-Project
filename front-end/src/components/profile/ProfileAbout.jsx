@@ -7,16 +7,13 @@ const VIEW = 'View',
   CANCEL = 'Cancel';
 
 class ProfileAbout extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   renderView() {
     return (
       <React.Fragment>
         <ProfileAboutView message={this.props.message} />
         {this.props.editable && (
-          <ProfileAboutEditButton name="Edit" onClick={this.props.handleEdit} />
+          <ProfileAboutEditButton name={EDIT} onClick={this.props.handleEdit} />
         )}
       </React.Fragment>
     );

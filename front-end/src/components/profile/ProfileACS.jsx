@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import './ProfileACS.css';
 
 class ProfileACS extends Component {
-  constructor(props) {
-    super(props);
-  }
 
     renderError(){
         return <ProfileACSLabel message={'Error getting ACS'} />;

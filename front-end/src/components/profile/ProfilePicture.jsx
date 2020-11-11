@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
-import { getUserPicture, setUserPicture } from '../../api/ProfileCalls.js';
 import './ProfilePicture.css';
 
-const VIEW = 'View',
-  EDIT = 'Edit',
+const EDIT = 'Edit',
   SAVE = 'Save',
   CANCEL = 'Cancel';
 
 class ProfilePicture extends Component {
-  constructor(props) {
-    super(props);
-  }
   
   renderEditables() {
     return this.props.mode === EDIT ? (
