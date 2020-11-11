@@ -1,13 +1,17 @@
 import { BASE_URL, ORIGIN } from './HttpClient.js';
 //get
-const PROFILE = '/profile',
-  //update
-  UPDATEPICTURE = '/profile/update/picture',
-  UPDATEABOUT = '/profile/update/about',
-  UPDATESTATUS = '/profile/update/status',
-  UPDATEPICKS = '/profile/update/picks',
-  UPDATETRACKER = '/profile/update/tracker',
-  DELETETRACKER = '/profile/delete/tracker';
+const 
+    GET = 'GET',
+    PUT = 'PUT',
+    DELETE = 'DELETE',
+    PROFILE = '/profile',
+    //update
+    UPDATEPICTURE = '/profile/update/picture',
+    UPDATEABOUT = '/profile/update/about',
+    UPDATESTATUS = '/profile/update/status',
+    UPDATEPICKS = '/profile/update/picks',
+    UPDATETRACKER = '/profile/update/tracker',
+    DELETETRACKER = '/profile/delete/tracker';
 
 /*Profile Full*/
 export function getProfile(username) {
@@ -32,28 +36,24 @@ export function getProfile(username) {
   }
 
 /*ABOUT*/
-export async function updateUserAbout(message) {
-  //user stored in backend
-  const newUrl = BASE_URL + UPDATEABOUT;
-  var params = { about: message };
-  var fetchOptions = {
-    method: 'PUT',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  };
-  return fetch(newUrl, fetchOptions)
-    .then((res) => {
-        if(res.ok){
-            return res;
-        }
-
-    })
-    .catch((error) => {
-      console.log('Error connecting to backend service: ' + error);
-    });
+export async function updateUserAbout(about) {
+    let newUrl = new URL(BASE_URL + UPDATEABOUT);
+    const params = { about: about };
+    return fetch(newUrl, fetchOptionsWithBody(PUT, params))
+      .then(async(res) => {
+      const status = statusCatcher(res.status);
+      if (status.success){
+       //expect text in body with backend message
+       status.text = await res.text();
+       return status;
+      } else {
+      //on failure, (debug)
+          console.log(status.reason);
+          return status;
+      }
+      }).catch((error) => {
+        console.log('Error connecting to backend service: ' + error);
+      });
 }
 
 /*ACS*/
@@ -98,7 +98,7 @@ export async function updateUserStatus(message) {
 
 function fetchOptionsGet(){
     return {
-        method: 'GET',
+        method: GET,
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',

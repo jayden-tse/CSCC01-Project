@@ -79,7 +79,7 @@ updateShownUser(){
     //expect to get json object with ACS, acs change later
     getProfile(this.props.wantedUser).then((profile)=>{
         if(profile.error === true){
-            throw "error getting profile";
+            throw new Error("error getting profile");
         }
         this.setState({
             ACS: profile.ACS,
@@ -139,8 +139,8 @@ componentDidUpdate(prevProps) {
         console.log(`Profile ${caller} cancel`);
         //reset editable field in tate
         //example: {AboutEdit: this.state.About} for updating About
-        this.setState({ [`${caller}${EDIT}`]: this.state[`${caller}`]});
-        this.setState({ [`${caller}${MODE}`]: VIEW });
+        this.setState({ [`${caller}${EDIT}`]: this.state[`${caller}`],
+                        [`${caller}${MODE}`]: VIEW });
     }
 
     GenericHandleChange(e, caller){
@@ -152,14 +152,23 @@ componentDidUpdate(prevProps) {
     //not your profile
     if (!this.props.editable) {
       console.log('Save not authorized');
-      this.AboutHandleCancel();
+      this.GenericHandleCancel(ABOUT);
       return;
     }
     //change message in database
-
-    //if successful, change message in state
-    this.setState({ About: this.state.AboutEdit });
-    this.setState({ AboutMode: VIEW });
+    updateUserAbout(this.state.AboutEdit).then(async (res) => {
+        if(res.success){
+            //if successful, change message in state based on databaswe
+            this.setState({ About: res.text,
+                            AboutEdit: res.text,
+                             AboutMode: VIEW });
+        } else {
+            throw new Error("Unsuccessful update to About");
+        }
+    }).catch((error) => {
+        //unsuccessful, therefore reset
+        this.GenericHandleCancel(ABOUT);
+    });
   }
 
   PictureHandleSave() {
@@ -167,7 +176,7 @@ componentDidUpdate(prevProps) {
     //not your profile
     if (!this.props.editable) {
       console.log('Save not authorized');
-      this.PictureHandleCancel();
+      this.GenericHandleCancel(PICTURE);
       return;
     }
 
@@ -184,20 +193,11 @@ componentDidUpdate(prevProps) {
     //not your profile
     if (!this.props.editable) {
       console.log('Save not authorized');
-      this.StatusHandleCancel();
+      this.GenericHandleCancel(STATUS);
       return;
     }
     this.setState({ Status: this.state.StatusEdit });
     this.setState({ StatusMode: VIEW });
-  }
-
-  SocialHandleEdit(e) {
-    if (this.props.editable) {
-      console.log('Profile Social edit');
-      this.setState({ SocialMode: EDIT });
-    } else {
-      console.log('Edit not authorised');
-    }
   }
 
   SocialHandleSave() {
@@ -205,7 +205,7 @@ componentDidUpdate(prevProps) {
     //not your profile
     if (!this.props.editable) {
       console.log('Save not authorized');
-      this.SocialHandleCancel();
+      this.GenericHandleCancel(SOCIAL);
       return;
     }
     //if successful, change message in state
