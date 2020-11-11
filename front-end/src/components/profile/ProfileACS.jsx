@@ -1,28 +1,44 @@
 import React, { Component } from 'react';
-import { getUserACS, getUserACSChange } from '../../api/ProfileCalls.js';
+import { getUserACS } from '../../api/ProfileCalls.js';
 import './ProfileACS.css';
 
 class ProfileACS extends Component {
   constructor(props) {
     super(props);
-    this.state = { ACS: 0, ACSChange: 0 };
+    this.state = {error:false, ACS: 0, ACSChange: 0 };
   }
 
   componentDidMount() {
-    this.setState({ ACS: getUserACS(this.props.wantedUser) });
-    this.setState({
-      ACSChange: getUserACSChange(this.props.wantedUser),
-    });
-  }
+      //expect to get json object with ACS, acs change later
+    getUserACS(this.props.wantedUser).then((profile)=>{
+        this.setState({ ACS: profile.ACS });
+        //this.setState({ ACSChange: profile.ACSChange });
+    }).catch((error) => {
+            console.log(error);
+            console.log('Error with profile response');
+            this.setState({ error: true });
+          });
+}
+
+    renderError(){
+        return <ProfileACSLabel message={'Error getting ACS'} />;
+    }
+
+    renderNormal(){
+        return(<React.Fragment>
+            <ProfileACSLabel message={'Your ACS is ' + this.state.ACS} />
+            <br />
+            <ProfileACSLabel message={'Tier: ' + ACSTier(this.state.ACS)} />
+            {/* <br />//remove for now
+            <ProfileACSLabel message={this.state.ACSChange + ' ACS score today'} />
+            */}
+            </React.Fragment>);
+    }
 
   render() {
     return (
       <div className="ProfileACS">
-        <ProfileACSLabel message={'Your ACS is ' + this.state.ACS} />
-        <br />
-        <ProfileACSLabel message={'Tier: ' + ACSTier(this.state.ACS)} />
-        <br />
-        <ProfileACSLabel message={this.state.ACSChange + ' ACS score today'} />
+        {this.state.error ? this.renderError():this.renderNormal()}
       </div>
     );
   }

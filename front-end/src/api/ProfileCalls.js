@@ -45,7 +45,10 @@ export async function setUserAbout(message) {
   };
   return fetch(newUrl, fetchOptions)
     .then((res) => {
-      return res;
+        if(res.ok){
+            return res;
+        }
+
     })
     .catch((error) => {
       console.log('Error connecting to backend service: ' + error);
@@ -59,14 +62,19 @@ export function getUserACS(username) {
   newUrl.search = new URLSearchParams(params).toString();
   return fetch(newUrl, fetchOptionsGet())
     .then((res) => {
-      return res;
-    })
-    .catch((error) => {
+    const status = statusCatcher(res.status);
+    if (status.success){
+     //expect a json body with wanted information
+     return res.json();
+    // return{ACS:111,ACSChange:0} //debug: expected within profile
+    } else {
+    //on failure, (debug)
+        console.log(status.reason);
+        return {ACS: -1, ACSChange:0};
+    }
+    }).catch((error) => {
       console.log('Error connecting to backend service: ' + error);
     });
-}
-export function getUserACSChange(username) {
-  return 20;
 }
 
 /*Profile Picture*/
@@ -137,3 +145,34 @@ function fetchOptionsWithBody(method, body){
       };
 }
 
+function statusCatcher(resStatus){
+    // Convert server response to appropriate status object
+    let status = {
+        success: false,
+        reason: ''
+    };
+    switch(resStatus) {
+        // Call successful
+        case 200:
+            status.success = true;
+            break;
+        // Not authenticated
+        case 401:
+            status.reason = 'Not Authenticated';
+            break;
+        // Unexpected error with database
+        case 500:
+            status.reason = 'Unexpected Database Failure';
+            break;
+        // Some other error
+        default:
+            status.reason = 'other';
+            // DEBUG ONLY
+            // console.error(
+            //     `Sign Up fetch had unexpected response code: ${response.status}
+            //     with status text: ${response.statusText}`
+            // );
+            break;
+    }
+    return status;
+}
