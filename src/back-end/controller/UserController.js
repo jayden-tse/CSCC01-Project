@@ -51,12 +51,8 @@ exports.user_update_password_put = async function (req, res) {
         // user is authenticated
         try {
             let hashedPassword = dbCreate.passwordHasher(req.body.password);
-            let result = await dbUpdate.updateUser(req.session.passport, 'password', hashedPassword);
-            if (result.matchedCount) {
-                res.sendStatus(200); // OK
-            } else {
-                res.sendStatus(404); // NOT FOUND
-            }
+            await dbUpdate.updateUser(req.session.passport, 'password', hashedPassword);
+            res.sendStatus(200); // OK
         } catch {
             res.status(500).send(WRITE_FAILED); // Internal server error
         }
@@ -71,12 +67,8 @@ exports.user_update_email_put = async function (req, res) {
         try {
             let newEmail = await dbRead.findEmail(req.body.email);
             if (newEmail === null) {
-                let result = await dbUpdate.updateUser(req.session.passport, 'email', req.body.email);
-                if (result.matchedCount) {
-                    res.sendStatus(200); // OK
-                } else {
-                    res.sendStatus(404); // NOT FOUND
-                }
+                await dbUpdate.updateUser(req.session.passport, 'email', req.body.email);
+                res.sendStatus(200); // OK
             } else {
                 res.status(400).send(EMAIL_EXISTS);
             }
@@ -94,12 +86,8 @@ exports.user_update_phonenum_put = async function (req, res) {
         try {
             let newNum = await dbRead.findPhoneNum(req.body.phonenum);
             if (newNum === null) {
-                let result = await dbUpdate.updateUser(req.session.passport, 'phonenum', req.body.phonenum);
-                if (result.matchedCount) {
-                    res.sendStatus(200); // OK
-                } else {
-                    res.sendStatus(404); // NOT FOUND
-                }
+                await dbUpdate.updateUser(req.session.passport, 'phonenum', req.body.phonenum);
+                res.sendStatus(200); // OK
             } else {
                 res.status(400).send(PHONENUM_EXISTS);
             }

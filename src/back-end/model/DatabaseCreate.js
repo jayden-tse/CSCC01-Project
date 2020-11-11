@@ -8,7 +8,7 @@ const Profile = require('./Profile.js');
 const Post = require('./Post.js');
 
 const DatabaseRead = require('./DatabaseRead.js');
-const { USERS, POSTS} = require('./DatabaseHelper');
+const { USERS, POSTS } = require('./DatabaseHelper');
 const dbRead = new DatabaseRead();
 
 // Business email from which users will get the confirmation.
@@ -45,7 +45,7 @@ class DatabaseCreate {
             text: 'Your SportCred account has been created successfully.'
         };
 
-        transporter.sendMail(mailOptions, function (error, info) {
+        transporter.sendMail(mailOptions, function(error, info) {
             if (error) {
                 console.log(error);
             } else {
@@ -60,9 +60,33 @@ class DatabaseCreate {
         return hashedPassword;
     }
 
+    // Profile
+    async addMatchToHistory(req, match) {
+        let username = { 'username': req.user }
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
+            $addToSet: {
+                "profile.picks": match
+            }
+        });
+        let user = await mongoConnect.getDBCollection(USERS).findOne(username);
+        return user.profile.picks;
+    }
+
+    async addUserToTracker(req, addUsername) {
+        let username = { 'username': req.user }
+        let addUsernameResult = await mongoConnect.getDBCollection(USERS).findOne({ 'username': addUsername });
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
+            $addToSet: {
+                "profile.tracker": { "username": addUsername, "ACS": addUsernameResult.profile.ACS }
+            }
+        });
+        let user = await mongoConnect.getDBCollection(USERS).findOne(username);
+        return user.profile.tracker;
+    }
+
     // the Zone
-    async createPost(user, date, content, agrees, disagrees, comments) {
-        let post = new Post(user, date, content, agrees, disagrees, comments);
+    async createPost(user, date, content, agrees, disagrees, comments, agreeusers, disagreeusers, likes, dislikes) {
+        let post = new Post(user, date, content, agrees, disagrees, comments, agreeusers, disagreeusers, likes, dislikes);
         let result = await mongoConnect.getDBCollection(POSTS).insertOne(post);
     }
 
