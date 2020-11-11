@@ -15,6 +15,14 @@ const VIEW = 'View',
   SAVE = 'Save',
   CANCEL = 'Cancel';
 
+  var SAMPLE = [
+    { username: 'user1', ACS: 100 },
+    { username: 'user2', ACS: 200 },
+    { username: 'user3', ACS: 300 },
+    { username: 'user4', ACS: 400 },
+    { username: 'user5', ACS: 500 },
+  ];
+
 class ProfilePage extends Component {
     
   constructor(props) {
@@ -43,6 +51,8 @@ class ProfilePage extends Component {
             'https://www.instagram.com/',
           ],
         SocialMode: VIEW,
+        CurrentIsFollowing:false,
+        WantedFollowList: SAMPLE
     };
 
     //a lot of bloat rn, refactor later
@@ -65,6 +75,8 @@ class ProfilePage extends Component {
     this.SocialHandleSave = this.SocialHandleSave.bind(this);
     this.SocialHandleCancel = this.SocialHandleCancel.bind(this);
     this.SocialHandleChange = this.SocialHandleChange.bind(this);
+
+    this.RadarHandleFollow = this.RadarHandleFollow.bind(this);
 }
 
 componentDidMount() {
@@ -229,6 +241,11 @@ componentDidMount() {
     this.setState({ SocialEdit: tempLinks });
   }
 
+  RadarHandleFollow() {
+    //toggle following
+    this.setState({ CurrentIsFollowing: !this.state.CurrentIsFollowing });
+  }
+
   render() {
     return (
       <div className="ProfilePage">
@@ -277,6 +294,9 @@ componentDidMount() {
           wantedUser={this.props.wantedUser}
           editable={this.props.editable}
           handleViewProfile={this.props.handleViewProfile}
+          handleFollow={this.RadarHandleFollow}
+          CurrentIsFollowing={this.state.CurrentIsFollowing}
+          WantedFollowList={this.state.WantedFollowList}
         />
         <ProfileSocial
           currentUser={this.props.currentUser}

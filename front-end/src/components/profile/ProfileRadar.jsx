@@ -1,30 +1,12 @@
 import React, { Component } from 'react';
 import './ProfileRadar.css';
 
-const sample = [
-  { username: 'user1', ACS: 100 },
-  { username: 'user2', ACS: 200 },
-  { username: 'user3', ACS: 300 },
-  { username: 'user4', ACS: 400 },
-  { username: 'user5', ACS: 500 },
-];
-
 const FOLY = 'Follow: ✓';
 const FOLN = 'Follow: x';
 
 class ProfileRadar extends Component {
   constructor(props) {
     super(props);
-    this.state = { following: FOLN };
-    this.handleFollow = this.handleFollow.bind(this);
-  }
-
-  handleFollow() {
-    if (this.state.following === FOLY) {
-      this.setState({ following: FOLN });
-    } else {
-      this.setState({ following: FOLY });
-    }
   }
 
   render() {
@@ -32,14 +14,14 @@ class ProfileRadar extends Component {
       <div className="ProfileRadar">
         {!this.props.editable && (
           <FollowButton
-            handleClick={this.handleFollow}
-            followMessage={this.state.following}
+            handleClick={this.props.handleFollow}
+            followMessage={this.props.CurrentIsFollowing ? FOLY:FOLN}
           />
         )}
         <header className="ProfileRadarHeader">{`${this.props.wantedUser} is following:`}</header>
         <nav>
           <ul className="ProfileRadarList">
-            {ListFollowed(sample, this.props.handleViewProfile)}
+            {ListFollowed(this.props.WantedFollowList, this.props.handleViewProfile)}
           </ul>
         </nav>
       </div>
