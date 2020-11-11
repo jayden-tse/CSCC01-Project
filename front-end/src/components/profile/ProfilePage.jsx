@@ -20,6 +20,9 @@ class ProfilePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        ACS: 0,
+        ACSChange: 0,
+        ACSError:false,
         About: '',
         AboutEdit: '',
         AboutMode: VIEW,
@@ -29,9 +32,17 @@ class ProfilePage extends Component {
         Status: '',
         StatusEdit: '',
         StatusMode: VIEW,
-        ACS: 0,
-        ACSChange: 0,
-        ACSError:false,
+        Social: [
+            'https://www.facebook.com',
+            'https://twitter.com',
+            'https://www.instagram.com/',
+          ],
+        SocialEdit: [
+            'https://www.facebook.com',
+            'https://twitter.com',
+            'https://www.instagram.com/',
+          ],
+        SocialMode: VIEW,
     };
 
     //a lot of bloat rn, refactor later
@@ -49,6 +60,11 @@ class ProfilePage extends Component {
     this.StatusHandleSave = this.StatusHandleSave.bind(this);
     this.StatusHandleCancel = this.StatusHandleCancel.bind(this);
     this.StatusHandleChange = this.StatusHandleChange.bind(this);
+
+    this.SocialHandleEdit = this.SocialHandleEdit.bind(this);
+    this.SocialHandleSave = this.SocialHandleSave.bind(this);
+    this.SocialHandleCancel = this.SocialHandleCancel.bind(this);
+    this.SocialHandleChange = this.SocialHandleChange.bind(this);
 }
 
 componentDidMount() {
@@ -177,6 +193,42 @@ componentDidMount() {
     this.setState({ StatusEdit: e.target.value });
   }
 
+  SocialHandleEdit(e) {
+    if (this.props.editable) {
+      console.log('Profile Social edit');
+      this.setState({ SocialMode: EDIT });
+    } else {
+      console.log('Edit not authorised');
+    }
+  }
+
+  SocialHandleSave() {
+    console.log('Profile Social save');
+    //not your profile
+    if (!this.props.editable) {
+      console.log('Save not authorized');
+      this.SocialHandleCancel();
+      return;
+    }
+    //if successful, change message in state
+    this.setState({ Social: this.state.SocialEdit });
+    this.setState({ SocialMode: VIEW });
+  }
+
+  SocialHandleCancel() {
+    console.log('Profile Social cancel');
+
+    //reset editMessage
+    this.setState({ SocialEdit: this.state.Social });
+    this.setState({ SocialMode: VIEW });
+  }
+
+  SocialHandleChange(e, id) {
+    var tempLinks = [...this.state.SocialEdit]; //clone array
+    tempLinks[id] = e.target.value;
+    this.setState({ SocialEdit: tempLinks });
+  }
+
   render() {
     return (
       <div className="ProfilePage">
@@ -230,6 +282,12 @@ componentDidMount() {
           currentUser={this.props.currentUser}
           wantedUser={this.props.wantedUser}
           editable={this.props.editable}
+          mode={this.state.SocialMode}
+          links={this.state.Social}
+          handleEdit={this.SocialHandleEdit}
+          handleSave={this.SocialHandleSave}
+          handleCancel={this.SocialHandleCancel}
+          handleChange={this.SocialHandleChange}
         />
       </div>
     );
