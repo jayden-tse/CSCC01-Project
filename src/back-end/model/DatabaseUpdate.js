@@ -59,21 +59,21 @@ class DatabaseUpdate {
         return result;
     }
 
-    async helperVote(likes, dislikes, postId) {
+    async helperVote(agree, disagree, postId) {
         // helps updateVote by updating the likes/dislikes.
         let post = { '_id': ObjectId(postId) };
         let postDoc = await mongoConnect.getDBCollection(POSTS).findOne(post)
         let postUpdate = {};
-        if (likes !== 0) {
+        if (agree !== 0) {
             postUpdate = {
                 $set: {
-                    likes: postDoc.likes + likes
+                    agree: postDoc.agree + agree
                 }
             };
-        } else if (dislikes !== 0) {
+        } else if (disagree !== 0) {
             postUpdate = {
                 $set: {
-                    dislikes: postDoc.dislikes + dislikes
+                    disagree: postDoc.disagree + disagree
                 }
             }
         }
@@ -141,12 +141,13 @@ class DatabaseUpdate {
         return null;
     }
 
-    async createComment(post, user, date, text, agrees, disagrees) {
-        let comment = new Comment(user, date, text, agrees, disagrees); // should be in JSON format
+    // under dbUpdate instead of dbCreate because we update the post with a comment. Might change later if needed.
+    async createComment(postId, user, date, text, usersagreed, usersdisagreed, agree, disagree) {
+        let comment = new Comment(new ObjectId(), user, date, text, usersagreed, usersdisagreed, agree, disagree); // should be in JSON format
         // post should be a unique ID
-        let newPost = { "_id": ObjectId(post) };
+        let post = { "_id": ObjectId(postId) };
         let result = await mongoConnect.getDBCollection(POSTS).updateOne(
-            newPost, {
+            post, {
                 $push: {
                     comments: comment
                 }
@@ -154,5 +155,6 @@ class DatabaseUpdate {
         );
         return result;
     }
+
 }
 module.exports = DatabaseUpdate;

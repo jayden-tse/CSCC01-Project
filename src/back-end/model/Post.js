@@ -1,5 +1,5 @@
 class Post {
-    constructor(username, date, content, agree, disagree, comments, usersagreed, usersdisagreed, likes, dislikes) {
+    constructor(username, date, content, agree, disagree, comments, usersagreed, usersdisagreed) {
         this.username = username;
         this.date = date;
         this.content = content;
@@ -8,8 +8,6 @@ class Post {
         this.comments = comments;
         this.usersagreed = usersagreed
         this.usersdisagreed = usersdisagreed;
-        this.likes = likes;
-        this.dislikes = dislikes;
     }
 }
 
