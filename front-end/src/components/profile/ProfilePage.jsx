@@ -26,6 +26,9 @@ class ProfilePage extends Component {
         Picture: '',
         PictureEdit: '',
         PictureMode: VIEW,
+        Status: '',
+        StatusEdit: '',
+        StatusMode: VIEW,
         ACS: 0,
         ACSChange: 0,
         ACSError:false,
@@ -41,6 +44,11 @@ class ProfilePage extends Component {
     this.PictureHandleSave = this.PictureHandleSave.bind(this);
     this.PictureHandleCancel = this.PictureHandleCancel.bind(this);
     this.PictureHandleChange = this.PictureHandleChange.bind(this);
+    
+    this.StatusHandleEdit = this.StatusHandleEdit.bind(this);
+    this.StatusHandleSave = this.StatusHandleSave.bind(this);
+    this.StatusHandleCancel = this.StatusHandleCancel.bind(this);
+    this.StatusHandleChange = this.StatusHandleChange.bind(this);
 }
 
 componentDidMount() {
@@ -111,7 +119,7 @@ componentDidMount() {
     //not your profile
     if (!this.props.editable) {
       console.log('Save not authorized');
-      this.handleCancel();
+      this.PictureHandleCancel();
       return;
     }
 
@@ -136,6 +144,38 @@ componentDidMount() {
     this.setState({ PictureEdit: e.target.value });
   }
 
+  StatusHandleEdit() {
+    if (this.props.editable) {
+      console.log('Profile Status edit');
+      this.setState({ StatusMode: EDIT });
+    } else {
+      console.log('Edit not authorised');
+    }
+  }
+
+  StatusHandleSave() {
+    console.log('Profile Status save');
+    //not your profile
+    if (!this.props.editable) {
+      console.log('Save not authorized');
+      this.StatusHandleCancel();
+      return;
+    }
+    this.setState({ Status: this.state.StatusEdit });
+    this.setState({ StatusMode: VIEW });
+  }
+
+  StatusHandleCancel() {
+    console.log('Profile Status cancel');
+
+    //reset editMessage
+    this.setState({ StatusEdit: this.state.Status });
+    this.setState({ StatusMode: VIEW });
+  }
+
+  StatusHandleChange(e) {
+    this.setState({ StatusEdit: e.target.value });
+  }
 
   render() {
     return (
@@ -166,6 +206,12 @@ componentDidMount() {
           currentUser={this.props.currentUser}
           wantedUser={this.props.wantedUser}
           editable={this.props.editable}
+          mode={this.state.StatusMode}
+          message={this.state.Status}
+          handleEdit={this.StatusHandleEdit}
+          handleSave={this.StatusHandleSave}
+          handleCancel={this.StatusHandleCancel}
+          handleChange={this.StatusHandleChange}
         />
         <ProfileACS
           currentUser={this.props.currentUser}
