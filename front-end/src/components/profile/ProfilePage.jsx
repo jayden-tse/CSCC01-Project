@@ -5,7 +5,7 @@ import ProfilePicture from './ProfilePicture';
 import ProfileStatus from './ProfileStatus';
 import ProfileRadar from './ProfileRadar';
 import ProfileSocial from './ProfileSocial';
-import { getUserACS } from '../../api/ProfileCalls.js';
+import { getUserACS, getUserPicture, setUserPicture } from '../../api/ProfileCalls.js';
 import './ProfilePage.css';
 
 /*note: currentUser is the user logged in currently
@@ -23,15 +23,24 @@ class ProfilePage extends Component {
         About: '',
         AboutEdit: '',
         AboutMode: VIEW,
+        Picture: '',
+        PictureEdit: '',
+        PictureMode: VIEW,
         ACS: 0,
         ACSChange: 0,
         ACSError:false,
     };
 
+    //a lot of bloat rn, refactor later
     this.AboutHandleEdit = this.AboutHandleEdit.bind(this);
     this.AboutHandleSave = this.AboutHandleSave.bind(this);
     this.AboutHandleCancel = this.AboutHandleCancel.bind(this);
     this.AboutHandleChange = this.AboutHandleChange.bind(this);
+
+    this.PictureHandleEdit = this.PictureHandleEdit.bind(this);
+    this.PictureHandleSave = this.PictureHandleSave.bind(this);
+    this.PictureHandleCancel = this.PictureHandleCancel.bind(this);
+    this.PictureHandleChange = this.PictureHandleChange.bind(this);
 }
 
 componentDidMount() {
@@ -45,6 +54,12 @@ componentDidMount() {
           console.log('Error with profile response');
           this.setState({ ACSError: true });
         });
+    //get user picture from storage before render
+    const image = getUserPicture(this.props.wantedUser);
+    this.setState({
+      Picture: image,
+      PictureEdit: image,
+    });
 }
 
   AboutHandleEdit() {
@@ -82,6 +97,46 @@ componentDidMount() {
     this.setState({ AboutEdit: e.target.value });
   }
 
+  PictureHandleEdit() {
+    if (this.props.editable) {
+      console.log('Profile Picture edit');
+      this.setState({ PictureMode: EDIT });
+    } else {
+      console.log('Edit not authorised');
+    }
+  }
+
+  PictureHandleSave() {
+    console.log('Profile Picture save');
+    //not your profile
+    if (!this.props.editable) {
+      console.log('Save not authorized');
+      this.handleCancel();
+      return;
+    }
+
+    //change picture in database
+    setUserPicture(this.props.currentUser, this.state.PictureEdit);
+    //if successful, change message in state
+    this.setState({ Picture: this.state.PictureEdit });
+
+    this.setState({ PictureMode: VIEW });
+  }
+
+  PictureHandleCancel() {
+    console.log('Profile Picture cancel');
+
+    //reset editMessage
+    this.setState({ PictureEdit: this.state.Picture });
+
+    this.setState({ PictureMode: VIEW });
+  }
+
+  PictureHandleChange(e) {
+    this.setState({ PictureEdit: e.target.value });
+  }
+
+
   render() {
     return (
       <div className="ProfilePage">
@@ -89,6 +144,12 @@ componentDidMount() {
           currentUser={this.props.currentUser}
           wantedUser={this.props.wantedUser}
           editable={this.props.editable}
+          mode={this.state.PictureMode}
+          picture={this.state.Picture}
+          handleEdit={this.PictureHandleEdit}
+          handleSave={this.PictureHandleSave}
+          handleCancel={this.PictureHandleCancel}
+          handleChange={this.PictureHandleChange}
         />
         <ProfileAbout
           currentUser={this.props.currentUser}
