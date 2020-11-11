@@ -136,24 +136,25 @@ class DatabaseUpdate {
     }
 
     async updateComment(postId, commentId, type, content) {
-        let comment = dbRead.getComment(postId, commentId);
-        comment[type] = content;
-        return mongoConnect.getDBCollection(POSTS).updateOne({
-            '_id': ObjectId(postId)
-        }, {
-            $set: {
-                comment: comment
-            }
-        })
+        let query = {
+            _id: ObjectId(postId),
+            "comments._id": ObjectId(commentId)
+        }
+        let updateString = "comments.$." + type;
+        let updateData = {
+            [updateString]: content
+        }
+        let result = await mongoConnect.getDBCollection(POSTS).updateOne(query, { $set: updateData });
+        return result;
     }
 
     async helperVoteComment(agree, disagree, comment, postId) {
         if (agree !== 0) {
             comment.agree = comment.agree + agree;
-            this.updateComment(postId, comment._id, "agree", comment)
+            return this.updateComment(postId, comment._id, "agree", comment.agree)
         } else if (disagree !== 0) {
             comment.disagree = comment.disagree + disagree;
-            this.updateComment(postId, comment._id, "disagree", comment);
+            return this.updateComment(postId, comment._id, "disagree", comment.disagree);
         }
     }
 
@@ -163,13 +164,12 @@ class DatabaseUpdate {
         let result = await mongoConnect.getDBCollection(POSTS).findOne(post);
         if (result) {
             // nonempty post
-            let allComments = dbRead.getAllComments(postId);
-            let comment = dbRead.getComment(postId, commentId);
-            if (allComments !== [] && comment) {
+            let comment = await dbRead.getComment(postId, commentId);
+            if (comment) {
                 // nonempty list of comments was found and comment was found
                 // start modifying comment likes/dislikes etc
-                let agreed = comment.useragreed;
-                let disagreed = comment.userdisagreed;
+                let agreed = comment.usersagreed;
+                let disagreed = comment.usersdisagreed;
                 let userAgreed = agreed.indexOf(username) !== -1;
                 let userDisagreed = disagreed.indexOf(username) !== -1;
                 if (vote > 0) { // agree
@@ -177,25 +177,29 @@ class DatabaseUpdate {
                         // remove from disagreed
                         disagreed.splice(disagreed.findIndex(e => e === username), 1);
                         this.helperVoteComment(0, -1, comment, postId);
+                        comment.usersdisagreed = disagreed;
                         this.updateComment(postId, commentId, "usersdisagreed", disagreed);
                     }
 
                     if (userAgreed) {
+                        console.log("agreed");
                         // already liked, remove the like
                         agreed.splice(agreed.findIndex(e => e === username), 1);
+                        comment.usersagreed = agreed;
                         this.helperVoteComment(-1, 0, comment, postId);
                     } else {
                         // hasn't liked yet, add the like
                         agreed.push(username);
+                        comment.usersagreed = agreed;
                         this.helperVoteComment(1, 0, comment, postId);
                     }
-
                     return this.updateComment(postId, commentId, "usersagreed", agreed); // either way update usersagreed on the post
                 } else if (vote < 0) { // disagree
                     if (userAgreed) {
                         // remove from agreed
                         agreed.splice(agreed.findIndex(e => e === username), 1);
                         this.helperVoteComment(-1, 0, comment, postId);
+                        comment.usersagreed = agreed;
                         this.updateComment(postId, commentId, "usersagreed", agreed);
                     }
 

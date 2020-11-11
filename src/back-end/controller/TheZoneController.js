@@ -47,6 +47,17 @@ exports.the_zone_all_posts_get = async function(req, res) {
     }
 };
 
+exports.the_zone_post_comments_get = async function(req, res) {
+    if (req.user) {
+        try {
+            res.status(200).json(await dbRead.getAllComments(req.query.postid));
+        } catch (e) {
+            console.log(e)
+            res.status(500).send(WRITE_FAILED)
+        }
+    }
+}
+
 exports.the_zone_update_post_put = async function(req, res) {
     if (req.user) {
         try {
@@ -85,8 +96,12 @@ exports.the_zone_update_vote_put = async function(req, res) {
 exports.the_zone_comment_put = async function(req, res) {
     if (req.user) {
         try {
-            await dbCreate.createComment(req.body.post, req.session.passport.user, new Date(), req.body.text, 0, 0, [], []);
-            res.sendStatus(200); // OK
+            let result = await dbCreate.createComment(req.body.post, req.session.passport.user, new Date(), req.body.text, 0, 0, [], []);
+            if (result.matchedCount > 0) {
+                res.sendStatus(200); // OK
+            } else {
+                res.status(404).send(NOT_FOUND);
+            }
         } catch (e) {
             console.log(e);
             res.status(500).send(WRITE_FAILED);
@@ -100,7 +115,8 @@ exports.the_zone_update_comment_vote_put = async function(req, res) {
     if (req.user) {
         try {
             // update agree for comments here
-            let result = await dbUpdate.updateVote(req.session.passport.user, req.body.vote, req.body.postId, req.body.commentId);
+            let result = await dbUpdate.voteComment(req.session.passport.user, req.body.vote, req.body.postId, req.body.commentId);
+            console.log(result !== null)
             if (result && result.modifiedCount > 0) {
                 res.sendStatus(200);
             } else {
