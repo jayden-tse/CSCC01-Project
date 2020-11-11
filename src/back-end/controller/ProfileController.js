@@ -66,6 +66,20 @@ exports.profile_get_picture = async function (req, res) {
 
 }
 
+exports.profile_links_get = async function (req, res) {
+    if (req.user) {
+        // user is authenticated
+        try {
+            await dbRead.getLinks(req.session.passport);
+            res.sendStatus(200); // OK
+        } catch {
+            res.status(500).send(WRITE_FAILED); // Internal server error
+        }
+    } else {
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
+    }
+}
+
 exports.profile_update_about_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
