@@ -204,6 +204,7 @@ class App extends React.Component {
             <ProfilePage
               currentUser={this.state.currentUser}
               wantedUser={this.state.profileView}
+              editable={this.state.currentUser === this.state.profileView}
               handleViewProfile={this.handleViewProfile}
             />
           </div>
