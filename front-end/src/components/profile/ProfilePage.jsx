@@ -18,8 +18,8 @@ const VIEW = 'View',
   var SAMPLE = [
     { username: 'demouser', ACS: 100 },
     { username: 'demouser25', ACS: 200 },
-    { username: 'user3', ACS: 300 },
-    { username: 'user4', ACS: 400 },
+    { username: '123asdqw132feq', ACS: 300 },
+    { username: 'Choose', ACS: 400 },
     { username: 'user5', ACS: 500 },
   ];
 
@@ -82,6 +82,9 @@ class ProfilePage extends Component {
 updateShownUser(){
     //expect to get json object with ACS, acs change later
     getProfile(this.props.wantedUser).then((profile)=>{
+        if(profile.error === true){
+            throw "error getting profile";
+        }
         this.setState({
             ACS: profile.ACS,
             ACSChange: 0,

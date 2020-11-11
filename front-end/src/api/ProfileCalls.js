@@ -27,7 +27,7 @@ export function getProfile(username) {
       } else {
       //on failure, (debug)
           console.log(status.reason);
-          return {};
+          return {error:true};
       }
       }).catch((error) => {
         console.log('Error connecting to backend service: ' + error);

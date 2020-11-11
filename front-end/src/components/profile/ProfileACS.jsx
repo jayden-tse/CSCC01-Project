@@ -24,7 +24,7 @@ class ProfileACS extends Component {
   render() {
     return (
       <div className="ProfileACS">
-        {this.props.error ? this.renderError():this.renderNormal()}
+        {this.props.ACSError ? this.renderError():this.renderNormal()}
       </div>
     );
   }
