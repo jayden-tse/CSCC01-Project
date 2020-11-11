@@ -65,8 +65,8 @@ export function getUserACS(username) {
     const status = statusCatcher(res.status);
     if (status.success){
      //expect a json body with wanted information
-     return res.json();
-    // return{ACS:111,ACSChange:0} //debug: expected within profile
+    //  return res.json();
+    return{ACS:111,ACSChange:0} //debug: expected within profile
     } else {
     //on failure, (debug)
         console.log(status.reason);

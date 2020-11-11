@@ -5,6 +5,7 @@ import ProfilePicture from './ProfilePicture';
 import ProfileStatus from './ProfileStatus';
 import ProfileRadar from './ProfileRadar';
 import ProfileSocial from './ProfileSocial';
+import { getUserACS } from '../../api/ProfileCalls.js';
 import './ProfilePage.css';
 
 /*note: currentUser is the user logged in currently
@@ -22,12 +23,28 @@ class ProfilePage extends Component {
         About: '',
         AboutEdit: '',
         AboutMode: VIEW,
+        ACS: 0,
+        ACSChange: 0,
+        ACSError:false,
     };
 
     this.AboutHandleEdit = this.AboutHandleEdit.bind(this);
     this.AboutHandleSave = this.AboutHandleSave.bind(this);
     this.AboutHandleCancel = this.AboutHandleCancel.bind(this);
     this.AboutHandleChange = this.AboutHandleChange.bind(this);
+}
+
+componentDidMount() {
+    //expect to get json object with ACS, acs change later
+  getUserACS(this.props.wantedUser).then((profile)=>{
+      this.setState({ ACS: profile.ACS });
+      //this.setState({ ACSChange: profile.ACSChange });
+  }).catch((error) => {
+      //will throw if somethings missing
+          console.log(error);
+          console.log('Error with profile response');
+          this.setState({ ACSError: true });
+        });
 }
 
   AboutHandleEdit() {
@@ -92,6 +109,9 @@ class ProfilePage extends Component {
         <ProfileACS
           currentUser={this.props.currentUser}
           wantedUser={this.props.wantedUser}
+          ACS={this.state.ACS}
+          ACSChange={this.state.ACSChange}
+          ACSError={this.state.ACSError}
         />
         <ProfileRadar
           currentUser={this.props.currentUser}

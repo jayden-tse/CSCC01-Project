@@ -1,24 +1,10 @@
 import React, { Component } from 'react';
-import { getUserACS } from '../../api/ProfileCalls.js';
 import './ProfileACS.css';
 
 class ProfileACS extends Component {
   constructor(props) {
     super(props);
-    this.state = {error:false, ACS: 0, ACSChange: 0 };
   }
-
-  componentDidMount() {
-      //expect to get json object with ACS, acs change later
-    getUserACS(this.props.wantedUser).then((profile)=>{
-        this.setState({ ACS: profile.ACS });
-        //this.setState({ ACSChange: profile.ACSChange });
-    }).catch((error) => {
-            console.log(error);
-            console.log('Error with profile response');
-            this.setState({ error: true });
-          });
-}
 
     renderError(){
         return <ProfileACSLabel message={'Error getting ACS'} />;
@@ -26,11 +12,11 @@ class ProfileACS extends Component {
 
     renderNormal(){
         return(<React.Fragment>
-            <ProfileACSLabel message={'Your ACS is ' + this.state.ACS} />
+            <ProfileACSLabel message={'Your ACS is ' + this.props.ACS} />
             <br />
-            <ProfileACSLabel message={'Tier: ' + ACSTier(this.state.ACS)} />
+            <ProfileACSLabel message={'Tier: ' + ACSTier(this.props.ACS)} />
             {/* <br />//remove for now
-            <ProfileACSLabel message={this.state.ACSChange + ' ACS score today'} />
+            <ProfileACSLabel message={this.props.ACSChange + ' ACS score today'} />
             */}
             </React.Fragment>);
     }
@@ -38,7 +24,7 @@ class ProfileACS extends Component {
   render() {
     return (
       <div className="ProfileACS">
-        {this.state.error ? this.renderError():this.renderNormal()}
+        {this.props.error ? this.renderError():this.renderNormal()}
       </div>
     );
   }

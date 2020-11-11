@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { getUserAbout, setUserAbout } from '../../api/ProfileCalls.js';
 import './ProfileAbout.css';
 
 const VIEW = 'View',
