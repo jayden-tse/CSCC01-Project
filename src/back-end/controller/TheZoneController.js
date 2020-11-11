@@ -10,7 +10,7 @@ exports.the_zone_post_put = async function(req, res) {
         // user authenticated
         // user, date, content, agree, disagree, comments
         try {
-            await dbCreate.createPost(req.session.passport.user, new Date(), req.body.content, 0, 0, [], [], [], 0, 0);
+            await dbCreate.createPost(req.session.passport.user, new Date(), req.body.content, 0, 0, [], [], []);
             res.sendStatus(200);
         } catch (e) {
             console.log(e);

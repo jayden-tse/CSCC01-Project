@@ -213,5 +213,6 @@ class DatabaseUpdate {
             }
         }
     }
+
 }
 module.exports = DatabaseUpdate;
