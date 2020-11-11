@@ -68,6 +68,12 @@ router.put('/logout', loginController.deauth);
 
 /* PROFILE */
 
+// Add match to profile picks
+router.put('/profile/add/picks', profileController.profile_add_picks_put);
+
+// Add user to profile tracker
+router.put('/profile/add/tracker', profileController.profile_add_user_tracker_put);
+
 // Get profile
 router.get('/profile', profileController.profile_get);
 
@@ -78,7 +84,7 @@ router.get('/profile/picks', profileController.profile_picks_get);
 router.get('/profile/tracker', profileController.profile_tracker_get);
 
 // Get profile picture
-router.get('/profile/picture', profileController.profile_get_picture);
+router.get('/profile/picture', profileController.profile_picture_get);
 
 // Update profile picture
 router.put(
@@ -94,9 +100,6 @@ router.put(
   '/profile/update/status',
   profileController.profile_update_status_put
 );
-
-// Update profile picks
-router.put('/profile/update/picks', profileController.profile_update_picks_put);
 
 // Update profile tracker
 router.put(

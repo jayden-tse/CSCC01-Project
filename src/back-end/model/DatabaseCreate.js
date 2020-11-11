@@ -8,7 +8,7 @@ const Profile = require('./Profile.js');
 const Post = require('./Post.js');
 
 const DatabaseRead = require('./DatabaseRead.js');
-const { USERS, POSTS} = require('./DatabaseHelper');
+const { USERS, POSTS } = require('./DatabaseHelper');
 const dbRead = new DatabaseRead();
 
 // Business email from which users will get the confirmation.
@@ -58,6 +58,30 @@ class DatabaseCreate {
         let salt = bcrypt.genSaltSync(saltRounds);
         let hashedPassword = bcrypt.hashSync(password, salt);
         return hashedPassword;
+    }
+
+    // Profile
+    async addMatchToHistory(req, match) {
+        let username = { 'username': req.user }
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
+            $addToSet: {
+                "profile.picks": match
+            }
+        });
+        let user = await mongoConnect.getDBCollection(USERS).findOne(username);
+        return user.profile.picks;
+    }
+
+    async addUserToTracker(req, addUsername) {
+        let username = { 'username': req.user }
+        let addUsernameResult = await mongoConnect.getDBCollection(USERS).findOne({ 'username': addUsername });
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
+            $addToSet: {
+                "profile.tracker": { "username": addUsername, "ACS": addUsernameResult.profile.ACS }
+            }
+        });
+        let user = await mongoConnect.getDBCollection(USERS).findOne(username);
+        return user.profile.tracker;
     }
 
     // the Zone

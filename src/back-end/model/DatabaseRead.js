@@ -36,25 +36,21 @@ class DatabaseRead {
 
     async getProfile(username) {
         let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
-        console.log(result.profile);
         return result.profile;
     }
 
     async getPickHistory(username) {
         let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
-        console.log(result.profile.picks);
         return result.profile.picks;
     }
 
     async getTracker(username) {
         let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
-        console.log(result.profile.tracker);
         return result.profile.tracker;
     }
 
     async getProfilePicture(username) {
         let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username });
-        console.log(result.profile.picture);
         return result.profile.picture; // should be a URL
     }
 
@@ -90,7 +86,7 @@ class DatabaseRead {
 
     passwordChecker(password, hashedPassword) {
         let state = bcrypt.compareSync(password, hashedPassword);
-        return state
+        return state;
     }
 }
 

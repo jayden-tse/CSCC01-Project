@@ -4,14 +4,14 @@ const { USERS } = require('./DatabaseHelper');
 
 class DatabaseDelete {
 
-    async removeUserFromTracker(req, username) {
-        let user = { 'username': req.user }
-        let result = await mongoConnect.getDBCollection(USERS).updateOne(user, {
+    async removeUserFromTracker(req, removeUsername) {
+        let username = { 'username': req.user }
+        let result = await mongoConnect.getDBCollection(USERS).updateOne(username, {
             $pull: {
-                "profile.tracker": username
+                "profile.tracker": { "username": removeUsername }
             }
         });
-        return result;
+        return result.modifiedCount;
     }
 }
 
