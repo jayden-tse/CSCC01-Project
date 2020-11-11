@@ -85,7 +85,7 @@ exports.the_zone_update_vote_put = async function(req, res) {
 exports.the_zone_comment_put = async function(req, res) {
     if (req.user) {
         try {
-            await dbUpdate.createComment(req.body.post, req.session.passport.user, new Date(), req.body.text, 0, 0);
+            await dbCreate.createComment(req.body.post, req.session.passport.user, new Date(), req.body.text, 0, 0, [], []);
             res.sendStatus(200); // OK
         } catch (e) {
             console.log(e);
@@ -95,6 +95,25 @@ exports.the_zone_comment_put = async function(req, res) {
         res.status(401).send(NOT_AUTHENTICATED)
     }
 }
+
+exports.the_zone_update_comment_vote_put = async function(req, res) {
+    if (req.user) {
+        try {
+            // update agree for comments here
+            let result = await dbUpdate.updateVote(req.session.passport.user, req.body.vote, req.body.postId, req.body.commentId);
+            if (result && result.modifiedCount > 0) {
+                res.sendStatus(200);
+            } else {
+                res.status(400).send(BAD_INPUT);
+            }
+        } catch (e) {
+            console.log(e);
+            res.status(500).send(WRITE_FAILED);
+        }
+    } else {
+        res.status(401).send(NOT_AUTHENTICATED);
+    }
+};
 
 exports.the_zone_post_del = function(req, res) {
     res.send('NOT IMPLEMENTED');

@@ -80,6 +80,19 @@ class DatabaseRead {
         return posts;
     }
 
+    async getAllComments(postId) {
+        return await dbRead.getPost(postId)[0].comments;
+    }
+
+    async getComment(postId, commentId) {
+        let commentIdObject = { '_id': ObjectId(commentId) }
+        let allComments = this.getAllComments(postId);
+        for (let i = 0; i < allComments.length; i++) {
+            if (allComments[i]._id === commentIdObject) return allComments[i];
+        }
+        return null;
+    }
+
     async findUsername(username) {
         return await mongoConnect.getDBCollection(USERS).findOne({ "username": username });
     }
