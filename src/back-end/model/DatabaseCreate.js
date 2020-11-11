@@ -45,7 +45,7 @@ class DatabaseCreate {
             text: 'Your SportCred account has been created successfully.'
         };
 
-        transporter.sendMail(mailOptions, function (error, info) {
+        transporter.sendMail(mailOptions, function(error, info) {
             if (error) {
                 console.log(error);
             } else {
@@ -85,8 +85,8 @@ class DatabaseCreate {
     }
 
     // the Zone
-    async createPost(user, date, content, agrees, disagrees, comments) {
-        let post = new Post(user, date, content, agrees, disagrees, comments);
+    async createPost(user, date, content, agrees, disagrees, comments, agreeusers, disagreeusers, likes, dislikes) {
+        let post = new Post(user, date, content, agrees, disagrees, comments, agreeusers, disagreeusers, likes, dislikes);
         let result = await mongoConnect.getDBCollection(POSTS).insertOne(post);
     }
 

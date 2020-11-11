@@ -202,11 +202,8 @@ router.get('/thezone/post/all', thezoneController.the_zone_all_posts_get);
 // Update the zone post
 router.put('/thezone/update/post', thezoneController.the_zone_update_post_put);
 
-// Update the zone post agree
-router.put(
-  '/thezone/update/agree',
-  thezoneController.the_zone_update_agree_put
-);
+// Update the zone post votes
+router.put('/thezone/update/vote', thezoneController.the_zone_update_vote_put);
 
 // Update the zone post's comment
 router.put(
