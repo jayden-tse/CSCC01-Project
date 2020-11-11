@@ -12,7 +12,6 @@ exports.auth = function(req, res, next) {
                 if (err) {
                     return next(err);
                 }
-                // res.sendStatus(200);
                 res.set({
                     'Access-Control-Allow-Credentials': true,
                     'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -25,8 +24,9 @@ exports.auth = function(req, res, next) {
 
 exports.deauth = function(req, res, next) {
     if (req.user) {
-        res.clearCookie('cookie');
-        req.logout();
+        req.logout(); // should work but it doesn't?
+        req.session.destroy(); // same as above
+        res.clearCookie('connect.sid'); // actually destroys the cookie
         res.sendStatus(200);
     } else {
         res.sendStatus(400);
