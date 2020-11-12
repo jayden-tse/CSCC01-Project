@@ -247,8 +247,6 @@ componentDidUpdate(prevProps) {
     return (
       <div className="ProfilePage">
         <ProfilePicture
-          currentUser={this.props.currentUser}
-          wantedUser={this.props.wantedUser}
           editable={this.props.editable}
           mode={this.state.PictureMode}
           picture={this.state.Picture}
@@ -258,7 +256,6 @@ componentDidUpdate(prevProps) {
           handleChange={(e) => this.GenericHandleChange(e, PICTURE)}
         />
         <ProfileAbout
-          currentUser={this.props.currentUser}
           wantedUser={this.props.wantedUser}
           editable={this.props.editable}
           mode={this.state.AboutMode}
@@ -269,8 +266,6 @@ componentDidUpdate(prevProps) {
           handleChange={(e) => this.GenericHandleChange(e, ABOUT)}
         />
         <ProfileStatus
-          currentUser={this.props.currentUser}
-          wantedUser={this.props.wantedUser}
           editable={this.props.editable}
           mode={this.state.StatusMode}
           message={this.state.Status}
@@ -280,14 +275,11 @@ componentDidUpdate(prevProps) {
           handleChange={(e) => this.GenericHandleChange(e, STATUS)}
         />
         <ProfileACS
-          currentUser={this.props.currentUser}
-          wantedUser={this.props.wantedUser}
           ACS={this.state.ACS}
           ACSChange={this.state.ACSChange}
           ACSError={this.state.ACSError}
         />
         <ProfileRadar
-          currentUser={this.props.currentUser}
           wantedUser={this.props.wantedUser}
           editable={this.props.editable}
           handleViewProfile={this.props.handleViewProfile}
@@ -296,8 +288,6 @@ componentDidUpdate(prevProps) {
           WantedFollowList={this.state.WantedFollowList}
         />
         <ProfileSocial
-          currentUser={this.props.currentUser}
-          wantedUser={this.props.wantedUser}
           editable={this.props.editable}
           mode={this.state.SocialMode}
           links={this.state.Social}
