@@ -179,13 +179,20 @@ componentDidUpdate(prevProps) {
       this.GenericHandleCancel(PICTURE);
       return;
     }
-
-    //change picture in database
-    
-    //if successful, change message in state
-    this.setState({ Picture: this.state.PictureEdit });
-
-    this.setState({ PictureMode: VIEW });
+    //change message in database
+    updateUserPicture(this.state.PictureEdit).then(async (res) => {
+        if(res.success){
+            //if successful, change message in state based on databaswe
+            this.setState({ Picture: res.text,
+                            PictureEdit: res.text,
+                            PictureMode: VIEW });
+        } else {
+            throw new Error("Unsuccessful update to Picture");
+        }
+    }).catch((error) => {
+        //unsuccessful, therefore reset
+        this.GenericHandleCancel(PICTURE);
+    });
   }
 
   StatusHandleSave() {
@@ -196,8 +203,20 @@ componentDidUpdate(prevProps) {
       this.GenericHandleCancel(STATUS);
       return;
     }
-    this.setState({ Status: this.state.StatusEdit });
-    this.setState({ StatusMode: VIEW });
+    //change message in database
+    updateUserStatus(this.state.StatusEdit).then(async (res) => {
+        if(res.success){
+            //if successful, change message in state based on databaswe
+            this.setState({ Status: res.text,
+                            StatusEdit: res.text,
+                            StatusMode: VIEW });
+        } else {
+            throw new Error("Unsuccessful update to Status");
+        }
+    }).catch((error) => {
+        //unsuccessful, therefore reset
+        this.GenericHandleCancel(PICTURE);
+    });
   }
 
   SocialHandleSave() {

@@ -13,6 +13,8 @@ const
     UPDATETRACKER = '/profile/update/tracker',
     DELETETRACKER = '/profile/delete/tracker';
 
+const statusDef = { success: false, reason: '' };
+
 /*Profile Full*/
 export function getProfile(username) {
     let newUrl = new URL(BASE_URL + PROFILE);
@@ -39,28 +41,16 @@ export function getProfile(username) {
 export async function updateUserAbout(about) {
     let newUrl = new URL(BASE_URL + UPDATEABOUT);
     const params = { about: about };
-    return fetch(newUrl, fetchOptionsWithBody(PUT, params))
-      .then(async(res) => {
-      const status = statusCatcher(res.status);
-      if (status.success){
-       //expect text in body with backend message
-       status.text = await res.text();
-       return status;
-      } else {
-      //on failure, (debug)
-          console.log(status.reason);
-          return status;
-      }
-      }).catch((error) => {
-        console.log('Error connecting to backend service: ' + error);
-      });
+    return await fetchText(newUrl, fetchOptionsWithBody(PUT, params));
 }
 
 /*ACS*/
 
 /*Profile Picture*/
-export function updateUserPicture(username, src) {
-  return '';
+export async function updateUserPicture(src) {
+    let newUrl = new URL(BASE_URL + UPDATEPICTURE);
+    const params = { picture: src };
+    return await fetchText(newUrl, fetchOptionsWithBody(PUT, params));
 }
 
 /*Radar*/
@@ -75,25 +65,10 @@ export async function deleteProfileTracker(){
 /*Social*/
 
 /*Status*/
-export async function updateUserStatus(message) {
-    //user stored in backend
-    const newUrl = BASE_URL + UPDATESTATUS;
-        var params = { about: message };
-    var fetchOptions = {
-        method: 'PUT',
-        mode: 'cors',
-        headers: {
-        'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(params),
-    };
-    return fetch(newUrl, fetchOptions)
-        .then((res) => {
-            return res;
-        })
-        .catch((error) => {
-        console.log('Error connecting to backend service: ' + error);
-        });
+export async function updateUserStatus(status) {
+    let newUrl = new URL(BASE_URL + UPDATESTATUS);
+    const params = { status: status };
+    return await fetchText(newUrl, fetchOptionsWithBody(PUT, params));
 }
 
 function fetchOptionsGet(){
@@ -127,10 +102,7 @@ function fetchOptionsWithBody(method, body){
 
 function statusCatcher(resStatus){
     // Convert server response to appropriate status object
-    let status = {
-        success: false,
-        reason: ''
-    };
+    let status = {...statusDef};
     switch(resStatus) {
         // Call successful
         case 200:
@@ -155,4 +127,24 @@ function statusCatcher(resStatus){
             break;
     }
     return status;
+}
+
+async function fetchText(url, options){
+    //handle calls that return text rather than json
+    return await fetch(url, options)
+      .then(async(res) => {
+      const status = statusCatcher(res.status);
+      if (status.success){
+       //expect text in body with backend message
+       status.text = await res.text();
+       return status;
+      } else {
+      //on failure, (debug)
+          console.log(status.reason);
+          return status;
+      }
+      }).catch((error) => {
+        console.log('Error connecting to backend service: ' + error);
+        return {...statusDef};
+      });
 }
