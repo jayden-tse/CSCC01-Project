@@ -31,7 +31,7 @@ class DatabaseUpdate {
         return user.profile.tracker;
     }
 
-    async addSocialMediaLink(req, type, link) {
+    async updateSocialMediaLink(req, type, link) {
         let linkType = 'profile.links.' + type;
         let username = { 'username': req.user };
         await mongoConnect.getDBCollection(USERS).updateOne(username, {

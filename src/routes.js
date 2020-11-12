@@ -114,13 +114,13 @@ router.put(
 router.put('/profile/update/ACS', profileController.profile_update_ACS_put);
 
 // Update profile link for facebook
-router.put('profile/update/links/facebook', profileController.profile_update_links_facebook_put);
+router.put('/profile/update/links/facebook', profileController.profile_update_links_facebook_put);
 
 // Update profile link for twitter
-router.put('profile/update/links/twitter', profileController.profile_update_links_twitter_put);
+router.put('/profile/update/links/twitter', profileController.profile_update_links_twitter_put);
 
 // Update profile link for instagram
-router.put('profile/update/links/instagram', profileController.profile_update_links_instagram_put);
+router.put('/profile/update/links/instagram', profileController.profile_update_links_instagram_put);
 
 // Delete profile tracker
 router.delete('/profile/delete/tracker', profileController.profile_tracker_del);
