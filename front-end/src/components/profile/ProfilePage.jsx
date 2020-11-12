@@ -234,32 +234,38 @@ componentDidUpdate(prevProps) {
     }
     //if current user is following => delete. else not following => add
     if(this.state.CurrentIsFollowing){
-        //handle delete
-        console.log(`Profile delete ${this.props.wantedUser}`);
-        calls[UNFOLLOW](this.props.wantedUser).then((res) => {
+        this.RadarHandleFollowDelete(this.props.wantedUser);
+    } else {
+        this.RadarHandleFollowAdd(this.props.wantedUser);
+    }
+  }
+
+  RadarHandleFollowDelete(username){
+        console.log(`Profile delete ${username}`);
+        calls[UNFOLLOW](username).then((res) => {
             if(res.success || res.reason === NOTFOUND){
                 //if successful or not followed, just re-get tracker and recheck if followed
                 this.updateCurrentTracker();
             } else {
-                throw new Error(`Unsuccessful unfollow to ${this.props.wantedUser}`);
+                throw new Error(`Unsuccessful unfollow to ${username}`);
             }
         }).catch((error) => {
             //unsuccessful, therefore dont unfollow
         });
-    } else {
-        //handle add
-        console.log(`Profile add ${this.props.wantedUser}`);
-        calls[FOLLOW](this.props.wantedUser).then((res) => {
+  }
+
+  RadarHandleFollowAdd(username){
+        console.log(`Profile add ${username}`);
+        calls[FOLLOW](username).then((res) => {
             if(res.success){
                 //if successful or not followed, just re-get tracker and recheck if followed
                 this.updateCurrentTracker();
             } else {
-                throw new Error(`Unsuccessful follow to ${this.props.wantedUser}`);
+                throw new Error(`Unsuccessful follow to ${username}`);
             }
         }).catch((error) => {
             //unsuccessful, therefore dont unfollow
         });
-    }
   }
 
   render() {
