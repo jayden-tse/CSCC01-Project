@@ -78,7 +78,7 @@ class ProfilePage extends Component {
 updateShownUser(){
     //expect to get json object with ACS, acs change later
     getProfile(this.props.wantedUser).then((profile)=>{
-        if(profile.error === true){
+        if(!profile.success){//throw if not successful
             throw new Error("error getting profile");
         }
         this.setState({
@@ -156,7 +156,7 @@ componentDidUpdate(prevProps) {
       return;
     }
     //change message in database
-    updateUserAbout(this.state.AboutEdit).then(async (res) => {
+    updateUserAbout(this.state.AboutEdit).then((res) => {
         if(res.success){
             //if successful, change message in state based on databaswe
             this.setState({ About: res.text,
@@ -180,7 +180,7 @@ componentDidUpdate(prevProps) {
       return;
     }
     //change message in database
-    updateUserPicture(this.state.PictureEdit).then(async (res) => {
+    updateUserPicture(this.state.PictureEdit).then((res) => {
         if(res.success){
             //if successful, change message in state based on databaswe
             this.setState({ Picture: res.text,
@@ -204,7 +204,7 @@ componentDidUpdate(prevProps) {
       return;
     }
     //change message in database
-    updateUserStatus(this.state.StatusEdit).then(async (res) => {
+    updateUserStatus(this.state.StatusEdit).then((res) => {
         if(res.success){
             //if successful, change message in state based on databaswe
             this.setState({ Status: res.text,

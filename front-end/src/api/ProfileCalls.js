@@ -9,32 +9,18 @@ const
     UPDATEPICTURE = '/profile/update/picture',
     UPDATEABOUT = '/profile/update/about',
     UPDATESTATUS = '/profile/update/status',
-    UPDATEPICKS = '/profile/update/picks',
     UPDATETRACKER = '/profile/update/tracker',
     DELETETRACKER = '/profile/delete/tracker';
 
+//ensure status fields have no overlap with profile in db
 const statusDef = { success: false, reason: '' };
 
 /*Profile Full*/
-export function getProfile(username) {
+export async function getProfile(username) {
     let newUrl = new URL(BASE_URL + PROFILE);
     const params = { username: username };
     newUrl.search = new URLSearchParams(params).toString();
-    return fetch(newUrl, fetchOptionsGet())
-      .then((res) => {
-      const status = statusCatcher(res.status);
-      if (status.success){
-       //expect a json body with wanted information
-        return res.json();
-      //return{ACS:111,ACSChange:0} //debug: expected within profile
-      } else {
-      //on failure, (debug)
-          console.log(status.reason);
-          return {error:true};
-      }
-      }).catch((error) => {
-        console.log('Error connecting to backend service: ' + error);
-      });
+    return await fetchJson(newUrl, fetchOptionsGet());
   }
 
 /*ABOUT*/
@@ -127,6 +113,26 @@ function statusCatcher(resStatus){
             break;
     }
     return status;
+}
+
+async function fetchJson(url, options){
+    //handle calls that return json
+    return await fetch(url, options)
+    .then(async(res) => {
+    let status = statusCatcher(res.status);
+    if (status.success){
+    //expect a json body with wanted information, merge with status
+    Object.assign(status, await res.json());
+    return status;
+    } else {
+    //on failure, (debug)
+        console.log(status.reason);
+        return status;
+    }
+    }).catch((error) => {
+    console.log('Error connecting to backend service: ' + error);
+    return {...statusDef};
+    });
 }
 
 async function fetchText(url, options){
