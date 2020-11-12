@@ -19,6 +19,11 @@ const VIEW = 'View',
   PICTURE = 'Picture',
   SOCIAL = 'Social';
 
+  const calls = {[ABOUT]: updateUserAbout, 
+    [STATUS]: updateUserStatus,
+    [PICTURE]: updateUserPicture
+  };
+
   var SAMPLE = [
     { username: 'demouser', ACS: 100 },
     { username: 'demouser25', ACS: 200 },
@@ -63,14 +68,10 @@ class ProfilePage extends Component {
     this.GenericHandleEdit = this.GenericHandleEdit.bind(this);
     this.GenericHandleCancel = this.GenericHandleCancel.bind(this);
     this.GenericHandleChange = this.GenericHandleChange.bind(this);
+    this.GenericHandleSave = this.GenericHandleSave.bind(this);
 
-    //save functions (call handles might be different)
-    this.AboutHandleSave = this.AboutHandleSave.bind(this);
-    this.PictureHandleSave = this.PictureHandleSave.bind(this);
-    this.StatusHandleSave = this.StatusHandleSave.bind(this);
+    //non-generic functions (call handles might be different)
     this.SocialHandleSave = this.SocialHandleSave.bind(this);
-
-    //non-generic functions
     this.SocialHandleChange = this.SocialHandleChange.bind(this);
     this.RadarHandleFollow = this.RadarHandleFollow.bind(this);
 }
@@ -147,77 +148,29 @@ componentDidUpdate(prevProps) {
         this.setState({ [`${caller}${EDIT}`]: e.target.value });
     }
 
-  AboutHandleSave() {
-    console.log('Profile About save');
-    //not your profile
-    if (!this.props.editable) {
-      console.log('Save not authorized');
-      this.GenericHandleCancel(ABOUT);
-      return;
-    }
-    //change message in database
-    updateUserAbout(this.state.AboutEdit).then((res) => {
-        if(res.success){
-            //if successful, change message in state based on databaswe
-            this.setState({ About: res.text,
-                            AboutEdit: res.text,
-                             AboutMode: VIEW });
-        } else {
-            throw new Error("Unsuccessful update to About");
+    GenericHandleSave(caller){
+        console.log(`Profile ${caller} save`);
+        //not your profile
+        if (!this.props.editable) {
+          console.log(`${caller} not authorized`);
+          this.GenericHandleCancel(caller);
+          return;
         }
-    }).catch((error) => {
-        //unsuccessful, therefore reset
-        this.GenericHandleCancel(ABOUT);
-    });
-  }
-
-  PictureHandleSave() {
-    console.log('Profile Picture save');
-    //not your profile
-    if (!this.props.editable) {
-      console.log('Save not authorized');
-      this.GenericHandleCancel(PICTURE);
-      return;
+        //change field in database
+        calls[caller](this.state[`${caller}${EDIT}`]).then((res) => {
+            if(res.success){
+                //if successful, change field in state based on databaswe
+                this.setState({ [`${caller}`]: res.text,
+                                [`${caller}${EDIT}`]: res.text,
+                                [`${caller}${MODE}`]: VIEW });
+            } else {
+                throw new Error(`Unsuccessful update to ${caller}`);
+            }
+        }).catch((error) => {
+            //unsuccessful, therefore reset
+            this.GenericHandleCancel(caller);
+        });
     }
-    //change message in database
-    updateUserPicture(this.state.PictureEdit).then((res) => {
-        if(res.success){
-            //if successful, change message in state based on databaswe
-            this.setState({ Picture: res.text,
-                            PictureEdit: res.text,
-                            PictureMode: VIEW });
-        } else {
-            throw new Error("Unsuccessful update to Picture");
-        }
-    }).catch((error) => {
-        //unsuccessful, therefore reset
-        this.GenericHandleCancel(PICTURE);
-    });
-  }
-
-  StatusHandleSave() {
-    console.log('Profile Status save');
-    //not your profile
-    if (!this.props.editable) {
-      console.log('Save not authorized');
-      this.GenericHandleCancel(STATUS);
-      return;
-    }
-    //change message in database
-    updateUserStatus(this.state.StatusEdit).then((res) => {
-        if(res.success){
-            //if successful, change message in state based on databaswe
-            this.setState({ Status: res.text,
-                            StatusEdit: res.text,
-                            StatusMode: VIEW });
-        } else {
-            throw new Error("Unsuccessful update to Status");
-        }
-    }).catch((error) => {
-        //unsuccessful, therefore reset
-        this.GenericHandleCancel(PICTURE);
-    });
-  }
 
   SocialHandleSave() {
     console.log('Profile Social save');
@@ -251,7 +204,7 @@ componentDidUpdate(prevProps) {
           mode={this.state.PictureMode}
           picture={this.state.Picture}
           handleEdit={() => this.GenericHandleEdit(PICTURE)}
-          handleSave={this.PictureHandleSave}
+          handleSave={() => this.GenericHandleSave(PICTURE)}
           handleCancel={() => this.GenericHandleCancel(PICTURE)}
           handleChange={(e) => this.GenericHandleChange(e, PICTURE)}
         />
@@ -261,7 +214,7 @@ componentDidUpdate(prevProps) {
           mode={this.state.AboutMode}
           message={this.state.About}
           handleEdit={() => this.GenericHandleEdit(ABOUT)}
-          handleSave={this.AboutHandleSave}
+          handleSave={() => this.GenericHandleSave(ABOUT)}
           handleCancel={() => this.GenericHandleCancel(ABOUT)}
           handleChange={(e) => this.GenericHandleChange(e, ABOUT)}
         />
@@ -270,7 +223,7 @@ componentDidUpdate(prevProps) {
           mode={this.state.StatusMode}
           message={this.state.Status}
           handleEdit={() => this.GenericHandleEdit(STATUS)}
-          handleSave={this.StatusHandleSave}
+          handleSave={() => this.GenericHandleSave(STATUS)}
           handleCancel={() => this.GenericHandleCancel(STATUS)}
           handleChange={(e) => this.GenericHandleChange(e, STATUS)}
         />
