@@ -29,14 +29,6 @@ const VIEW = 'View',
     [UNFOLLOW]: deleteProfileTracker,    
   };
 
-  var SAMPLE = [
-    { username: 'demouser', ACS: 100 },
-    { username: 'demouser25', ACS: 200 },
-    { username: '123asdqw132feq', ACS: 300 },
-    { username: 'Choose', ACS: 400 },
-    { username: 'user5', ACS: 500 },
-  ];
-
 class ProfilePage extends Component {
     
   constructor(props) {
@@ -67,7 +59,7 @@ class ProfilePage extends Component {
         SocialMode: VIEW,
         CurrentIsFollowing: true,
         CurrentFollowList: [],
-        WantedFollowList: SAMPLE
+        WantedFollowList: []
     };
 
     //generic functions
@@ -144,7 +136,7 @@ updateShownUser(){
                 'https://www.instagram.com/',
             ],
             SocialMode: VIEW,
-            WantedFollowList: [...SAMPLE]
+            WantedFollowList: profile.tracker
         });
         //change current follow list if you're getting current user
         if(this.props.editable){
@@ -243,7 +235,7 @@ componentDidUpdate(prevProps) {
     //if current user is following => delete. else not following => add
     if(this.state.CurrentIsFollowing){
         //handle delete
-        console.log("delete");
+        console.log(`Profile delete ${this.props.wantedUser}`);
         calls[UNFOLLOW](this.props.wantedUser).then((res) => {
             if(res.success || res.reason === NOTFOUND){
                 //if successful or not followed, just re-get tracker and recheck if followed
@@ -256,7 +248,17 @@ componentDidUpdate(prevProps) {
         });
     } else {
         //handle add
-        console.log("add");
+        console.log(`Profile add ${this.props.wantedUser}`);
+        calls[FOLLOW](this.props.wantedUser).then((res) => {
+            if(res.success){
+                //if successful or not followed, just re-get tracker and recheck if followed
+                this.updateCurrentTracker();
+            } else {
+                throw new Error(`Unsuccessful follow to ${this.props.wantedUser}`);
+            }
+        }).catch((error) => {
+            //unsuccessful, therefore dont unfollow
+        });
     }
   }
 
