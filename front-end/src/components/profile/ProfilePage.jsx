@@ -17,11 +17,15 @@ const VIEW = 'View',
   ABOUT = 'About',
   STATUS = 'Status',
   PICTURE = 'Picture',
-  SOCIAL = 'Social';
+  SOCIAL = 'Social',
+  FOLLOW = 'Follow',
+  UNFOLLOW = 'Unfollow';
 
   const calls = {[ABOUT]: updateUserAbout, 
     [STATUS]: updateUserStatus,
-    [PICTURE]: updateUserPicture
+    [PICTURE]: updateUserPicture,
+    [FOLLOW]: addProfileTracker,
+    [UNFOLLOW]: deleteProfileTracker,    
   };
 
   var SAMPLE = [

@@ -40,12 +40,16 @@ export async function updateUserPicture(src) {
 }
 
 /*Radar*/
-export async function addProfileTracker(){
-
+export async function addProfileTracker(username){
+    let newUrl = new URL(BASE_URL + UPDATETRACKER);
+    const params = { username: username };
+    return await fetchText(newUrl, fetchOptionsWithBody(PUT, params));
 }
 
-export async function deleteProfileTracker(){
-
+export async function deleteProfileTracker(username){
+    let newUrl = new URL(BASE_URL + DELETETRACKER);
+    const params = { username: username };
+    return await fetchText(newUrl, fetchOptionsWithBody(DELETE, params));
 }
 
 /*Social*/
@@ -97,6 +101,10 @@ function statusCatcher(resStatus){
         // Not authenticated
         case 401:
             status.reason = 'Not Authenticated';
+            break;
+        // Not authenticated
+        case 404:
+            status.reason = 'Not Found';
             break;
         // Unexpected error with database
         case 500:
