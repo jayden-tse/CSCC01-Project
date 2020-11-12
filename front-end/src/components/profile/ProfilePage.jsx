@@ -19,7 +19,8 @@ const VIEW = 'View',
   PICTURE = 'Picture',
   SOCIAL = 'Social',
   FOLLOW = 'Follow',
-  UNFOLLOW = 'Unfollow';
+  UNFOLLOW = 'Unfollow',
+  NOTFOUND = 'Not Found';
 
   const calls = {[ABOUT]: updateUserAbout, 
     [STATUS]: updateUserStatus,
@@ -64,7 +65,8 @@ class ProfilePage extends Component {
             'https://www.instagram.com/',
           ],
         SocialMode: VIEW,
-        CurrentIsFollowing:false,
+        CurrentIsFollowing: true,
+        CurrentFollowList: [],
         WantedFollowList: SAMPLE
     };
 
@@ -78,6 +80,38 @@ class ProfilePage extends Component {
     this.SocialHandleSave = this.SocialHandleSave.bind(this);
     this.SocialHandleChange = this.SocialHandleChange.bind(this);
     this.RadarHandleFollow = this.RadarHandleFollow.bind(this);
+}
+
+updateCurrentFollowing(){
+    //should call whenever viewing another user
+    //or if current's follow list is changed
+    let fol = false;
+    let ls = this.state.CurrentFollowList;
+    for(let i=0; i<ls.length; i++){
+        //updates CurrentIsFollowing if wantedUser is on current user's follow list
+        if(ls[i].username === this.props.wantedUser){
+            fol = true;
+            break;
+        }
+    }
+    this.setState({CurrentIsFollowing: fol,});
+}
+
+updateCurrentTracker(){
+    //this is for updating current user's tracker after a change
+    //expect to get json object with ACS, acs change later
+    getProfile(this.props.currentUser).then((profile)=>{
+        if(!profile.success){//throw if not successful
+            throw new Error("error getting tracker");
+        }
+        this.setState({
+            CurrentFollowList: profile.tracker
+        });
+        this.updateCurrentFollowing();
+    }).catch((error) => {
+        //will throw if somethings missing
+        console.log('Error with tracker response' + error);
+    });
 }
 
 updateShownUser(){
@@ -110,15 +144,20 @@ updateShownUser(){
                 'https://www.instagram.com/',
             ],
             SocialMode: VIEW,
-            CurrentIsFollowing:false,
             WantedFollowList: [...SAMPLE]
         });
+        //change current follow list if you're getting current user
+        if(this.props.editable){
+            this.setState({CurrentFollowList: profile.tracker})
+        } else {
+            this.updateCurrentFollowing();
+        }
     }).catch((error) => {
         //will throw if somethings missing
             console.log(error);
             console.log('Error with profile response');
             this.setState({ ACSError: true });
-            });
+    });
 }
 
 componentDidMount() {
@@ -196,8 +235,29 @@ componentDidUpdate(prevProps) {
   }
 
   RadarHandleFollow() {
-    //toggle following
-    this.setState({ CurrentIsFollowing: !this.state.CurrentIsFollowing });
+    //handle current user =(follow/unfollow)> wanted user (page view)
+    //same user case, shouldnt happen
+    if(this.props.editable){
+        return;
+    }
+    //if current user is following => delete. else not following => add
+    if(this.state.CurrentIsFollowing){
+        //handle delete
+        console.log("delete");
+        calls[UNFOLLOW](this.props.wantedUser).then((res) => {
+            if(res.success || res.reason === NOTFOUND){
+                //if successful or not followed, just re-get tracker and recheck if followed
+                this.updateCurrentTracker();
+            } else {
+                throw new Error(`Unsuccessful unfollow to ${this.props.wantedUser}`);
+            }
+        }).catch((error) => {
+            //unsuccessful, therefore dont unfollow
+        });
+    } else {
+        //handle add
+        console.log("add");
+    }
   }
 
   render() {

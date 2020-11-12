@@ -4,12 +4,14 @@ const
     GET = 'GET',
     PUT = 'PUT',
     DELETE = 'DELETE',
-    PROFILE = '/profile',
+    //get
+    GETPROFILE = '/profile',
     //update
     UPDATEPICTURE = '/profile/update/picture',
     UPDATEABOUT = '/profile/update/about',
     UPDATESTATUS = '/profile/update/status',
-    UPDATETRACKER = '/profile/update/tracker',
+    //tracker
+    ADDTRACKER = '/profile/add/tracker',
     DELETETRACKER = '/profile/delete/tracker';
 
 //ensure status fields have no overlap with profile in db
@@ -17,7 +19,7 @@ const statusDef = { success: false, reason: '' };
 
 /*Profile Full*/
 export async function getProfile(username) {
-    let newUrl = new URL(BASE_URL + PROFILE);
+    let newUrl = new URL(BASE_URL + GETPROFILE);
     const params = { username: username };
     newUrl.search = new URLSearchParams(params).toString();
     return await fetchJson(newUrl, fetchOptionsGet());
@@ -41,9 +43,9 @@ export async function updateUserPicture(src) {
 
 /*Radar*/
 export async function addProfileTracker(username){
-    let newUrl = new URL(BASE_URL + UPDATETRACKER);
+    let newUrl = new URL(BASE_URL + ADDTRACKER);
     const params = { username: username };
-    return await fetchText(newUrl, fetchOptionsWithBody(PUT, params));
+    return await fetchJson(newUrl, fetchOptionsWithBody(PUT, params));
 }
 
 export async function deleteProfileTracker(username){
