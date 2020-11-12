@@ -6,7 +6,8 @@ import ProfileStatus from './ProfileStatus';
 import ProfileRadar from './ProfileRadar';
 import ProfileSocial from './ProfileSocial';
 import { getProfile, updateUserAbout, updateUserPicture, addProfileTracker, 
-    deleteProfileTracker, updateUserStatus } from '../../api/ProfileCalls.js';
+    deleteProfileTracker, updateUserStatus, updateLinkFacebook, updateLinkTwitter,
+    updateLinkInstagram } from '../../api/ProfileCalls.js';
 import './ProfilePage.css';
 
 /*note: currentUser is the user logged in currently
@@ -26,7 +27,8 @@ const VIEW = 'View',
     [STATUS]: updateUserStatus,
     [PICTURE]: updateUserPicture,
     [FOLLOW]: addProfileTracker,
-    [UNFOLLOW]: deleteProfileTracker,    
+    [UNFOLLOW]: deleteProfileTracker, 
+    [SOCIAL]: [updateLinkFacebook, updateLinkTwitter, updateLinkInstagram]   
   };
 
 class ProfilePage extends Component {
@@ -215,9 +217,29 @@ componentDidUpdate(prevProps) {
       this.GenericHandleCancel(SOCIAL);
       return;
     }
-    //if successful, change message in state
-    this.setState({ Social: this.state.SocialEdit });
-    this.setState({ SocialMode: VIEW });
+    //if successful, change message in state and database
+    // ------Facebook link---------
+    calls[SOCIAL][0](this.state[`${[SOCIAL][0]}${EDIT}`][0]).then((res) => {
+      console.log(`${calls[SOCIAL][0]}`);                      // the function
+      console.log(this.state[`${[SOCIAL][0]}${EDIT}`][0]);     // the input from user
+      // console.log(calls[SOCIAL][0](this.state[`${[SOCIAL][0]}${EDIT}`]));    //promise
+      if(res.success){
+          //if successful, change field in state based on database
+          this.setState({ [SOCIAL]: res.text,
+                          [SOCIAL`${EDIT}`]: res.text,
+                          [SOCIAL`${MODE}`]: VIEW });
+      } else {
+          throw new Error(`Unsuccessful update to ${SOCIAL}`);
+      }
+  }).catch((error) => {
+      //unsuccessful, therefore reset
+      this.GenericHandleCancel(SOCIAL);
+  });
+  // ----------Twitter link-----------
+
+  // -----------Instagram link---------
+    // this.setState({ Social: this.state.SocialEdit });
+    // this.setState({ SocialMode: VIEW });
   }
 
   SocialHandleChange(e, id) {

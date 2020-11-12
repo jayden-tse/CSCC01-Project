@@ -10,6 +10,9 @@ const
     UPDATEPICTURE = '/profile/update/picture',
     UPDATEABOUT = '/profile/update/about',
     UPDATESTATUS = '/profile/update/status',
+    UPDATELINKFACEBOOK = '/profile/update/links/facebook',
+    UPDATELINKTWITTER = '/profile/update/links/twitter',
+    UPDATELINKINSTAGRAM = '/profile/update/links/instagram',
     //tracker
     ADDTRACKER = '/profile/add/tracker',
     DELETETRACKER = '/profile/delete/tracker';
@@ -55,6 +58,23 @@ export async function deleteProfileTracker(username){
 }
 
 /*Social*/
+export async function updateLinkFacebook(link) {
+    let newUrl = new URL(BASE_URL + UPDATELINKFACEBOOK);
+    const params = { facebook: link };
+    return await fetchText(newUrl, fetchOptionsWithBody(PUT, params));
+}
+
+export async function updateLinkTwitter(link) {
+    let newUrl = new URL(BASE_URL + UPDATELINKTWITTER);
+    const params = { twitter: link };
+    return await fetchText(newUrl, fetchOptionsWithBody(PUT, params));
+}
+
+export async function updateLinkInstagram(link) {
+    let newUrl = new URL(BASE_URL + UPDATELINKINSTAGRAM);
+    const params = { instagram: link };
+    return await fetchText(newUrl, fetchOptionsWithBody(PUT, params));
+}
 
 /*Status*/
 export async function updateUserStatus(status) {
@@ -147,6 +167,8 @@ async function fetchJson(url, options){
 
 async function fetchText(url, options){
     //handle calls that return text rather than json
+    console.log(url);
+    console.log(`${options}`);
     return await fetch(url, options)
       .then(async(res) => {
       const status = statusCatcher(res.status);

@@ -238,11 +238,15 @@ exports.profile_update_tracker_put = async function (req, res) {
 };
 
 exports.profile_update_links_facebook_put = async function(req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    });
     if (req.user) {
         // user is authenticated
         try {
-            await dbUpdate.addSocialMediaLink(req.session.passport, 'facebook', req.body.links);
-            res.sendStatus(200); // OK
+            let link = await dbUpdate.addSocialMediaLink(req.session.passport, 'facebook', req.body.links);
+            res.status(200).send(link); // OK
         } catch {
             res.status(500).send(WRITE_FAILED); // Internal server error
         }
@@ -252,11 +256,15 @@ exports.profile_update_links_facebook_put = async function(req, res) {
 };
 
 exports.profile_update_links_instagram_put = async function(req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    });
     if (req.user) {
         // user is authenticated
         try {
-            await dbUpdate.addSocialMediaLink(req.session.passport, 'instagram', req.body.links);
-            res.sendStatus(200); // OK
+            let link = await dbUpdate.addSocialMediaLink(req.session.passport, 'instagram', req.body.links);
+            res.status(200).send(link); // OK
         } catch {
             res.status(500).send(WRITE_FAILED); // Internal server error
         }
@@ -266,11 +274,15 @@ exports.profile_update_links_instagram_put = async function(req, res) {
 };
 
 exports.profile_update_links_twitter_put = async function(req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    });
     if (req.user) {
         // user is authenticated
         try {
-            await dbUpdate.addSocialMediaLink(req.session.passport, 'twitter', req.body.links);
-            res.sendStatus(200); // OK
+            let link = await dbUpdate.addSocialMediaLink(req.session.passport, 'twitter', req.body.links);
+            res.status(200).send(link); // OK
         } catch {
             res.status(500).send(WRITE_FAILED); // Internal server error
         }
