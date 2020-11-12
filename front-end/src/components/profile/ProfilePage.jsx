@@ -17,15 +17,17 @@ const VIEW = 'View',
   ABOUT = 'About',
   STATUS = 'Status',
   PICTURE = 'Picture',
-  SOCIAL = 'Social';
+  SOCIAL = 'Social',
+  FOLLOW = 'Follow',
+  UNFOLLOW = 'Unfollow',
+  NOTFOUND = 'Not Found';
 
-  var SAMPLE = [
-    { username: 'demouser', ACS: 100 },
-    { username: 'demouser25', ACS: 200 },
-    { username: '123asdqw132feq', ACS: 300 },
-    { username: 'Choose', ACS: 400 },
-    { username: 'user5', ACS: 500 },
-  ];
+  const calls = {[ABOUT]: updateUserAbout, 
+    [STATUS]: updateUserStatus,
+    [PICTURE]: updateUserPicture,
+    [FOLLOW]: addProfileTracker,
+    [UNFOLLOW]: deleteProfileTracker,    
+  };
 
 class ProfilePage extends Component {
     
@@ -55,30 +57,59 @@ class ProfilePage extends Component {
             'https://www.instagram.com/',
           ],
         SocialMode: VIEW,
-        CurrentIsFollowing:false,
-        WantedFollowList: SAMPLE
+        CurrentIsFollowing: true,
+        CurrentFollowList: [],
+        WantedFollowList: []
     };
 
     //generic functions
     this.GenericHandleEdit = this.GenericHandleEdit.bind(this);
     this.GenericHandleCancel = this.GenericHandleCancel.bind(this);
     this.GenericHandleChange = this.GenericHandleChange.bind(this);
+    this.GenericHandleSave = this.GenericHandleSave.bind(this);
 
-    //save functions (call handles might be different)
-    this.AboutHandleSave = this.AboutHandleSave.bind(this);
-    this.PictureHandleSave = this.PictureHandleSave.bind(this);
-    this.StatusHandleSave = this.StatusHandleSave.bind(this);
+    //non-generic functions (call handles might be different)
     this.SocialHandleSave = this.SocialHandleSave.bind(this);
-
-    //non-generic functions
     this.SocialHandleChange = this.SocialHandleChange.bind(this);
     this.RadarHandleFollow = this.RadarHandleFollow.bind(this);
+}
+
+updateCurrentFollowing(){
+    //should call whenever viewing another user
+    //or if current's follow list is changed
+    let fol = false;
+    let ls = this.state.CurrentFollowList;
+    for(let i=0; i<ls.length; i++){
+        //updates CurrentIsFollowing if wantedUser is on current user's follow list
+        if(ls[i].username === this.props.wantedUser){
+            fol = true;
+            break;
+        }
+    }
+    this.setState({CurrentIsFollowing: fol,});
+}
+
+updateCurrentTracker(){
+    //this is for updating current user's tracker after a change
+    //expect to get json object with ACS, acs change later
+    getProfile(this.props.currentUser).then((profile)=>{
+        if(!profile.success){//throw if not successful
+            throw new Error("error getting tracker");
+        }
+        this.setState({
+            CurrentFollowList: profile.tracker
+        });
+        this.updateCurrentFollowing();
+    }).catch((error) => {
+        //will throw if somethings missing
+        console.log('Error with tracker response' + error);
+    });
 }
 
 updateShownUser(){
     //expect to get json object with ACS, acs change later
     getProfile(this.props.wantedUser).then((profile)=>{
-        if(profile.error === true){
+        if(!profile.success){//throw if not successful
             throw new Error("error getting profile");
         }
         this.setState({
@@ -105,15 +136,20 @@ updateShownUser(){
                 'https://www.instagram.com/',
             ],
             SocialMode: VIEW,
-            CurrentIsFollowing:false,
-            WantedFollowList: [...SAMPLE]
+            WantedFollowList: profile.tracker
         });
+        //change current follow list if you're getting current user
+        if(this.props.editable){
+            this.setState({CurrentFollowList: profile.tracker})
+        } else {
+            this.updateCurrentFollowing();
+        }
     }).catch((error) => {
         //will throw if somethings missing
             console.log(error);
             console.log('Error with profile response');
             this.setState({ ACSError: true });
-            });
+    });
 }
 
 componentDidMount() {
@@ -147,58 +183,29 @@ componentDidUpdate(prevProps) {
         this.setState({ [`${caller}${EDIT}`]: e.target.value });
     }
 
-  AboutHandleSave() {
-    console.log('Profile About save');
-    //not your profile
-    if (!this.props.editable) {
-      console.log('Save not authorized');
-      this.GenericHandleCancel(ABOUT);
-      return;
-    }
-    //change message in database
-    updateUserAbout(this.state.AboutEdit).then(async (res) => {
-        if(res.success){
-            //if successful, change message in state based on databaswe
-            this.setState({ About: res.text,
-                            AboutEdit: res.text,
-                             AboutMode: VIEW });
-        } else {
-            throw new Error("Unsuccessful update to About");
+    GenericHandleSave(caller){
+        console.log(`Profile ${caller} save`);
+        //not your profile
+        if (!this.props.editable) {
+          console.log(`${caller} not authorized`);
+          this.GenericHandleCancel(caller);
+          return;
         }
-    }).catch((error) => {
-        //unsuccessful, therefore reset
-        this.GenericHandleCancel(ABOUT);
-    });
-  }
-
-  PictureHandleSave() {
-    console.log('Profile Picture save');
-    //not your profile
-    if (!this.props.editable) {
-      console.log('Save not authorized');
-      this.GenericHandleCancel(PICTURE);
-      return;
+        //change field in database
+        calls[caller](this.state[`${caller}${EDIT}`]).then((res) => {
+            if(res.success){
+                //if successful, change field in state based on databaswe
+                this.setState({ [`${caller}`]: res.text,
+                                [`${caller}${EDIT}`]: res.text,
+                                [`${caller}${MODE}`]: VIEW });
+            } else {
+                throw new Error(`Unsuccessful update to ${caller}`);
+            }
+        }).catch((error) => {
+            //unsuccessful, therefore reset
+            this.GenericHandleCancel(caller);
+        });
     }
-
-    //change picture in database
-    
-    //if successful, change message in state
-    this.setState({ Picture: this.state.PictureEdit });
-
-    this.setState({ PictureMode: VIEW });
-  }
-
-  StatusHandleSave() {
-    console.log('Profile Status save');
-    //not your profile
-    if (!this.props.editable) {
-      console.log('Save not authorized');
-      this.GenericHandleCancel(STATUS);
-      return;
-    }
-    this.setState({ Status: this.state.StatusEdit });
-    this.setState({ StatusMode: VIEW });
-  }
 
   SocialHandleSave() {
     console.log('Profile Social save');
@@ -220,8 +227,45 @@ componentDidUpdate(prevProps) {
   }
 
   RadarHandleFollow() {
-    //toggle following
-    this.setState({ CurrentIsFollowing: !this.state.CurrentIsFollowing });
+    //handle current user =(follow/unfollow)> wanted user (page view)
+    //same user case, shouldnt happen
+    if(this.props.editable){
+        return;
+    }
+    //if current user is following => delete. else not following => add
+    if(this.state.CurrentIsFollowing){
+        this.RadarHandleFollowDelete(this.props.wantedUser);
+    } else {
+        this.RadarHandleFollowAdd(this.props.wantedUser);
+    }
+  }
+
+  RadarHandleFollowDelete(username){
+        console.log(`Profile delete ${username}`);
+        calls[UNFOLLOW](username).then((res) => {
+            if(res.success || res.reason === NOTFOUND){
+                //if successful or not followed, just re-get tracker and recheck if followed
+                this.updateCurrentTracker();
+            } else {
+                throw new Error(`Unsuccessful unfollow to ${username}`);
+            }
+        }).catch((error) => {
+            //unsuccessful, therefore dont unfollow
+        });
+  }
+
+  RadarHandleFollowAdd(username){
+        console.log(`Profile add ${username}`);
+        calls[FOLLOW](username).then((res) => {
+            if(res.success){
+                //if successful or not followed, just re-get tracker and recheck if followed
+                this.updateCurrentTracker();
+            } else {
+                throw new Error(`Unsuccessful follow to ${username}`);
+            }
+        }).catch((error) => {
+            //unsuccessful, therefore dont unfollow
+        });
   }
 
   render() {
@@ -229,47 +273,39 @@ componentDidUpdate(prevProps) {
     return (
       <div className="ProfilePage">
         <ProfilePicture
-          currentUser={this.props.currentUser}
-          wantedUser={this.props.wantedUser}
           editable={this.props.editable}
           mode={this.state.PictureMode}
           picture={this.state.Picture}
           handleEdit={() => this.GenericHandleEdit(PICTURE)}
-          handleSave={this.PictureHandleSave}
+          handleSave={() => this.GenericHandleSave(PICTURE)}
           handleCancel={() => this.GenericHandleCancel(PICTURE)}
           handleChange={(e) => this.GenericHandleChange(e, PICTURE)}
         />
         <ProfileAbout
-          currentUser={this.props.currentUser}
           wantedUser={this.props.wantedUser}
           editable={this.props.editable}
           mode={this.state.AboutMode}
           message={this.state.About}
           handleEdit={() => this.GenericHandleEdit(ABOUT)}
-          handleSave={this.AboutHandleSave}
+          handleSave={() => this.GenericHandleSave(ABOUT)}
           handleCancel={() => this.GenericHandleCancel(ABOUT)}
           handleChange={(e) => this.GenericHandleChange(e, ABOUT)}
         />
         <ProfileStatus
-          currentUser={this.props.currentUser}
-          wantedUser={this.props.wantedUser}
           editable={this.props.editable}
           mode={this.state.StatusMode}
           message={this.state.Status}
           handleEdit={() => this.GenericHandleEdit(STATUS)}
-          handleSave={this.StatusHandleSave}
+          handleSave={() => this.GenericHandleSave(STATUS)}
           handleCancel={() => this.GenericHandleCancel(STATUS)}
           handleChange={(e) => this.GenericHandleChange(e, STATUS)}
         />
         <ProfileACS
-          currentUser={this.props.currentUser}
-          wantedUser={this.props.wantedUser}
           ACS={this.state.ACS}
           ACSChange={this.state.ACSChange}
           ACSError={this.state.ACSError}
         />
         <ProfileRadar
-          currentUser={this.props.currentUser}
           wantedUser={this.props.wantedUser}
           editable={this.props.editable}
           handleViewProfile={this.props.handleViewProfile}
@@ -278,8 +314,6 @@ componentDidUpdate(prevProps) {
           WantedFollowList={this.state.WantedFollowList}
         />
         <ProfileSocial
-          currentUser={this.props.currentUser}
-          wantedUser={this.props.wantedUser}
           editable={this.props.editable}
           mode={this.state.SocialMode}
           links={this.state.Social}
