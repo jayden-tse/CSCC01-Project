@@ -140,6 +140,8 @@ updateShownUser(){
             SocialMode: VIEW,
             WantedFollowList: profile.tracker
         });
+        //handle recieving social, put into array
+        this.recieveSocial(profile.links);
         //change current follow list if you're getting current user
         if(this.props.editable){
             this.setState({CurrentFollowList: profile.tracker})
@@ -151,6 +153,16 @@ updateShownUser(){
             console.log(error);
             console.log('Error with profile response');
             this.setState({ ACSError: true });
+    });
+}
+
+recieveSocial(json){
+    //current order for social links
+    const socialArr = [json.facebook, json.twitter, json.instagram]
+    this.setState({
+        Social: [...socialArr],
+        SocialEdit: [...socialArr],
+        SocialMode: VIEW,
     });
 }
 
