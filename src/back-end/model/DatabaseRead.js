@@ -79,14 +79,12 @@ class DatabaseRead {
         await cursor.forEach(function(doc) {
             posts.push(doc);
         });
-        return posts[0];
+        return posts;
     }
 
     async getAllComments(postId) {
         let post = await this.getPost(postId);
-        console.log("post: " + post);
-        console.log(post.comments);
-        return post.comments;
+        return post[0].comments;
     }
 
     async getComment(postId, commentId) {

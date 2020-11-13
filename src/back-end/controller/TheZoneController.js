@@ -116,9 +116,10 @@ exports.the_zone_update_comment_vote_put = async function(req, res) {
         try {
             // update agree for comments here
             let result = await dbUpdate.voteComment(req.session.passport.user, req.body.vote, req.body.postId, req.body.commentId);
-            console.log(result !== null)
             if (result && result.modifiedCount > 0) {
-                res.sendStatus(200);
+                comment = await dbRead.getComment(req.body.postId, req.body.commentId)
+                total = comment.agree + comment.disagree
+                res.status(200).send({ totalVotes: total })
             } else {
                 res.status(400).send(BAD_INPUT);
             }
