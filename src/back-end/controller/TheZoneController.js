@@ -24,7 +24,8 @@ exports.the_zone_post_put = async function(req, res) {
 exports.the_zone_post_get = async function(req, res) {
     if (req.user) {
         try {
-            res.status(200).json(await dbRead.getPost(req.query.post));
+            post = await dbRead.getPost(req.query.post);
+            res.status(200).json(post[0]);
         } catch (e) {
             console.log(e);
             res.status(500).send(WRITE_FAILED);
@@ -79,8 +80,9 @@ exports.the_zone_update_vote_put = async function(req, res) {
         try {
             // update likes here
             let result = await dbUpdate.updateVote(req.session.passport.user, req.body.vote, req.body.postId); // may need to change from body.vote to query.vote/param.vote
-            if (result && result.modifiedCount > 0) {
-                res.sendStatus(200);
+            if (result[1] && result[1].modifiedCount > 0) {
+                total = result[0];
+                res.status(200).json({ totalVotes: total })
             } else {
                 res.status(400).send(BAD_INPUT);
             }
@@ -97,7 +99,7 @@ exports.the_zone_comment_put = async function(req, res) {
     if (req.user) {
         try {
             let result = await dbCreate.createComment(req.body.post, req.session.passport.user, new Date(), req.body.text, 0, 0, [], []);
-            if (result.matchedCount > 0) {
+            if (result && result.matchedCount > 0) {
                 res.sendStatus(200); // OK
             } else {
                 res.status(404).send(NOT_FOUND);
@@ -116,9 +118,8 @@ exports.the_zone_update_comment_vote_put = async function(req, res) {
         try {
             // update agree for comments here
             let result = await dbUpdate.voteComment(req.session.passport.user, req.body.vote, req.body.postId, req.body.commentId);
-            if (result && result.modifiedCount > 0) {
-                comment = await dbRead.getComment(req.body.postId, req.body.commentId)
-                total = comment.agree + comment.disagree
+            if (result[1] && result[1].modifiedCount > 0) {
+                total = result[0];
                 res.status(200).send({ totalVotes: total })
             } else {
                 res.status(400).send(BAD_INPUT);

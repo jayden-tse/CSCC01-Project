@@ -110,8 +110,10 @@ class DatabaseUpdate {
                     agreed.push(username);
                     this.helperVote(1, 0, postId);
                 }
-
-                return this.updatePost(postId, "usersagreed", agreed); // either way update usersagreed on the post
+                let result = []
+                result.push(postDoc.agree + postDoc.disagree);
+                result.push(await this.updatePost(postId, "usersagreed", agreed)); // either way update usersagreed on the post
+                return result;
             } else if (vote < 0) { // disagree
                 if (userAgreed) {
                     // remove from agreed
@@ -129,7 +131,11 @@ class DatabaseUpdate {
                     disagreed.push(username);
                     this.helperVote(0, 1, postId);
                 }
-                return this.updatePost(postId, "usersdisagreed", disagreed); // either way update usersdisagreed on the post
+                let result = []
+                result.push(postDoc.agree + postDoc.disagree);
+                result.push(await this.updatePost(postId, "usersdisagreed", disagreed)); // either way update usersdisagreed on the post
+                return result;
+
             }
         }
         return null;
@@ -193,7 +199,10 @@ class DatabaseUpdate {
                         comment.usersagreed = agreed;
                         this.helperVoteComment(1, 0, comment, postId);
                     }
-                    return this.updateComment(postId, commentId, "usersagreed", agreed); // either way update usersagreed on the post
+                    let result = []
+                    result.push(comment.agree + comment.disagree);
+                    result.push(await this.updateComment(postId, commentId, "usersagreed", agreed)); // either way update usersdisagreed on the post
+                    return result;
                 } else if (vote < 0) { // disagree
                     if (userAgreed) {
                         // remove from agreed
@@ -212,7 +221,11 @@ class DatabaseUpdate {
                         disagreed.push(username);
                         this.helperVoteComment(0, 1, comment, postId);
                     }
-                    return this.updateComment(postId, commentId, "usersdisagreed", disagreed); // either way update usersdisagreed on the post
+                    let result = []
+                    result.push(comment.agree + comment.disagree);
+                    result.push(await this.updateComment(postId, commentId, "usersdisagreed", disagreed)); // either way update usersdisagreed on the post
+                    return result;
+
                 }
             }
         }
