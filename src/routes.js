@@ -175,4 +175,6 @@ router.put('/thezone/update/post/comment/vote', thezoneController.the_zone_updat
 // Delete the zone post
 router.delete('/thezone/delete/post', thezoneController.the_zone_post_del);
 
+// Delete the zone comment
+router.delete('/thezone/delete/comment', thezoneController.the_zone_comment_del);
 module.exports = router;

@@ -89,6 +89,7 @@ class DatabaseRead {
 
     async getComment(postId, commentId) {
         let post = await this.getAllPosts({ '_id': ObjectId(postId) });
+        console.log(post);
         for (let i = 0; i < post[0].comments.length; i++) {
             if (post[0].comments[i]._id.toString() === commentId.toString()) {
                 return post[0].comments[i];

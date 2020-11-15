@@ -1,6 +1,6 @@
 var mongoConnect = require('../../mongoConnect');
 
-const { USERS } = require('./DatabaseHelper');
+const { USERS, POSTS } = require('./DatabaseHelper');
 
 class DatabaseDelete {
 
@@ -11,6 +11,21 @@ class DatabaseDelete {
                 "profile.tracker": username
             }
         });
+        return result;
+    }
+
+    async deletePost(post) {
+        return await mongoConnect.getDBCollection(POSTS).deleteOne(post)
+    }
+
+    async deleteComment(post, comment) {
+        let result = await mongoConnect.getDBCollection(POSTS).updateOne({
+            _id: post[0]._id
+        }, {
+            $pull: {
+                comments: { _id: comment._id }
+            }
+        })
         return result;
     }
 }
