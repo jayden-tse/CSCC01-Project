@@ -111,7 +111,7 @@ class DatabaseUpdate {
                     this.helperVote(1, 0, postId);
                 }
                 let result = []
-                result.push(postDoc.agree + postDoc.disagree);
+                result.push(postDoc.agree - postDoc.disagree);
                 result.push(await this.updatePost(postId, "usersagreed", agreed)); // either way update usersagreed on the post
                 return result;
             } else if (vote < 0) { // disagree
@@ -132,7 +132,7 @@ class DatabaseUpdate {
                     this.helperVote(0, 1, postId);
                 }
                 let result = []
-                result.push(postDoc.agree + postDoc.disagree);
+                result.push(postDoc.agree - postDoc.disagree);
                 result.push(await this.updatePost(postId, "usersdisagreed", disagreed)); // either way update usersdisagreed on the post
                 return result;
 
@@ -200,7 +200,7 @@ class DatabaseUpdate {
                         this.helperVoteComment(1, 0, comment, postId);
                     }
                     let result = []
-                    result.push(comment.agree + comment.disagree);
+                    result.push(comment.agree - comment.disagree);
                     result.push(await this.updateComment(postId, commentId, "usersagreed", agreed)); // either way update usersdisagreed on the post
                     return result;
                 } else if (vote < 0) { // disagree
@@ -222,7 +222,7 @@ class DatabaseUpdate {
                         this.helperVoteComment(0, 1, comment, postId);
                     }
                     let result = []
-                    result.push(comment.agree + comment.disagree);
+                    result.push(comment.agree - comment.disagree);
                     result.push(await this.updateComment(postId, commentId, "usersdisagreed", disagreed)); // either way update usersdisagreed on the post
                     return result;
 
