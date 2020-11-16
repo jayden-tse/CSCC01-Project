@@ -147,7 +147,7 @@ updateShownUser(){
         //will throw if somethings missing
             console.log(error);
             console.log('Error with profile response');
-            this.setState({ ACSError: true });
+            //this.setState({ ACSError: true });
     });
 }
 
