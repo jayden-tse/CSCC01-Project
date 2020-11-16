@@ -1,6 +1,9 @@
 import React from "react";
 import "./TheZonePost.css";
 import TheZoneCreateComment from "./TheZoneCreateComment";
+import TheZoneAgree from "./TheZoneAgree";
+import TheZoneComment from "./TheZoneComment";
+import { getPost, deletePost} from '../../api/TheZoneCalls';
 
 class TheZonePost extends React.Component {
   constructor(props) {
@@ -9,113 +12,102 @@ class TheZonePost extends React.Component {
       title: "POST TITLE",
       poster: "Poster",
       body: "POST BODY",
-      agreePercent: 56,
       comments: [
-        "first comment",
-        "second comment",
-        "third comment"
-      ],
-      agreeHidden: false,
-      selectedOption: "Agree"
+      ]
+
     };
     this.addComment = this.addComment.bind(this);
-    this.hideAgree = this.hideAgree.bind(this);
-    this.showAgree = this.showAgree.bind(this);
-    this.onValueChange = this.onValueChange.bind(this);
-    this.handleAgreeSubmit = this.handleAgreeSubmit.bind(this);
+    this.loadPost = this.loadPost.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.removeComment = this.removeComment.bind(this);
   }
 
-  // add a new comment to the comments list with its message = data
-  addComment(data) {
-    const newComments = this.state.comments.concat(data);
-    this.setState({
-      comments: newComments
-    })
+  // add a new comment 
+  addComment() {
+    this.loadPost();
   }
   //TODO: get post data from back end api given the post id
   // and set the post data with state
   componentDidMount() {
-
+    this.loadPost();
   }
 
-  hideAgree() {
-    this.setState({
-      agreeHidden: true
+  removeComment() {
+    this.loadPost();
+  }
+
+  loadPost() {
+    getPost(this.props.postid).then(result => {
+      const commentList = [];
+      result.comments.forEach(function (entry) {
+        var dates = new Date(entry.date).toTimeString();
+        entry.date = dates;
+        commentList.push(entry);
+      });
+      this.setState({
+        date: new Date(result.date).toTimeString(),
+        title: result.content.title,
+        poster: result.username,
+        body: result.content.text,
+        comments: commentList
+      })
     })
-  }
+	}
 
-  showAgree() {
-    this.setState({
-      agreeHidden: false
+
+  handleDelete() {
+    deletePost(
+      this.props.postid
+    ).then((response) => {
+      // if response ok then delte the post
+      if (response.ok) {
+        this.props.removePost();
+      }
     })
-  }
-
-  onValueChange(event) {
-    this.setState({
-      selectedOption: event.target.value
+    .catch((error) => {
+      // for debugging
+      console.log(error);
+      console.log('Error with response');
+      this.setState({ error: true });
     });
-    
-  }
-
-  //Debug message for now 
-  handleAgreeSubmit() {
-    console.log(this.state.selectedOption)
-  }
+	}
 
   render() {
-    const isHidden = this.state.agreeHidden;
-    let agree = null;
-    if (!isHidden) {
-      agree =
-        (<div>
-          <div className="percentageDisplay">
-            <button className="smlButton" onClick={this.hideAgree}>-</button>
-            <h2 className="percentageText">{this.state.agreePercent}% Agree</h2>
-          </div>
-          <div className="agree">
-            <input
-              className="agreeOptions"
-              type="radio"
-              value="Agree"
-              checked={this.state.selectedOption === "Agree"}
-              onChange={this.onValueChange}
-            /> 
-            <label className="agreeText"> Agree </label>
-            <input
-              className="agreeOptions"
-              type="radio"
-              value="Disagree"
-              checked={this.state.selectedOption === "Disagree"}
-              onChange={this.onValueChange}
-            /> 
-            <label className="agreeText"> Disagree </label>
-            <button
-              className="agreeButton"
-              onClick={this.handleAgreeSubmit}
-            >Submit</button>
-  
-          </div>
-         </div>);
+    let deleteButton = null;
+    if (this.state.poster === this.props.currentUser) {
+      deleteButton = <div><button onClick={this.handleDelete}> Delete Post </button></div>
     } else {
-      agree = (<button className="smlButton" onClick={this.showAgree}>+</button>);
-		}
+      deleteButton = <div></div>
+    }
     return (
       <div className="post">        
         <div className="postHeader">
-          {agree}
+          <TheZoneAgree postid={this.props.postid} mode="post" />
           <div className="titleContainer">
             <h1 className="title">{this.state.title}</h1>
-            <p>Posted by:<span>{this.state.poster}</span></p>
+            <p>Posted by <span>{this.state.poster}</span> on <span>{this.state.date}</span></p>
           </div>
         </div>
         <p>{this.state.body}</p>
+        {deleteButton}
         <div className="comment">
           {this.state.comments.map(
-            comment => <p>{comment}</p>
-          )}
-          <TheZoneCreateComment 
+            comment => <TheZoneComment
+              key={comment._id.toString()}
+              postid={this.props.postid}
+              commentid={comment._id}
+              agree={comment.agree}
+              disagree={comment.disagree}
+              username={comment.username}
+              date={comment.date}
+              text={comment.text}
+              removeComment={this.removeComment}
+              currentUser={this.props.currentUser}
+            />
+            )}
+          <TheZoneCreateComment
             addComment={this.addComment}
-            postid={this.props.postid} 
+            postid={this.props.postid}
           />
         </div>
         

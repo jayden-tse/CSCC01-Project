@@ -211,6 +211,9 @@ router.get('/thezone/post', thezoneController.the_zone_post_get); // PUT request
 // Get all zone posts
 router.get('/thezone/post/all', thezoneController.the_zone_all_posts_get);
 
+// Get all comments on a post
+router.get('/thezone/post/comments', thezoneController.the_zone_post_comments_get);
+
 // Update the zone post
 router.put('/thezone/update/post', thezoneController.the_zone_update_post_put);
 
@@ -218,12 +221,14 @@ router.put('/thezone/update/post', thezoneController.the_zone_update_post_put);
 router.put('/thezone/update/vote', thezoneController.the_zone_update_vote_put);
 
 // Update the zone post's comment
-router.put(
-  '/thezone/update/post/comment',
-  thezoneController.the_zone_comment_put
-);
+router.put('/thezone/update/post/comment', thezoneController.the_zone_comment_put);
+
+// Update the zone post comment's vote
+router.put('/thezone/update/post/comment/vote', thezoneController.the_zone_update_comment_vote_put)
 
 // Delete the zone post
 router.delete('/thezone/delete/post', thezoneController.the_zone_post_del);
 
+// Delete the zone comment
+router.delete('/thezone/delete/comment', thezoneController.the_zone_comment_del);
 module.exports = router;
