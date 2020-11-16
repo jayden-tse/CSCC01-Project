@@ -8,8 +8,8 @@ const dbRead = new DatabaseRead();
 
 class DatabaseUpdate {
 
-    async updateUserTracker(req) {
-        let username = { 'username': req.user }
+    async updateUserTracker(userToUpdate) {
+        let username = { 'username': userToUpdate }
         let user = await mongoConnect.getDBCollection(USERS).findOne(username);
         let tracker = user.profile.tracker;
         console.log(tracker);

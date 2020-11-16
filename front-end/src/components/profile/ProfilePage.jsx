@@ -6,8 +6,8 @@ import ProfileStatus from './ProfileStatus';
 import ProfileRadar from './ProfileRadar';
 import ProfileSocial from './ProfileSocial';
 import { getProfile, updateUserAbout, updateUserPicture, addProfileTracker, 
-    deleteProfileTracker, updateUserStatus, updateLinkFacebook, updateLinkTwitter,
-    updateLinkInstagram } from '../../api/ProfileCalls.js';
+    deleteProfileTracker, updateProfileTracker, updateUserStatus, 
+    updateLinkFacebook, updateLinkTwitter, updateLinkInstagram } from '../../api/ProfileCalls.js';
 import './ProfilePage.css';
 
 /*note: currentUser is the user logged in currently
@@ -112,6 +112,9 @@ updateCurrentTracker(){
 }
 
 updateShownUser(){
+    //update acs of tracker viewed, you get next anyways so update state in getProfile
+    updateProfileTracker(this.props.wantedUser).catch(()=>{console.log('Error with updating tracker ACS');});
+
     //expect to get json object with ACS, acs change later
     getProfile(this.props.wantedUser).then((profile)=>{
         if(!profile.success){//throw if not successful
