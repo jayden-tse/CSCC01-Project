@@ -50,10 +50,18 @@ class ProfileSocial extends Component {
   }
 }
 
+function HTTPSPrefix(link){
+    //if http or https is in string
+    if(/(http(s?)):\/\//i.test(link)){
+        return link;   
+    }
+    return 'https://' + link;
+}
+
 function SocialLink(props) {
   return (
     <div>
-      <a target="_blank" href={props.link}>
+      <a target="_blank" href={HTTPSPrefix(props.link)}>
         {props.link}
       </a>
     </div>
