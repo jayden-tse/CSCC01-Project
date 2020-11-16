@@ -27,7 +27,7 @@ exports.the_zone_post_get = async function(req, res) {
             res.status(200).json(await dbRead.getPost(req.query.post));
         } catch (e) {
             console.log(e);
-            res.status(500).send(WRITE_FAILED);
+            res.status(500).send(SEARCH_FAILED);
         }
     } else {
         res.status(401).send(NOT_AUTHENTICATED);
@@ -40,7 +40,7 @@ exports.the_zone_all_posts_get = async function(req, res) {
             res.status(200).json(await dbRead.getAllPosts({}));
         } catch (e) {
             console.log(e);
-            res.status(500).send(WRITE_FAILED);
+            res.status(500).send(SEARCH_FAILED);
         }
     } else {
         res.status(401).send(NOT_AUTHENTICATED);
