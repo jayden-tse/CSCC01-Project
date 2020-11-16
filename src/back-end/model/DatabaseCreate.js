@@ -6,6 +6,8 @@ const saltRounds = 10;
 
 const Profile = require('./Profile.js');
 const Post = require('./Post.js');
+const Comment = require('./Comment.js');
+const ObjectId = require('mongodb').ObjectID;
 
 const DatabaseRead = require('./DatabaseRead.js');
 const { USERS, POSTS } = require('./DatabaseHelper');
@@ -66,6 +68,19 @@ class DatabaseCreate {
         let result = await mongoConnect.getDBCollection(POSTS).insertOne(post);
     }
 
+    async createComment(postId, user, date, text, agree, disagree, usersagreed, usersdisagreed) {
+        let comment = new Comment(new ObjectId(), user, date, text, agree, disagree, usersagreed, usersdisagreed); // should be in JSON format
+        // post should be a unique ID
+        let post = { "_id": ObjectId(postId) };
+        let result = await mongoConnect.getDBCollection(POSTS).updateOne(
+            post, {
+                $push: {
+                    comments: comment
+                }
+            }
+        );
+        return result;
+    }
 }
 
 module.exports = DatabaseCreate;

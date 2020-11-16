@@ -73,11 +73,28 @@ class DatabaseRead {
 
     async getPost(req) {
         const posts = [];
-        const cursor = await mongoConnect.getDBCollection(POSTS).find({ "_id": ObjectId(req) });
+        const cursor = await mongoConnect.getDBCollection(POSTS).find({
+            _id: ObjectId(req)
+        });
         await cursor.forEach(function(doc) {
             posts.push(doc);
         });
         return posts;
+    }
+
+    async getAllComments(postId) {
+        let post = await this.getPost(postId);
+        return post[0].comments;
+    }
+
+    async getComment(postId, commentId) {
+        let post = await this.getAllPosts({ '_id': ObjectId(postId) });
+        for (let i = 0; i < post[0].comments.length; i++) {
+            if (post[0].comments[i]._id.toString() === commentId.toString()) {
+                return post[0].comments[i];
+            }
+        }
+        return null;
     }
 
     async findUsername(username) {
