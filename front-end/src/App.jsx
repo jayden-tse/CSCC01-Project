@@ -126,8 +126,8 @@ class App extends React.Component {
               redirectToProfile={this.redirectToProfile}
             />
             <TheZonePage
+              currentUser={this.state.currentUser}
               redirectToDebate={this.redirectToDebate}
-              redirectToOpenCourt={this.redirectToOpenCourt}
               redirectToPicksAndPredictions={this.redirectToPicksAndPredictions}
               redirectToTrivia={this.redirectToTrivia}
             />

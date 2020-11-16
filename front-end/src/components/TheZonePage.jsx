@@ -4,17 +4,16 @@ import TheZone from '../components/theZone/TheZone';
 // needed for the page
 
 class TheZonePage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   
   render() {
     return (
       <div>
-        <TheZone redirectToDebate={this.props.redirectToDebate}
+        <TheZone
+          redirectToDebate={this.props.redirectToDebate}
           redirectToOpenCourt={this.props.redirectToOpenCourt}
           redirectToPicksAndPredictions={this.props.redirectToPicksAndPredictions}
-          redirectToTrivia={this.props.redirectToTrivia}/>
+          redirectToTrivia={this.props.redirectToTrivia}
+          currentUser={this.props.currentUser}/>
       </div>
     )
   }

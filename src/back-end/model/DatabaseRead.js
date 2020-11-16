@@ -25,14 +25,16 @@ passport.use(new LocalStrategy(
             });
     }
 ));
-passport.serializeUser(function(user, done) {
-    done(null, user.username);
+passport.serializeUser(function (user, done) {
+  done(null, user.username);
 });
+
 passport.deserializeUser(function(username, done) {
     done(null, mongoConnect.getDBCollection(USERS).findOne({ "username": username }));
 });
 
 class DatabaseRead {
+
 
     async getProfile(req) {
         let username = { "username": req.user }
@@ -66,18 +68,36 @@ class DatabaseRead {
         const posts = [];
         const cursor = await mongoConnect.getDBCollection(POSTS).find(req);
         await cursor.forEach(function(doc) {
-            posts.push(doc);
+            posts.push(doc._id);
         });
         return posts;
     }
 
     async getPost(req) {
         const posts = [];
-        const cursor = await mongoConnect.getDBCollection(POSTS).find({ "_id": ObjectId(req) });
+        const cursor = await mongoConnect.getDBCollection(POSTS).find({
+            _id: ObjectId(req)
+        });
         await cursor.forEach(function(doc) {
             posts.push(doc);
         });
         return posts;
+    }
+
+    async getAllComments(postId) {
+        let post = await this.getPost(postId);
+        return post[0].comments;
+    }
+
+    async getComment(postId, commentId) {
+        let postid = { "_id": ObjectId(postId) };
+        let post = await mongoConnect.getDBCollection(POSTS).findOne(postid);
+        for (let i = 0; i < post.comments.length; i++) {
+            if (post.comments[i]._id.toString() === commentId.toString()) {
+                return post.comments[i];
+            }
+        }
+        return null;
     }
 
     async findUsername(username) {
@@ -92,10 +112,19 @@ class DatabaseRead {
         return await mongoConnect.getDBCollection(USERS).findOne({ "phonenum": num });
     }
 
-    passwordChecker(password, hashedPassword) {
-        let state = bcrypt.compareSync(password, hashedPassword);
-        return state
-    }
+
+  async findEmail(email) {
+    return await mongoConnect.getDBCollection("Users").findOne({ "email": email });
+  }
+
+  async findPhoneNum(num) {
+    return await mongoConnect.getDBCollection("Users").findOne({ "phonenum": num });
+  }
+
+  passwordChecker(password, hashedPassword) {
+    let state = bcrypt.compareSync(password, hashedPassword);
+    return state
+  }
 }
 
 module.exports = DatabaseRead;
