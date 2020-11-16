@@ -231,21 +231,51 @@ componentDidUpdate(prevProps) {
           //if successful, change field in state based on database
           let tempLinks = [...this.state.Social];  // copy social
           tempLinks[0] = res.text;      // set wanted link in state
-          console.log(tempLinks);
           //copy array into state
           this.setState({ [`${SOCIAL}`]: [...tempLinks],
                           [`${SOCIAL}${EDIT}`]: [...tempLinks],
                           [`${SOCIAL}${MODE}`]: VIEW });
-      } else {
-          throw new Error(`Unsuccessful update to ${SOCIAL}`);
-      }
-  }).catch((error) => {
+        } else {
+            throw new Error(`Unsuccessful update to ${SOCIAL}`);
+        }
+    }).catch((error) => {
       //unsuccessful, therefore reset
       this.GenericHandleCancel(SOCIAL);
-  });
+    });
   // ----------Twitter link-----------
-
+    calls[SOCIAL][1](this.state[`${[SOCIAL][0]}${EDIT}`][1]).then((res) => {
+      if(res.success){
+          //if successful, change field in state based on database
+          let tempLinks = [...this.state.Social];  // copy social
+          tempLinks[1] = res.text;      // set wanted link in state
+          //copy array into state
+          this.setState({ [`${SOCIAL}`]: [...tempLinks],
+                          [`${SOCIAL}${EDIT}`]: [...tempLinks],
+                          [`${SOCIAL}${MODE}`]: VIEW });
+        } else {
+            throw new Error(`Unsuccessful update to ${SOCIAL}`);
+        }
+    }).catch((error) => {
+      //unsuccessful, therefore reset
+      this.GenericHandleCancel(SOCIAL);
+    });
   // -----------Instagram link---------
+    calls[SOCIAL][2](this.state[`${[SOCIAL][0]}${EDIT}`][2]).then((res) => {
+        if(res.success){
+            //if successful, change field in state based on database
+            let tempLinks = [...this.state.Social];  // copy social
+            tempLinks[2] = res.text;      // set wanted link in state
+            //copy array into state
+            this.setState({ [`${SOCIAL}`]: [...tempLinks],
+                            [`${SOCIAL}${EDIT}`]: [...tempLinks],
+                            [`${SOCIAL}${MODE}`]: VIEW });
+        } else {
+            throw new Error(`Unsuccessful update to ${SOCIAL}`);
+        }
+    }).catch((error) => {
+        //unsuccessful, therefore reset
+        this.GenericHandleCancel(SOCIAL);
+    });
     // this.setState({ Social: this.state.SocialEdit });
     // this.setState({ SocialMode: VIEW });
   }
