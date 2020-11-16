@@ -1,12 +1,15 @@
 import React from "react";
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import { createPost } from '../../api/TheZoneCalls.js';
 
 class TheZoneCreatePost extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
       title: "",
-      body: "" 
+      body: "",
+      date: new Date(),
+      error: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,13 +23,27 @@ class TheZoneCreatePost extends React.Component {
   // and update PostList on success add to re-render the comments
   handleSubmit() {
     if (this.state.title !== "" && this.state.body !== "") {
-      // if response 200 then add post id returned from api, 
-      // using true condition for now since we dont have api yet
-      if (true) {
-        // placeholder post id
-        this.props.addPost(111111);
-      }
-      this.setState({ title:"", body:"" })
+      // create post with the following parameters
+      // content of the post stored in state
+      createPost(
+        this.state.title, this.state.body
+      ).then((response) => {
+        // if response ok then create post on front end and clear the inputs
+        if (response.ok) {
+          // dummy post id
+          this.props.addPost();
+          this.setState({ title: "", body: "" })
+        // else set error to true
+        } else {
+          this.setState({ error: true });
+        }
+      }) 
+        .catch((error) => {
+        // for debugging
+        console.log(error);
+        console.log('Error with response');
+        this.setState({ error: true });
+      });
     }
   }
   

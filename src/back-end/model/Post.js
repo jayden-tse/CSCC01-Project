@@ -5,9 +5,9 @@ class Post {
         this.content = content;
         this.agree = agree; // # of users who agreed
         this.disagree = disagree; // # of users who disagreed
-        this.comments = comments;
         this.usersagreed = usersagreed
         this.usersdisagreed = usersdisagreed;
+        this.comments = comments;
     }
 }
 
