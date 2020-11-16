@@ -167,8 +167,8 @@ async function fetchJson(url, options){
 
 async function fetchText(url, options){
     //handle calls that return text rather than json
-    console.log(url);
-    console.log(`${options}`);
+    // console.log(url);
+    // console.log(options);
     return await fetch(url, options)
       .then(async(res) => {
       const status = statusCatcher(res.status);

@@ -249,8 +249,8 @@ exports.profile_update_links_facebook_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let link = await dbUpdate.updateSocialMediaLink(req.session.passport, 'facebook', req.body.links);
-            res.status(200).send({ link }); // OK
+            let link = await dbUpdate.updateSocialMediaLink(req.session.passport, 'facebook', req.body['facebook']);
+            res.status(200).send( link ); // OK
         } catch {
             res.status(500).send(WRITE_FAILED); // Internal server error
         }
@@ -267,8 +267,8 @@ exports.profile_update_links_instagram_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let link = await dbUpdate.updateSocialMediaLink(req.session.passport, 'instagram', req.body.links);
-            res.status(200).send({ link }); // OK
+            let link = await dbUpdate.updateSocialMediaLink(req.session.passport, 'instagram', req.body['instagram']);
+            res.status(200).send( link ); // OK
         } catch {
             res.status(500).send(WRITE_FAILED); // Internal server error
         }
@@ -285,8 +285,8 @@ exports.profile_update_links_twitter_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let link = await dbUpdate.updateSocialMediaLink(req.session.passport, 'twitter', req.body.links);
-            res.status(200).send({ link }); // OK
+            let link = await dbUpdate.updateSocialMediaLink(req.session.passport, 'twitter', req.body['twitter']);
+            res.status(200).send( link ); // OK
         } catch {
             res.status(500).send(WRITE_FAILED); // Internal server error
         }

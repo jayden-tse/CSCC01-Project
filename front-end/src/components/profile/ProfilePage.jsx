@@ -74,6 +74,9 @@ class ProfilePage extends Component {
     this.SocialHandleSave = this.SocialHandleSave.bind(this);
     this.SocialHandleChange = this.SocialHandleChange.bind(this);
     this.RadarHandleFollow = this.RadarHandleFollow.bind(this);
+
+    //helper functions that require bind
+    this.recieveSocial = this.recieveSocial.bind(this);
 }
 
 updateCurrentFollowing(){
@@ -127,16 +130,8 @@ updateShownUser(){
             Status: profile.status,
             StatusEdit: profile.status,
             StatusMode: VIEW,
-            Social: [
-                'https://www.facebook.com',
-                'https://twitter.com',
-                'https://www.instagram.com/',
-            ],
-            SocialEdit: [
-                'https://www.facebook.com',
-                'https://twitter.com',
-                'https://www.instagram.com/',
-            ],
+            Social: ["","",""],
+            SocialEdit: ["","",""],
             SocialMode: VIEW,
             WantedFollowList: profile.tracker
         });
@@ -232,14 +227,15 @@ componentDidUpdate(prevProps) {
     //if successful, change message in state and database
     // ------Facebook link---------
     calls[SOCIAL][0](this.state[`${[SOCIAL][0]}${EDIT}`][0]).then((res) => {
-      console.log(`${calls[SOCIAL][0]}`);                      // the function
-      console.log(this.state[`${[SOCIAL][0]}${EDIT}`][0]);     // the input from user
-      // console.log(calls[SOCIAL][0](this.state[`${[SOCIAL][0]}${EDIT}`]));    //promise
       if(res.success){
           //if successful, change field in state based on database
-          this.setState({ [SOCIAL]: res.text,
-                          [SOCIAL`${EDIT}`]: res.text,
-                          [SOCIAL`${MODE}`]: VIEW });
+          let tempLinks = [...this.state.Social];  // copy social
+          tempLinks[0] = res.text;      // set wanted link in state
+          console.log(tempLinks);
+          //copy array into state
+          this.setState({ [`${SOCIAL}`]: [...tempLinks],
+                          [`${SOCIAL}${EDIT}`]: [...tempLinks],
+                          [`${SOCIAL}${MODE}`]: VIEW });
       } else {
           throw new Error(`Unsuccessful update to ${SOCIAL}`);
       }
