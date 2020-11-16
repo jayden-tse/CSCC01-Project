@@ -85,8 +85,8 @@ class DatabaseUpdate {
 
     async updateVote(username, vote, postId) {
         // updates the list of voters and number of likes/dislikes.
-        let doc = await dbRead.getPost(postId)
-        let postDoc = doc[0];
+      let post = { "_id": ObjectId(postId) };
+      let postDoc = await mongoConnect.getDBCollection(POSTS).findOne(post);
         if (postDoc !== null) {
             let agreed = postDoc.usersagreed; // should be an array of usernames (string)
             let disagreed = postDoc.usersdisagreed;
@@ -140,6 +140,7 @@ class DatabaseUpdate {
         }
         return null;
     }
+
 
     async updateComment(postId, commentId, type, content) {
         let query = {

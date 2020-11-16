@@ -3,14 +3,10 @@
 import React from "react";
 import "./TheZone.css";
 import ScoreTicker from './ScoreTicker';
-
 import TheZonePostList from './TheZonePostList';
 
 
 class TheZone extends React.Component{
-  constructor(props) {
-      super(props);
-  }
 
   render() {
     return (
@@ -20,7 +16,7 @@ class TheZone extends React.Component{
           <button className="redirect" onClick={this.props.redirectToPicksAndPredictions}>Picks & Predictions</button>
           <button className="redirect" onClick={this.props.redirectToDebate}>Debate</button>
         </div>
-        <TheZonePostList />
+        <TheZonePostList currentUser={this.props.currentUser}/>
       </div>
     )
   }
