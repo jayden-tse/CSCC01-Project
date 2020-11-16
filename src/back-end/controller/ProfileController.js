@@ -230,7 +230,7 @@ exports.profile_update_tracker_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let tracker = await dbUpdate.updateUserTracker(req.session.passport);
+            let tracker = await dbUpdate.updateUserTracker(req.body.username);
             res.status(200).send({ tracker }); // OK
         } catch (e) {
             console.error(e);

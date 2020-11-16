@@ -15,7 +15,8 @@ const
     UPDATELINKINSTAGRAM = '/profile/update/links/instagram',
     //tracker
     ADDTRACKER = '/profile/add/tracker',
-    DELETETRACKER = '/profile/delete/tracker';
+    DELETETRACKER = '/profile/delete/tracker',
+    UPDATETRACKER = '/profile/update/tracker';
 
 //ensure status fields have no overlap with profile in db
 const statusDef = { success: false, reason: '' };
@@ -55,6 +56,12 @@ export async function deleteProfileTracker(username){
     let newUrl = new URL(BASE_URL + DELETETRACKER);
     const params = { username: username };
     return await fetchText(newUrl, fetchOptionsWithBody(DELETE, params));
+}
+
+export async function updateProfileTracker(username){
+    let newUrl = new URL(BASE_URL + UPDATETRACKER);
+    const params = { username: username };
+    return await fetchJson(newUrl, fetchOptionsWithBody(PUT, params));
 }
 
 /*Social*/
