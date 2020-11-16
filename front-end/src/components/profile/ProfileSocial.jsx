@@ -62,7 +62,7 @@ function SocialLink(props) {
 
 function SocialEditable(props) {
   return (
-    <form className="ProfileSocialEditable">
+    <form className="ProfileSocialEditable" onSubmit={event => event.preventDefault()}>
       <input
         className="ProfileSociableEditableText"
         onChange={(e) => props.onChange(e, props.id)}
