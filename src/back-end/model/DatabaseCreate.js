@@ -7,6 +7,8 @@ const saltRounds = 10;
 const Profile = require('./Profile.js');
 const Post = require('./Post.js');
 const Comment = require('./Comment.js');
+const Debate = require('./Debate.js');
+const Analysis = require('./Analysis.js')
 const ObjectId = require('mongodb').ObjectID;
 
 const DatabaseRead = require('./DatabaseRead.js');
@@ -81,6 +83,37 @@ class DatabaseCreate {
         );
         return result;
     }
+
+    // Debate
+    async addDebateQuestion(tier, question, start, end) {
+        // Only for creating the questions, normal users shouldn't have access to this
+        let debate = new Debate(tier, question, start, end);
+        let query = { "tier": tier }
+        let result = await mongoConnect.getDBCollection(DEBATES).updateOne(
+            query, {
+                $push: {
+                    [tier]: debate
+                }
+            }, {
+                upsert: true
+            }); // upsert creates the debate tier if it doesn't exist (it should after the first few inserts)
+        return result;
+    }
+
+    async addAnalysis(username, tier, question, answer) {
+        let analysis = new Analysis(username, tier, question, answer, new Date());
+        let query = { "tier": tier }
+        let result = await mongoConnect.getDBCollection(ANALYSES).updateOne(
+            query, {
+                $push: {
+                    [tier]: analysis
+                }
+            }, {
+                upsert: true
+            }); // upsert creates the debate tier if it doesn't exist (it should after the first few inserts)
+        return result;
+    }
+
 }
 
 module.exports = DatabaseCreate;

@@ -25,8 +25,8 @@ passport.use(new LocalStrategy(
             });
     }
 ));
-passport.serializeUser(function (user, done) {
-  done(null, user.username);
+passport.serializeUser(function(user, done) {
+    done(null, user.username);
 });
 
 passport.deserializeUser(function(username, done) {
@@ -113,18 +113,18 @@ class DatabaseRead {
     }
 
 
-  async findEmail(email) {
-    return await mongoConnect.getDBCollection("Users").findOne({ "email": email });
-  }
+    async findEmail(email) {
+        return await mongoConnect.getDBCollection("Users").findOne({ "email": email });
+    }
 
-  async findPhoneNum(num) {
-    return await mongoConnect.getDBCollection("Users").findOne({ "phonenum": num });
-  }
+    async findPhoneNum(num) {
+        return await mongoConnect.getDBCollection("Users").findOne({ "phonenum": num });
+    }
 
-  passwordChecker(password, hashedPassword) {
-    let state = bcrypt.compareSync(password, hashedPassword);
-    return state
-  }
+    passwordChecker(password, hashedPassword) {
+        let state = bcrypt.compareSync(password, hashedPassword);
+        return state
+    }
 }
 
 module.exports = DatabaseRead;
