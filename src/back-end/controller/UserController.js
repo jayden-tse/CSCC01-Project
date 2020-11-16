@@ -47,6 +47,10 @@ exports.user_check_phonenum_get = async function (req, res) {
 };
 
 exports.user_update_password_put = async function (req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    });
     if (req.user) {
         // user is authenticated
         try {
@@ -62,6 +66,10 @@ exports.user_update_password_put = async function (req, res) {
 };
 
 exports.user_update_email_put = async function (req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    });
     if (req.user) {
         // user is authenticated
         try {
@@ -81,6 +89,10 @@ exports.user_update_email_put = async function (req, res) {
 };
 
 exports.user_update_phonenum_put = async function (req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    });
     if (req.user) {
         // user is authenticated
         try {
