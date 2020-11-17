@@ -1,13 +1,9 @@
 var mongoConnect = require('../../mongoConnect');
-const { all } = require('../../routes');
-const Comment = require('./Comment.js')
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
 const { USERS, POSTS } = require('./DatabaseHelper');
 const DatabaseRead = require('./DatabaseRead');
-const DatabaseCreate = require('./DatabaseCreate');
 const dbRead = new DatabaseRead();
-const dbCreate = new DatabaseCreate();
 class DatabaseUpdate {
 
     async updateUserTracker(userToUpdate) {
@@ -107,8 +103,8 @@ class DatabaseUpdate {
 
     async updateVote(username, vote, postId) {
         // updates the list of voters and number of likes/dislikes.
-      let post = { "_id": ObjectId(postId) };
-      let postDoc = await mongoConnect.getDBCollection(POSTS).findOne(post);
+        let post = { "_id": ObjectId(postId) };
+        let postDoc = await mongoConnect.getDBCollection(POSTS).findOne(post);
         if (postDoc !== null) {
             let agreed = postDoc.usersagreed; // should be an array of usernames (string)
             let disagreed = postDoc.usersdisagreed;
