@@ -111,8 +111,8 @@ class DatabaseCreate {
         let result = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "question": question });
         if (result === null) {
             let newQuestion = new Question(question, answer, other);
-            await mongoConnect.getDBCollection(QUESTIONS).insertOne(newQuestion);
-            return result;
+            let newResult = await mongoConnect.getDBCollection(QUESTIONS).insertOne(newQuestion);
+            return newResult;
         } else {
             return null;
         }
