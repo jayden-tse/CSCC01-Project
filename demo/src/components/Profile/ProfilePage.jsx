@@ -3,6 +3,7 @@ import ProfileAbout from "./ProfileAbout";
 import ProfileACS from "./ProfileACS";
 import ProfilePicture from "./ProfilePicture";
 import ProfileStatus from "./ProfileStatus";
+import "./ProfilePage.css";
 
 class ProfilePage extends Component {
   constructor(props) {

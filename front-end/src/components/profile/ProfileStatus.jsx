@@ -1,57 +1,20 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import './ProfileStatus.css';
 
-const VIEW = "View",
-  EDIT = "Edit",
-  SAVE = "Save",
-  CANCEL = "Cancel";
+const VIEW = 'View',
+  EDIT = 'Edit',
+  SAVE = 'Save',
+  CANCEL = 'Cancel';
 
 class ProfileStatus extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      message: "Status Message",
-      editMessage: "Status Message",
-      mode: VIEW,
-    };
-    this.handleEdit = this.handleEdit.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleEdit() {
-    console.log("Profile Status edit");
-    this.setState({ mode: EDIT });
-  }
-
-  handleSave() {
-    console.log("Profile Status save");
-    //change message in database
-
-    //if successful, change message in state
-    this.setState({ message: this.state.editMessage });
-
-    this.setState({ mode: VIEW });
-  }
-
-  handleCancel() {
-    console.log("Profile Status cancel");
-
-    //reset editMessage
-    this.setState({ editMessage: this.state.message });
-
-    this.setState({ mode: VIEW });
-  }
-
-  handleChange(e) {
-    this.setState({ editMessage: e.target.value });
-  }
 
   renderView() {
     return (
       <React.Fragment>
-        <ProfileStatusView message={this.state.message} />
-        <ProfileStatusEditButton name="Edit" onClick={this.handleEdit} />
+        <ProfileStatusView message={this.props.message} />
+        {this.props.editable && (
+          <ProfileStatusEditButton name={EDIT} onClick={this.props.handleEdit} />
+        )}
       </React.Fragment>
     );
   }
@@ -59,10 +22,10 @@ class ProfileStatus extends Component {
   renderEdit() {
     return (
       <ProfileStatusEditMode
-        message={this.state.message}
-        onSave={this.handleSave}
-        onCancel={this.handleCancel}
-        onChange={this.handleChange}
+        message={this.props.message}
+        onSave={this.props.handleSave}
+        onCancel={this.props.handleCancel}
+        onChange={this.props.handleChange}
       />
     );
   }
@@ -70,10 +33,15 @@ class ProfileStatus extends Component {
   render() {
     return (
       <div className="ProfileStatus">
-        {this.state.mode === VIEW ? this.renderView() : this.renderEdit()}
+        <ProfileStatusHeader message="Status:" />
+        {this.props.mode === VIEW ? this.renderView() : this.renderEdit()}
       </div>
     );
   }
+}
+
+function ProfileStatusHeader(props) {
+  return <label className="ProfileStatusHeader">{props.message}</label>;
 }
 
 function ProfileStatusView(props) {
@@ -95,7 +63,6 @@ function ProfileStatusEditMode(props) {
         defaultValue={props.message}
         onChange={props.onChange}
       />
-      <br />
       <button
         type="button"
         className="ProfileStatusSave"

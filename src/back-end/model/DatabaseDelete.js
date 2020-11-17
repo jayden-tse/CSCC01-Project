@@ -1,17 +1,17 @@
 var mongoConnect = require('../../mongoConnect');
 
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, QUESTIONS } = require('./DatabaseHelper');
 
 class DatabaseDelete {
 
-    async removeUserFromTracker(req, username) {
-        let user = { 'username': req.user }
-        let result = await mongoConnect.getDBCollection(USERS).updateOne(user, {
+    async removeUserFromTracker(req, removeUsername) {
+        let username = { 'username': req.user }
+        let result = await mongoConnect.getDBCollection(USERS).updateOne(username, {
             $pull: {
-                "profile.tracker": username
+                "profile.tracker": { "username": removeUsername }
             }
         });
-        return result;
+        return result.modifiedCount;
     }
 
     async deletePost(post) {
@@ -27,6 +27,11 @@ class DatabaseDelete {
             }
         })
         return result;
+    }
+
+    async deleteQuestion(question) {
+        let result = await mongoConnect.getDBCollection(QUESTIONS).deleteOne({ "question": question });
+        return result.deletedCount;
     }
 }
 

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./ProfileACS.css";
 
 class ProfileACS extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ function ACSTier(ACS) {
 }
 
 function ProfileACSLabel(props) {
-  return <label className="ACSlabel">{props.message}</label>;
+  return <label className="ProfileACSLabel">{props.message}</label>;
 }
 
 export default ProfileACS;
