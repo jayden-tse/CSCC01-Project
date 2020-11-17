@@ -9,15 +9,15 @@ const dbUpdate = new DatabaseUpdate();
 const dbDelete = new DatabaseDelete();
 
 exports.the_zone_post_put = async function(req, res) {
-	  res.set({
-	    'Access-Control-Allow-Credentials': true,
-	    'Access-Control-Allow-Origin': 'http://localhost:3000'
-	  })
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    })
     if (req.user) {
         // user authenticated
         // user, date, content, agree, disagree, comments
         try {
-            await dbCreate.createPost(req.session.passport.user, new Date(), req.body.content, 0, 0, [], [], []);
+            await dbCreate.createPost(req.session.passport.user, new Date(), req.body.content, 0, 0, [], [], []); // will throw an exception if it fails
             res.sendStatus(200);
         } catch (e) {
             console.log(e);
@@ -30,14 +30,18 @@ exports.the_zone_post_put = async function(req, res) {
 
 
 exports.the_zone_post_get = async function(req, res) {
-	  res.set({
-	    'Access-Control-Allow-Credentials': true,
-	    'Access-Control-Allow-Origin': 'http://localhost:3000'
-	  })
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    })
     if (req.user) {
         try {
-            post = await dbRead.getPost(req.query.post);
-            res.status(200).json(post[0]);
+            let post = await dbRead.getPost(req.query.post);
+            if (post[0]) {
+                res.status(200).json(post[0]);
+            } else {
+                res.status(404).send(NOT_FOUND);
+            }
         } catch (e) {
             console.log(e);
             res.status(500).send(SEARCH_FAILED);
@@ -48,10 +52,10 @@ exports.the_zone_post_get = async function(req, res) {
 };
 
 exports.the_zone_all_posts_get = async function(req, res) {
-	  res.set({
-	    'Access-Control-Allow-Credentials': true,
-	    'Access-Control-Allow-Origin': 'http://localhost:3000'
-	  })
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    })
     if (req.user) {
         try {
             res.status(200).json(await dbRead.getAllPosts({}));
@@ -78,17 +82,19 @@ exports.the_zone_post_comments_get = async function(req, res) {
 }
 
 exports.the_zone_update_post_put = async function(req, res) {
-	  res.set({
-	    'Access-Control-Allow-Credentials': true,
-	    'Access-Control-Allow-Origin': 'http://localhost:3000'
-	  })
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    })
     if (req.user) {
         try {
             let result = await dbUpdate.updatePost(req.body.postId, "content.text", req.body.message); // need to change to query/param
-            if (result !== null && result.modifiedCount > 0) {
+            if (result && result.modifiedCount > 0) {
                 res.sendStatus(200);
-            } else {
+            } else if (result && result.modifiedCount == 0) {
                 res.status(404).send(NOT_FOUND);
+            } else {
+                res.status(400).send(BAD_INPUT);
             }
         } catch (e) {
             console.log(e);
@@ -100,10 +106,10 @@ exports.the_zone_update_post_put = async function(req, res) {
 };
 
 exports.the_zone_update_vote_put = async function(req, res) {
-	  res.set({
-	    'Access-Control-Allow-Credentials': true,
-	    'Access-Control-Allow-Origin': 'http://localhost:3000'
-	  })
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    })
     if (req.user) {
         try {
             // update likes here
@@ -111,6 +117,8 @@ exports.the_zone_update_vote_put = async function(req, res) {
             if (result[1] && result[1].modifiedCount > 0) {
                 total = result[0];
                 res.status(200).json({ totalVotes: total })
+            } else if (result[1] && result[1].modifiedCount == 0) {
+                res.status(404).send(NOT_FOUND);
             } else {
                 res.status(400).send(BAD_INPUT);
             }
@@ -124,17 +132,19 @@ exports.the_zone_update_vote_put = async function(req, res) {
 };
 
 exports.the_zone_comment_put = async function(req, res) {
-	  res.set({
-	    'Access-Control-Allow-Credentials': true,
-	    'Access-Control-Allow-Origin': 'http://localhost:3000'
-	  })
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    })
     if (req.user) {
         try {
             let result = await dbCreate.createComment(req.body.post, req.session.passport.user, new Date(), req.body.text, 0, 0, [], []);
             if (result && result.matchedCount > 0) {
                 res.sendStatus(200); // OK
-            } else {
+            } else if (result && result.modifiedCount == 0) {
                 res.status(404).send(NOT_FOUND);
+            } else {
+                res.status(400).send(BAD_INPUT);
             }
         } catch (e) {
             console.log(e);
@@ -147,10 +157,10 @@ exports.the_zone_comment_put = async function(req, res) {
 
 
 exports.the_zone_update_comment_vote_put = async function(req, res) {
-	res.set({
-	    'Access-Control-Allow-Credentials': true,
-	    'Access-Control-Allow-Origin': 'http://localhost:3000'
-	})
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    })
     if (req.user) {
         try {
             // update agree for comments here
@@ -158,6 +168,8 @@ exports.the_zone_update_comment_vote_put = async function(req, res) {
             if (result[1] && result[1].modifiedCount > 0) {
                 total = result[0];
                 res.status(200).send({ totalVotes: total })
+            } else if (result[1] && result[1].modifiedCount == 0) {
+                res.status(404).send(NOT_FOUND);
             } else {
                 res.status(400).send(BAD_INPUT);
             }
@@ -171,11 +183,11 @@ exports.the_zone_update_comment_vote_put = async function(req, res) {
 };
 
 
-exports.the_zone_post_del = async function (req, res) {
-  res.set({
-    'Access-Control-Allow-Credentials': true,
-    'Access-Control-Allow-Origin': 'http://localhost:3000'
-  })
+exports.the_zone_post_del = async function(req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    })
     if (req.user) {
         try { // check owner of post
             let postId = req.body.postId;
@@ -186,11 +198,13 @@ exports.the_zone_post_del = async function (req, res) {
                 let result = await dbDelete.deletePost(post[0]);
                 if (result && result.deletedCount > 0) {
                     res.sendStatus(200);
+                } else if (result && result.modifiedCount == 0) {
+                    res.status(404).send(NOT_FOUND);
                 } else {
                     res.status(400).send(BAD_INPUT);
                 }
             } else {
-                res.status(400).send(NOT_AUTHENTICATED);
+                res.status(401).send(NOT_AUTHENTICATED);
             }
         } catch (e) {
             console.log(e);
@@ -201,12 +215,12 @@ exports.the_zone_post_del = async function (req, res) {
     }
 };
 
-exports.the_zone_comment_del = async function (req, res) {
-  res.set({
-    'Access-Control-Allow-Credentials': true,
-    'Access-Control-Allow-Origin': 'http://localhost:3000'
-  })
-    // might be a good idea to refactor all controllers to throw errors and catch in index.js instead to prevent this
+exports.the_zone_comment_del = async function(req, res) {
+    res.set({
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        })
+        // might be a good idea to refactor all controllers to throw errors and catch in index.js instead to prevent this
     if (req.user) {
         try {
             let post = await dbRead.getPost(req.body.postId);
@@ -220,6 +234,8 @@ exports.the_zone_comment_del = async function (req, res) {
                     let result = await dbDelete.deleteComment(post, comment);
                     if (result && result.modifiedCount > 0) {
                         res.sendStatus(200);
+                    } else if (result && result.modifiedCount == 0) {
+                        res.status(404).send(NOT_FOUND);
                     } else {
                         res.status(400).send(BAD_INPUT);
                     }
