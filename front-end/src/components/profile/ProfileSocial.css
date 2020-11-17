@@ -1,0 +1,29 @@
+.ProfileSocialClickable {
+    font-size: 22px;
+    color:#86C232;
+  }
+  
+.ProfileSocialEditableMessage {
+    /* height: 290px; */
+    width: 98%;
+    resize: none;
+    position: relative;
+  }
+
+.ProfileSocialEdit{
+    margin-top:15px;
+}
+
+.ProfileSocialSave,
+.ProfileSocialCancel {
+    margin-top: 37px;
+}
+
+.ProfileSocialEdit,
+.ProfileSocialSave,
+.ProfileSocialCancel {
+  width: fit-content;
+  display: block;
+  position: relative;
+  float: right;
+}
