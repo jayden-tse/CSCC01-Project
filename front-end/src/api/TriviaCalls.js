@@ -29,7 +29,7 @@ export async function getAnswer(question) {
         question: question
     };
     const options = {
-        method: 'PUT',
+        method: 'GET',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
@@ -133,11 +133,11 @@ export async function getAllTriviaQuestions() {
 }
 
 // Update a trivia question
-export async function updateQuestion(id, question, answer, other) {
+export async function updateQuestion(questionid, question, answer, other) {
     const newUrl = new URL(BASE_URL + '/trivia/update/question');
     // TODO: Change this when I see how a trivia question is stored and updated in backend
     const params = {
-        questionid: id,
+        questionid: questionid,
         question: question,
         answer: answer,
         other: other
