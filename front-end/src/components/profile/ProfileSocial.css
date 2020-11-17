@@ -1,17 +1,22 @@
 .ProfileSocialClickable {
     font-size: 22px;
+    width: 350px;
     color:#86C232;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
   }
   
 .ProfileSocialEditableMessage {
-    /* height: 290px; */
     width: 98%;
     resize: none;
     position: relative;
   }
 
 .ProfileSocialEdit{
-    margin-top:15px;
+    margin-top:4px;
 }
 
 .ProfileSocialSave,
