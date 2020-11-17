@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 var passport = require('passport');
 
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, QUESTIONS } = require('./DatabaseHelper');
 
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
@@ -26,10 +26,10 @@ passport.use(new LocalStrategy(
     }
 ));
 passport.serializeUser(function (user, done) {
-  done(null, user.username);
+    done(null, user.username);
 });
 
-passport.deserializeUser(function(username, done) {
+passport.deserializeUser(function (username, done) {
     done(null, mongoConnect.getDBCollection(USERS).findOne({ "username": username }));
 });
 
@@ -94,6 +94,31 @@ class DatabaseRead {
             }
         }
         return null;
+    }
+
+    async getQuestions10() {
+        let questions = await this.getQuestionsAll();
+        let questions10 = new Set();
+        while (questions10.size < 10) {
+            let rand = Math.floor(Math.random() * questions.length);
+            questions10.add(questions[rand]);
+        }
+
+        return Array.from(questions10);
+    }
+
+    async getQuestionsAll() {
+        let questions = [];
+        let cursor = await mongoConnect.getDBCollection(QUESTIONS).find();
+        await cursor.forEach(function (question) {
+            questions.push(question);
+        });
+        return questions;
+    }
+
+    async getAnswer(question) {
+        let getQuestion = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "question": question });
+        return getQuestion.answer;
     }
 
     async findUsername(username) {

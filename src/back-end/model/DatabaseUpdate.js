@@ -1,13 +1,10 @@
 var mongoConnect = require('../../mongoConnect');
-const { all } = require('../../routes');
-const Comment = require('./Comment.js')
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, QUESTIONS } = require('./DatabaseHelper');
 const DatabaseRead = require('./DatabaseRead');
-const DatabaseCreate = require('./DatabaseCreate');
 const dbRead = new DatabaseRead();
-const dbCreate = new DatabaseCreate();
+
 class DatabaseUpdate {
 
     async updateUserTracker(req) {
@@ -195,7 +192,7 @@ class DatabaseUpdate {
             // nonempty post
             let comment = await dbRead.getComment(postId, commentId);
             if (comment) {
-                // nonempty list of comments was found and comment was found
+                // nonempty list of news was found and comment was found
                 // start modifying comment likes/dislikes etc
                 let agreed = comment.usersagreed;
                 let disagreed = comment.usersdisagreed;
@@ -254,5 +251,20 @@ class DatabaseUpdate {
         }
     }
 
+    async updateQuestion(id, question, answer, other) {
+        let result = await mongoConnect.getDBCollection(QUESTIONS).updateOne({ "_id": ObjectId(id) }, {
+            $set: {
+                "question": question,
+                "answer": answer,
+                "other": other
+            }
+        });
+        if (result.modifiedCount > 0) {
+            let updatedQuestion = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "_id": ObjectId(id) });
+            return updatedQuestion;
+        } else {
+            return null;
+        }
+    }
 }
 module.exports = DatabaseUpdate;
