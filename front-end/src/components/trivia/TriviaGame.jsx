@@ -4,12 +4,12 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import TriviaStart from './TriviaStart';
 
 const theme = createMuiTheme({
-    palette: {
-        type: 'dark',
-        primary: {
-            main: '#86C232'
-        },
-    }
+  palette: {
+    type: 'dark',
+    primary: {
+      main: '#86C232'
+    },
+  }
 });
 
 /**
