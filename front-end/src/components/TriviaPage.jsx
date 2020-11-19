@@ -1,14 +1,17 @@
 import React from 'react';
-// replace whatever is in render with components
-// needed for the page
+import TriviaGame from './trivia/TriviaGame';
+import './TriviaPage.css';
 
+/**
+ * The container for playing a Trivia game.
+ */
 class TriviaPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
   
   render() {
-    return<h1>Trivia</h1>
+    return <div className="TriviaPage"><TriviaGame/></div>;
   }
 }
 
