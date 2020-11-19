@@ -1,5 +1,5 @@
-<div align=”center”># SPORTCRED</div>
-# FINISHED
+# SPORTCRED
+## FINISHED
 ## Signup
 * **As a new user, I want to be able to create an account so that I can explore this app. 20
    * Name, email, phone number, gender, age, location
