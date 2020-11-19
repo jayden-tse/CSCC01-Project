@@ -9,10 +9,10 @@ const { USERS, POSTS } = require('./DatabaseHelper');
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
 passport.use(new LocalStrategy(
-    async function(username, password, done) {
+    async function (username, password, done) {
         Users = mongoConnect.getDBCollection(USERS);
         Users.findOne({ username: username },
-            function(err, user) {
+            function (err, user) {
                 if (err) { return done(err); }
                 if (!user) {
                     return done(null, false, { message: 'Incorrect username.' });
@@ -35,33 +35,29 @@ passport.deserializeUser(function(username, done) {
 
 class DatabaseRead {
 
-
-    async getProfile(req) {
-        let username = { "username": req.user }
-        let result = await mongoConnect.getDBCollection(USERS).findOne(username)
-        console.log(result.profile);
+    async getProfile(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
         return result.profile;
     }
 
-    async getPickHistory(req) {
-        let username = { "username": req.user }
-        let result = await mongoConnect.getDBCollection(USERS).findOne(username)
-        console.log(result.profile.picks);
+    async getPickHistory(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
         return result.profile.picks;
     }
 
-    async getTracker(req) {
-        let username = { "username": req.user }
-        let result = await mongoConnect.getDBCollection(USERS).findOne(username)
-        console.log(result.profile.tracker);
+    async getTracker(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
         return result.profile.tracker;
     }
 
-    async getProfilePicture(req) {
-        let username = { "username": req.user };
-        let result = await mongoConnect.getDBCollection(USERS).findOne(username);
-        console.log(result.profile.picture);
+    async getProfilePicture(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username });
         return result.profile.picture; // should be a URL
+    }
+
+    async getLinks(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
+        return result.profile.links;
     }
 
     async getAllPosts(req) {

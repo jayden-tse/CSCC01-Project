@@ -31,7 +31,7 @@ class DatabaseCreate {
         // Only store this user in the database if there exists no other accounts with
         // the same phone numbers and email.
         // default image
-        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 100);
+        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 200, {facebook: '', instagram: '', twitter: ''});
         user.profile = userProfile;
         let hashedPassword = this.passwordHasher(user.password);
         user.password = hashedPassword;
@@ -60,6 +60,30 @@ class DatabaseCreate {
         let salt = bcrypt.genSaltSync(saltRounds);
         let hashedPassword = bcrypt.hashSync(password, salt);
         return hashedPassword;
+    }
+
+    // Profile
+    async addMatchToHistory(req, match) {
+        let username = { 'username': req.user }
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
+            $addToSet: {
+                "profile.picks": match
+            }
+        });
+        let user = await mongoConnect.getDBCollection(USERS).findOne(username);
+        return user.profile.picks;
+    }
+
+    async addUserToTracker(req, addUsername) {
+        let username = { 'username': req.user }
+        let addUsernameResult = await mongoConnect.getDBCollection(USERS).findOne({ 'username': addUsername });
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
+            $addToSet: {
+                "profile.tracker": { "username": addUsername, "ACS": addUsernameResult.profile.ACS }
+            }
+        });
+        let user = await mongoConnect.getDBCollection(USERS).findOne(username);
+        return user.profile.tracker;
     }
 
     // the Zone
