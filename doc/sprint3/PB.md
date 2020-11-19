@@ -1,4 +1,4 @@
-﻿<div‌ ‌align=”center”># SPORTCRED</div>
+<div align=”center”># SPORTCRED</div>
 # FINISHED
 ## Signup
 * **As a new user, I want to be able to create an account so that I can explore this app. 20
