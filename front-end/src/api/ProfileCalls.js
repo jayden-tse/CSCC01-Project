@@ -6,6 +6,7 @@ const
     DELETE = 'DELETE',
     //get
     GETPROFILE = '/profile',
+    GETPROFILEPICTURE = '/profile/picture',
     //update
     UPDATEPICTURE = '/profile/update/picture',
     UPDATEABOUT = '/profile/update/about',
@@ -39,6 +40,13 @@ export async function updateUserAbout(about) {
 /*ACS*/
 
 /*Profile Picture*/
+export async function getUserPicture(username) {
+    let newUrl = new URL(BASE_URL + GETPROFILEPICTURE);
+    const params = { username: username };
+    newUrl.search = new URLSearchParams(params).toString();
+    return await fetchJson(newUrl, fetchOptionsGet());
+}
+
 export async function updateUserPicture(src) {
     let newUrl = new URL(BASE_URL + UPDATEPICTURE);
     const params = { picture: src };
