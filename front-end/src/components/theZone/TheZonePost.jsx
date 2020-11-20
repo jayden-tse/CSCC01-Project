@@ -3,7 +3,7 @@ import "./TheZonePost.css";
 import TheZoneCreateComment from "./TheZoneCreateComment";
 import TheZoneAgree from "./TheZoneAgree";
 import TheZoneComment from "./TheZoneComment";
-import { getPost, deletePost} from '../../api/TheZoneCalls';
+import { getPost, deletePost } from '../../api/TheZoneCalls';
 
 class TheZonePost extends React.Component {
   constructor(props) {
@@ -52,7 +52,7 @@ class TheZonePost extends React.Component {
         comments: commentList
       })
     })
-	}
+  }
 
 
   handleDelete() {
@@ -64,13 +64,13 @@ class TheZonePost extends React.Component {
         this.props.removePost();
       }
     })
-    .catch((error) => {
-      // for debugging
-      console.log(error);
-      console.log('Error with response');
-      this.setState({ error: true });
-    });
-	}
+      .catch((error) => {
+        // for debugging
+        console.log(error);
+        console.log('Error with response');
+        this.setState({ error: true });
+      });
+  }
 
   render() {
     let deleteButton = null;
@@ -80,37 +80,40 @@ class TheZonePost extends React.Component {
       deleteButton = <div></div>
     }
     return (
-      <div className="post">        
-        <div className="postHeader">
-          <TheZoneAgree postid={this.props.postid} mode="post" />
-          <div className="titleContainer">
-            <h1 className="title">{this.state.title}</h1>
-            <p>Posted by <span>{this.state.poster}</span> on <span>{this.state.date}</span></p>
+      <div>
+        <div className="postContainer">
+          <div className="postHeaderContainer">
+            <TheZoneAgree postid={this.props.postid} mode="post" />
+            <div className="titleContainer">
+              <h1 className="title">{this.state.title}</h1>
+              <p>Posted by <span>{this.state.poster}</span> on <span>{this.state.date}</span></p>
+            </div>
+          </div>
+          {deleteButton}
+          <div className="postContent">
+            <p>{this.state.body}</p>
+          </div>
+          <div className="commentsContainer">
+            {this.state.comments.map(
+              comment => <TheZoneComment
+                postid={this.props.postid}
+                commentid={comment._id}
+                agree={comment.agree}
+                disagree={comment.disagree}
+                username={comment.username}
+                date={comment.date}
+                text={comment.text}
+                removeComment={this.removeComment}
+                currentUser={this.props.currentUser}
+              />
+            )}
+            <TheZoneCreateComment
+              addComment={this.addComment}
+              postid={this.props.postid}
+            />
           </div>
         </div>
-        <p>{this.state.body}</p>
-        {deleteButton}
-        <div className="comment">
-          {this.state.comments.map(
-            comment => <TheZoneComment
-              key={comment._id.toString()}
-              postid={this.props.postid}
-              commentid={comment._id}
-              agree={comment.agree}
-              disagree={comment.disagree}
-              username={comment.username}
-              date={comment.date}
-              text={comment.text}
-              removeComment={this.removeComment}
-              currentUser={this.props.currentUser}
-            />
-            )}
-          <TheZoneCreateComment
-            addComment={this.addComment}
-            postid={this.props.postid}
-          />
-        </div>
-        
+
       </div>
     );
   }
