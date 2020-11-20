@@ -94,6 +94,7 @@ class TheZonePost extends React.Component {
             <p>{this.state.body}</p>
           </div>
           <div className="commentsContainer">
+            <h3 className="commentTitleText">Comments</h3>
             {this.state.comments.map(
               comment => <TheZoneComment
                 postid={this.props.postid}
