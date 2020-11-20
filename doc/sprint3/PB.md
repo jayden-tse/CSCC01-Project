@@ -1,4 +1,5 @@
 # SPORTCRED
+Note: * = important; ** = Necessary
 ## FINISHED
 ### Signup
 * **As a new user, I want to be able to create an account so that I can explore this app. 20
@@ -82,6 +83,3 @@
 * *As a registered user, I want to be able to agree/disagree on posts so that I can express my opinion on a debate (based on a scale from 1-10). 5
 * **As a ACS bot, I want to look back retrospectively at debates and:
    * Compute the amount of ACS gained/lost from a debate so that they can see what level they are at 5
-
-
-* = important                ** = Necessary
