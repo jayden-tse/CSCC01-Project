@@ -1,6 +1,6 @@
 import React from "react";
 import DropdownButton from "./DropdownButton";
-import Avatar from '@material-ui/core/Avatar';
+import AccessProfile from '../general/AccessProfile.jsx';
 import "./CurrentUser.css";
 
 class CurrentUser extends React.Component{
@@ -24,11 +24,9 @@ class CurrentUser extends React.Component{
         <DropdownButton name={this.props.currentUser}
           handleLogout={this.props.handleLogout}
           redirectToProfile={this.props.redirectToProfile}/>
-        <Avatar className="profilePic"
-          style={{
-            width: 64,
-            height: 64
-          }}
+        <AccessProfile
+            username={this.props.currentUser} 
+            handleViewProfile={this.props.handleViewProfile}
         />
        </div>
     )
