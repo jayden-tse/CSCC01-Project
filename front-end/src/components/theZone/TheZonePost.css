@@ -8,6 +8,7 @@
 .titleContainer {
   margin-top: -20px;
   overflow: hidden;
+  padding-left:10px;
 }
 
 .postTitle {
@@ -19,7 +20,7 @@
 p {
   overflow-wrap: break-word;
   white-space: pre;
-  padding-left: 5px;
+  padding-left: 10px;
 }
 
 .postContainer {
@@ -27,7 +28,7 @@ p {
   border-color: #6B6E70;
   margin: 40px 5px 40px 5px;
   border-radius: 15px;
-  background-color: #202327;
+  background-color: #1c1f22;
 }
 
 .postHeaderContainer {
