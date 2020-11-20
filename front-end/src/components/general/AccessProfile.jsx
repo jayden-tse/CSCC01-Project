@@ -15,13 +15,12 @@ in App.jsx, in your component add prop handleViewProfile
     />
 Example use:
 import AccessProfile from '../general/AccessProfile.jsx';
-<AccessProfile username="demouser3" handleViewProfile={this.props.handleViewProfile}/>
 <AccessProfile username={username} handleViewProfile={this.props.handleViewProfile}/>
 */
 class AccessProfile extends Component {
     constructor(props){
         super(props);
-        this.state = {mode:"U" , picture:""};
+        this.state = {picture:""};
     }
 
     componentDidMount(){
@@ -36,7 +35,11 @@ class AccessProfile extends Component {
     }
 
     render() { 
-        return <img className="AccessProfileImage" src={this.state.picture} alt={`${this.props.username}'s pic`} onClick={()=>{this.props.handleViewProfile(this.props.username)}}></img>;
+        return <img className="AccessProfile"
+                src={this.state.picture}
+                alt={`${this.props.username}'s pic`}
+                onClick={()=>{this.props.handleViewProfile(this.props.username)}}
+                />;
     }
 }
  

@@ -105,6 +105,16 @@ class App extends React.Component {
     });
   }
 
+  singleTopNavBar(){
+    return <TopNavBar
+        currentUser={this.state.currentUser}
+        handleLogout={this.handleLogout}
+        redirectToTheZone={this.redirectToTheZone}
+        redirectToProfile={this.redirectToProfile}
+        handleViewProfile={this.handleViewProfile}
+    />
+  }
+
   render() {
     let page = null;
 
@@ -130,12 +140,7 @@ class App extends React.Component {
       if (this.state.currentPage === 'TheZone') {
         page = (
           <div>
-            <TopNavBar
-              currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout}
-              redirectToTheZone={this.redirectToTheZone}
-              redirectToProfile={this.redirectToProfile}
-            />
+            {this.singleTopNavBar()};
             <TheZonePage
               currentUser={this.state.currentUser}
               redirectToDebate={this.redirectToDebate}
@@ -147,60 +152,35 @@ class App extends React.Component {
       } else if (this.state.currentPage === 'OpenCourt') {
         page = (
           <div>
-            <TopNavBar
-              currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout}
-              redirectToTheZone={this.redirectToTheZone}
-              redirectToProfile={this.redirectToProfile}
-            />
+            {this.singleTopNavBar()};
             <OpenCourtPage />
           </div>
         );
       } else if (this.state.currentPage === 'Trivia') {
         page = (
           <div>
-            <TopNavBar
-              currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout}
-              redirectToTheZone={this.redirectToTheZone}
-              redirectToProfile={this.redirectToProfile}
-            />
+            {this.singleTopNavBar()};
             <TriviaPage />
           </div>
         );
       } else if (this.state.currentPage === 'PicksAndPredictions') {
         page = (
           <div>
-            <TopNavBar
-              currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout}
-              redirectToTheZone={this.redirectToTheZone}
-              redirectToProfile={this.redirectToProfile}
-            />
+            {this.singleTopNavBar()};
             <PicksAndPredictionsPage />
           </div>
         );
       } else if (this.state.currentPage === 'Debate') {
         page = (
           <div>
-            <TopNavBar
-              currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout}
-              redirectToTheZone={this.redirectToTheZone}
-              redirectToProfile={this.redirectToProfile}
-            />
+            {this.singleTopNavBar()};
             <DebatePage />
           </div>
         );
       } else if (this.state.currentPage === 'Profile') {
         page = (
           <div>
-            <TopNavBar
-              currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout}
-              redirectToTheZone={this.redirectToTheZone}
-              redirectToProfile={this.redirectToProfile}
-            />
+            {this.singleTopNavBar()};
             <ProfilePage
               currentUser={this.state.currentUser}
               wantedUser={this.state.profileView}
