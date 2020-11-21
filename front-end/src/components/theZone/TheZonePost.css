@@ -49,13 +49,12 @@ p {
 }
 
 .commentsContainer {
-  margin: 25px 0px 0px 15px;
+  margin: 25px 15px 0px 15px;
   border: 3px solid;
   border-color: #6B6E70;
   border-top-left-radius: 10px;
-  border-right:none;
-  border-bottom:none;
-  padding-right:1px;
+  border-top-right-radius: 10px;
+  border-bottom: none;
 }
 
 
