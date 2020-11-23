@@ -3,6 +3,8 @@ import { Typography } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import TriviaStart from './TriviaStart';
 import TriviaGame from './TriviaGame';
+// TODO: replace with API
+import TEMP_QUESTIONS from './SampleTrivia';
 
 const theme = createMuiTheme({
   palette: {
@@ -26,6 +28,7 @@ class Trivia extends React.Component {
     };
     this.loadSolo = this.loadSolo.bind(this);
     this.loadHeadToHead = this.loadHeadToHead.bind(this);
+    this.handleTriviaComplete = this.handleTriviaComplete.bind(this);
   }
   
   loadSolo() {
@@ -36,6 +39,12 @@ class Trivia extends React.Component {
   loadHeadToHead() {
     console.log('Loading Head to Head Trivia');
     this.setState({state: 'load'});
+  }
+
+  handleTriviaComplete() {
+    // TODO:
+    console.log('Finished answering trivia questions')
+    this.setState({state: 'results'});
   }
   
   render() {
@@ -53,10 +62,17 @@ class Trivia extends React.Component {
         content = <Typography variant="body1">Loading...</Typography>
         break;
       case 'trivia':
-        content = <TriviaGame/>
+        content = (
+          <TriviaGame
+            triviaQuestions={TEMP_QUESTIONS}
+            previewTimer={3}
+            answerTimer={14}
+            onFinish={this.handleTriviaComplete}
+          />
+        );
         break;
-      case 'result':
-        content = <Typography variant="body1">Result</Typography>
+      case 'results':
+        content = <Typography variant="body1">Results</Typography>
         break;
       default:
         content = (
