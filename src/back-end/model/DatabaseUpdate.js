@@ -4,7 +4,6 @@ const ObjectId = require('mongodb').ObjectID; // used to search by Id
 const { USERS, POSTS, QUESTIONS } = require('./DatabaseHelper');
 const DatabaseRead = require('./DatabaseRead');
 const dbRead = new DatabaseRead();
-
 class DatabaseUpdate {
 
     async updateUserTracker(req) {
