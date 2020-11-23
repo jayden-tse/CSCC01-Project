@@ -1,51 +1,73 @@
 var mongoConnect = require('../../mongoConnect');
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, QUESTIONS } = require('./DatabaseHelper');
 const DatabaseRead = require('./DatabaseRead');
 const dbRead = new DatabaseRead();
 class DatabaseUpdate {
 
-    async addMatchToHistory(req, match) {
+    async updateUserTracker(req) {
         let username = { 'username': req.user }
-        let result = await mongoConnect.getDBCollection(USERS).updateOne(username, {
-            $addToSet: {
-                "profile.picks": match
+        let user = await mongoConnect.getDBCollection(USERS).findOne(username);
+        let tracker = user.profile.tracker;
+        console.log(tracker);
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
+            $set: {
+                "profile.tracker": []
             }
         });
-        return result;
+        for (let i = 0; i < tracker.length; i++) {
+            let newUser = await mongoConnect.getDBCollection(USERS).findOne({ "username": tracker[i].username });
+            let profile = newUser.profile;
+            await mongoConnect.getDBCollection(USERS).updateOne(username, {
+                $addToSet: {
+                    "profile.tracker": { "username": tracker[i].username, "ACS": profile.ACS }
+                }
+            });
+        }
+        user = await mongoConnect.getDBCollection(USERS).findOne(username);
+        return user.profile.tracker;
     }
 
-    async addUserToTracker(req, addUsername) {
-        let username = { 'username': req.user }
-        let addUsernameResult = await mongoConnect.getDBCollection(USERS).findOne({ 'username': addUsername });
-        let result = await mongoConnect.getDBCollection(USERS).updateOne(username, {
-            $addToSet: {
-                "profile.tracker": [addUsername, addUsernameResult.profile.ACS]
+    async updateSocialMediaLink(req, type, link) {
+        let linkType = 'profile.links.' + type;
+        let username = { 'username': req.user };
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
+            $set: {
+                [linkType]: link
             }
         });
-        return result;
+        return link;
     }
 
     async updateMessage(req, type, message) {
         let messageType = 'profile.' + type;
         let username = { 'username': req.user };
-        let result = await mongoConnect.getDBCollection(USERS).updateOne(username, {
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
             $set: {
                 [messageType]: message
             }
         });
-        return result;
+        return message;
+    }
+
+    async updateACS(username, ACS) {
+        await mongoConnect.getDBCollection(USERS).updateOne({ "username": username }, {
+            $set: {
+                "profile.ACS": ACS
+            }
+        });
+        return ACS;
     }
 
     async updateUser(req, type, message) {
         let username = { 'username': req.user };
-        let result = await mongoConnect.getDBCollection(USERS).updateOne(username, {
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
             $set: {
                 [type]: message
             }
         });
-        return result;
+        return message;
     }
 
     async updatePost(postId, type, message) {
@@ -169,7 +191,7 @@ class DatabaseUpdate {
             // nonempty post
             let comment = await dbRead.getComment(postId, commentId);
             if (comment) {
-                // nonempty list of comments was found and comment was found
+                // nonempty list of news was found and comment was found
                 // start modifying comment likes/dislikes etc
                 let agreed = comment.usersagreed;
                 let disagreed = comment.usersdisagreed;
@@ -228,5 +250,20 @@ class DatabaseUpdate {
         }
     }
 
+    async updateQuestion(id, question, answer, other) {
+        let result = await mongoConnect.getDBCollection(QUESTIONS).updateOne({ "_id": ObjectId(id) }, {
+            $set: {
+                "question": question,
+                "answer": answer,
+                "other": other
+            }
+        });
+        if (result.modifiedCount > 0) {
+            let updatedQuestion = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "_id": ObjectId(id) });
+            return updatedQuestion;
+        } else {
+            return null;
+        }
+    }
 }
 module.exports = DatabaseUpdate;

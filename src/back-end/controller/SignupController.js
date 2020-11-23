@@ -1,4 +1,3 @@
-const e = require('express');
 const DatabaseCreate = require('../model/DatabaseCreate.js');
 const DatabaseRead = require('../model/DatabaseRead.js');
 const dbCreate = new DatabaseCreate();

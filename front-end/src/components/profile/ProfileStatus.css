@@ -1,0 +1,28 @@
+.ProfileStatusHeader {
+  height: 5%;
+  color: white;
+  font-size: 22;
+}
+
+.ProfileStatusView {
+  height: 100px;
+  width: 99%;
+  position: relative;
+  color: #6b6e70;
+}
+
+.ProfileStatusEditMessage {
+  height: 100px;
+  width: 99%;
+  resize: none;
+  position: relative;
+}
+
+.ProfileStatusEditButton,
+.ProfileStatusSave,
+.ProfileStatusCancel {
+  width: fit-content;
+  display: block;
+  position: relative;
+  float: right;
+}

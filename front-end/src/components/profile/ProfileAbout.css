@@ -1,0 +1,28 @@
+.ProfileAboutHeader {
+  height: 5%;
+  color: white;
+  font-size: 22;
+}
+
+.ProfileAboutView {
+  height: 250px;
+  width: 99%;
+  position: relative;
+  color: #6b6e70;
+}
+
+.ProfileAboutEditMessage {
+  height: 250px;
+  width: 99%;
+  resize: none;
+  position: relative;
+}
+
+.ProfileAboutEditButton,
+.ProfileAboutSave,
+.ProfileAboutCancel {
+  width: fit-content;
+  display: block;
+  position: relative;
+  float: right;
+}
