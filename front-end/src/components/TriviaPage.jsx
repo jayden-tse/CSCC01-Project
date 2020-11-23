@@ -1,5 +1,5 @@
 import React from 'react';
-import TriviaGame from './trivia/TriviaGame';
+import Trivia from './trivia/Trivia';
 import './TriviaPage.css';
 
 /**
@@ -11,7 +11,7 @@ class TriviaPage extends React.Component {
   // }
   
   render() {
-    return <div className="TriviaPage"><TriviaGame/></div>;
+    return <div className="TriviaPage"><Trivia/></div>;
   }
 }
 
