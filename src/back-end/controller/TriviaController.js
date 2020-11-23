@@ -40,7 +40,7 @@ exports.question_random_10_get = async function (req, res) {
         // user is authenticated
         try {
             let questions = await dbRead.getQuestions10();
-            res.status(200).send({ questions }); // OK
+            res.status(200).send({ questions }.questions); // OK
         } catch (e) {
             console.error(e);
             res.status(500).send(READ_FAILED); // Internal server error
@@ -59,7 +59,7 @@ exports.question_all_get = async function (req, res) {
         // user is authenticated
         try {
             let questions = await dbRead.getQuestionsAll();
-            res.status(200).send({ questions }); // OK
+            res.status(200).send({ questions }.questions); // OK
         } catch (e) {
             console.error(e);
             res.status(500).send(READ_FAILED); // Internal server error
