@@ -140,7 +140,7 @@ class App extends React.Component {
       if (this.state.currentPage === 'TheZone') {
         page = (
           <div>
-            {this.singleTopNavBar()};
+            {this.singleTopNavBar()}
             <TheZonePage
               currentUser={this.state.currentUser}
               redirectToDebate={this.redirectToDebate}
@@ -152,35 +152,35 @@ class App extends React.Component {
       } else if (this.state.currentPage === 'OpenCourt') {
         page = (
           <div>
-            {this.singleTopNavBar()};
+            {this.singleTopNavBar()}
             <OpenCourtPage />
           </div>
         );
       } else if (this.state.currentPage === 'Trivia') {
         page = (
           <div>
-            {this.singleTopNavBar()};
+            {this.singleTopNavBar()}
             <TriviaPage />
           </div>
         );
       } else if (this.state.currentPage === 'PicksAndPredictions') {
         page = (
           <div>
-            {this.singleTopNavBar()};
+            {this.singleTopNavBar()}
             <PicksAndPredictionsPage />
           </div>
         );
       } else if (this.state.currentPage === 'Debate') {
         page = (
           <div>
-            {this.singleTopNavBar()};
+            {this.singleTopNavBar()}
             <DebatePage />
           </div>
         );
       } else if (this.state.currentPage === 'Profile') {
         page = (
           <div>
-            {this.singleTopNavBar()};
+            {this.singleTopNavBar()}
             <ProfilePage
               currentUser={this.state.currentUser}
               wantedUser={this.state.profileView}
