@@ -2,18 +2,32 @@ import React from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
 
 /**
- * Shows the given question `props.question` for `props.previewTimer` seconds,
- * then gives `props.answerTimer` seconds for the player to choose an answer.
- * Calls `props.onAnswer` when the player has chosen an answer or the time ran
- * out.
+ * Shows the given question `props.question.question` for `props.previewTimer`
+ * seconds, then gives `props.answerTimer` seconds for the player to choose an
+ * answer. Calls `props.onAnswer` when the player chooses an answer or the
+ * time runs out.
  */
 class TriviaQuestion extends React.Component {
+  /**
+   * @param {*} props.onAnswer callback when an answer is selected or time ran
+   * out. Accepts 1 argument: `answer`: string or `null`.
+   * `answer` is `null` when the player does not choose an answer in time,
+   * otherwise it's one of the possible answer strings for this question
+   * (`props.question.answer` or one of `props.question.other`)
+   */
   constructor(props) {
     super(props);
     this.state = {
       // Number of seconds elapsed
-      time: 0
+      time: 0,
+      // Disables the answer buttons if true. The index corresponds to an
+      // index in the answer array (see componentDidMount())
+      disabled: [false, false, false, false],
+      // The index of the answer that the player selected
+      selected: null
     }
+    
+    this.handleAnswerSelect = this.handleAnswerSelect.bind(this);
   }
 
   componentDidMount() {
@@ -37,6 +51,15 @@ class TriviaQuestion extends React.Component {
     this.setState((state) => ({
       time: state.time + 1
     }));
+  }
+
+  // When an answer is selected
+  handleAnswerSelect(answerIndex) {
+    // Since an answer can only be selected once, disable the other options
+    // and record the answer
+    let disable = [true, true, true, true];
+    disable[answerIndex] = false;
+    this.setState({disabled: disable, selected: answerIndex});
   }
 
   render() {
@@ -85,10 +108,18 @@ class TriviaQuestion extends React.Component {
           {this.props.answerTimer - decrement}
         </Typography>
       );
-      const triviaAnswers = this.answers.map((answer) => {
+      const triviaAnswers = this.answers.map((answer, index) => {
         return (
-        <Grid item xs={12} sm={6}>
-          <Button variant='contained' color='primary'>{answer}</Button>
+        <Grid item xs={12} sm={6} key={'TriviaAnswer-' + index}>
+          <Button
+            disabled={this.state.disabled[index]}
+            value={index}
+            onClick={() => this.handleAnswerSelect(index)}
+            variant='contained'
+            color='primary'
+          >
+            {answer}
+          </Button>
         </Grid>
         );
       });
@@ -107,7 +138,9 @@ class TriviaQuestion extends React.Component {
           <Grid container item xs={12} spacing={2}>
             {triviaAnswers}
           </Grid>
-          <Grid item xs={12}>{answerTimer}</Grid>
+          <Grid item xs={12}>
+            {this.state.selected ? <p>Selected</p> : answerTimer}
+          </Grid>
         </Grid>
       );
     }
