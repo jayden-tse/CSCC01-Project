@@ -69,25 +69,6 @@ exports.question_all_get = async function (req, res) {
     }
 }
 
-exports.question_answer_get = async function (req, res) {
-    res.set({
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin': 'http://localhost:3000'
-    });
-    if (req.user) {
-        // user is authenticated
-        try {
-            let answer = await dbRead.getAnswer(req.query.question);
-            res.status(200).send({ answer }); // OK
-        } catch (e) {
-            console.error(e);
-            res.status(500).send(READ_FAILED); // Internal server error
-        }
-    } else {
-        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
-    }
-}
-
 exports.question_update_put = async function (req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,

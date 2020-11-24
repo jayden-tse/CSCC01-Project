@@ -116,11 +116,6 @@ class DatabaseRead {
         return questions;
     }
 
-    async getAnswer(question) {
-        let getQuestion = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "question": question });
-        return getQuestion.answer;
-    }
-
     async findUsername(username) {
         return await mongoConnect.getDBCollection(USERS).findOne({ "username": username });
     }
