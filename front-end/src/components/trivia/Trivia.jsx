@@ -38,11 +38,11 @@ class Trivia extends React.Component {
   loadSolo() {
     console.log('Loading Solo Trivia');
     get10TriviaQuestions().then(async (res)=>{
-        if(res.ok){
+        if(typeof res !== 'undefined' && res.ok){
             const questions = await res.json();
             this.setState({state: 'trivia', questions: questions});
         } else {
-            throw new Error("");
+            throw new Error("Bad Response From Backend");
         }
     }).catch((error)=>{
         console.log(`Error Loading Trivia Questions: ${error}`)
