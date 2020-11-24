@@ -1,25 +1,31 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import './ProfilePicture.css';
+
+const EDIT = 'Edit',
+  SAVE = 'Save',
+  CANCEL = 'Cancel';
 
 class ProfilePicture extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { src: "" };
-    this.handleEdit = this.handleEdit.bind(this);
+  
+  renderEditables() {
+    return this.props.mode === EDIT ? (
+      <ProfilePictureSubmit
+        name="Profile Picture Submit"
+        value={this.props.picture}
+        onSave={this.props.handleSave}
+        onCancel={this.props.handleCancel}
+        onChange={this.props.handleChange}
+      />
+    ) : (
+      <ProfilePictureEdit name="Edit" onClick={this.props.handleEdit} />
+    );
   }
 
-  handleEdit() {
-    console.log("Profile Picture edit");
-  }
   render() {
     return (
       <div className="ProfilePicture">
-        <ProfilePictureDisplay src={this.state.src} />
-
-        <ProfilePictureSubmit
-          name="Profile Picture Submit"
-          value={this.state.src}
-        />
-        <ProfilePictureEdit name="Edit" onClick={this.handleEdit} />
+        <ProfilePictureDisplay src={this.props.picture} />
+        {this.props.editable && this.renderEditables()}
       </div>
     );
   }
@@ -50,9 +56,25 @@ function ProfilePictureSubmit(props) {
         type="text"
         name={props.name}
         defaultValue={props.value}
+        onChange={props.onChange}
       />
+      <div className="ProfilePictureButtonContainer">
+        <button
+          type="button"
+          className="ProfilePictureCancel"
+          onClick={props.onCancel}
+        >
+          {CANCEL}
+        </button>
+        <button
+          type="button"
+          className="ProfilePictureSave"
+          onClick={props.onSave}
+        >
+          {SAVE}
+        </button>
+      </div>
     </form>
   );
 }
-
 export default ProfilePicture;

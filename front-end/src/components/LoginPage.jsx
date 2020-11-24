@@ -68,7 +68,7 @@ class LoginPage extends Component {
 
 function LoginInput(props) {
   return (
-    <form className="LoginInput">
+    <form className="LoginInput" onSubmit={event=>event.preventDefault()}>
       <label className="LoginInputLabel">{props.name}</label>
       <input
         className="LoginInputBox"

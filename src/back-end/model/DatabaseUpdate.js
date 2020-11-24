@@ -6,46 +6,68 @@ const DatabaseRead = require('./DatabaseRead');
 const dbRead = new DatabaseRead();
 class DatabaseUpdate {
 
-    async addMatchToHistory(req, match) {
-        let username = { 'username': req.user }
-        let result = await mongoConnect.getDBCollection(USERS).updateOne(username, {
-            $addToSet: {
-                "profile.picks": match
+    async updateUserTracker(userToUpdate) {
+        let username = { 'username': userToUpdate }
+        let user = await mongoConnect.getDBCollection(USERS).findOne(username);
+        let tracker = user.profile.tracker;
+        console.log(tracker);
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
+            $set: {
+                "profile.tracker": []
             }
         });
-        return result;
+        for (let i = 0; i < tracker.length; i++) {
+            let newUser = await mongoConnect.getDBCollection(USERS).findOne({ "username": tracker[i].username });
+            let profile = newUser.profile;
+            await mongoConnect.getDBCollection(USERS).updateOne(username, {
+                $addToSet: {
+                    "profile.tracker": { "username": tracker[i].username, "ACS": profile.ACS }
+                }
+            });
+        }
+        user = await mongoConnect.getDBCollection(USERS).findOne(username);
+        return user.profile.tracker;
     }
 
-    async addUserToTracker(req, addUsername) {
-        let username = { 'username': req.user }
-        let addUsernameResult = await mongoConnect.getDBCollection(USERS).findOne({ 'username': addUsername });
-        let result = await mongoConnect.getDBCollection(USERS).updateOne(username, {
-            $addToSet: {
-                "profile.tracker": [addUsername, addUsernameResult.profile.ACS]
+    async updateSocialMediaLink(req, type, link) {
+        let linkType = 'profile.links.' + type;
+        let username = { 'username': req.user };
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
+            $set: {
+                [linkType]: link
             }
         });
-        return result;
+        return link;
     }
 
     async updateMessage(req, type, message) {
         let messageType = 'profile.' + type;
         let username = { 'username': req.user };
-        let result = await mongoConnect.getDBCollection(USERS).updateOne(username, {
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
             $set: {
                 [messageType]: message
             }
         });
-        return result;
+        return message;
+    }
+
+    async updateACS(username, ACS) {
+        await mongoConnect.getDBCollection(USERS).updateOne({ "username": username }, {
+            $set: {
+                "profile.ACS": ACS
+            }
+        });
+        return ACS;
     }
 
     async updateUser(req, type, message) {
         let username = { 'username': req.user };
-        let result = await mongoConnect.getDBCollection(USERS).updateOne(username, {
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
             $set: {
                 [type]: message
             }
         });
-        return result;
+        return message;
     }
 
     async updatePost(postId, type, message) {

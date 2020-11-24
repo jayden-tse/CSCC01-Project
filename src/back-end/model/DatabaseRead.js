@@ -35,33 +35,29 @@ passport.deserializeUser(function(username, done) {
 
 class DatabaseRead {
 
-
-    async getProfile(req) {
-        let username = { "username": req.user }
-        let result = await mongoConnect.getDBCollection(USERS).findOne(username)
-        console.log(result.profile);
+    async getProfile(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
         return result.profile;
     }
 
-    async getPickHistory(req) {
-        let username = { "username": req.user }
-        let result = await mongoConnect.getDBCollection(USERS).findOne(username)
-        console.log(result.profile.picks);
+    async getPickHistory(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
         return result.profile.picks;
     }
 
-    async getTracker(req) {
-        let username = { "username": req.user }
-        let result = await mongoConnect.getDBCollection(USERS).findOne(username)
-        console.log(result.profile.tracker);
+    async getTracker(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
         return result.profile.tracker;
     }
 
-    async getProfilePicture(req) {
-        let username = { "username": req.user };
-        let result = await mongoConnect.getDBCollection(USERS).findOne(username);
-        console.log(result.profile.picture);
+    async getProfilePicture(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username });
         return result.profile.picture; // should be a URL
+    }
+
+    async getLinks(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username })
+        return result.profile.links;
     }
 
     async getAllPosts(req) {
@@ -140,7 +136,6 @@ class DatabaseRead {
     async getRandomDebateQuestion(tier) {
         let questions = await this.getAllDebateQuestions(tier);
         let rand = Math.floor(Math.random() * questions.length);
-        console.log(questions[rand]);
         return questions[rand];
     }
 

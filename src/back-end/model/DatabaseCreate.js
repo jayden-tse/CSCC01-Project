@@ -33,10 +33,9 @@ class DatabaseCreate {
     async createUser(user, questionnaire) {
         // Only store this user in the database if there exists no other accounts with
         // the same phone numbers and email.
-        // new users get a random fanalyst question
+        // default image
         let debate = await dbRead.getRandomDebateQuestion(FANALYST);
-        // image, about, status, questionnaire, picks, tracker, debateQuestion, analysis, ACS
-        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], debate, "", 100);
+        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 200, { facebook: '', instagram: '', twitter: '' }, debate.question, {});
         user.profile = userProfile;
         let hashedPassword = this.passwordHasher(user.password);
         user.password = hashedPassword;
@@ -67,7 +66,31 @@ class DatabaseCreate {
         return hashedPassword;
     }
 
-    // The Zone
+    // Profile
+    async addMatchToHistory(req, match) {
+        let username = { 'username': req.user }
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
+            $addToSet: {
+                "profile.picks": match
+            }
+        });
+        let user = await mongoConnect.getDBCollection(USERS).findOne(username);
+        return user.profile.picks;
+    }
+
+    async addUserToTracker(req, addUsername) {
+        let username = { 'username': req.user }
+        let addUsernameResult = await mongoConnect.getDBCollection(USERS).findOne({ 'username': addUsername });
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
+            $addToSet: {
+                "profile.tracker": { "username": addUsername, "ACS": addUsernameResult.profile.ACS }
+            }
+        });
+        let user = await mongoConnect.getDBCollection(USERS).findOne(username);
+        return user.profile.tracker;
+    }
+
+    // the Zone
     async createPost(user, date, content, agrees, disagrees, comments, agreeusers, disagreeusers, likes, dislikes) {
         let post = new Post(user, date, content, agrees, disagrees, comments, agreeusers, disagreeusers, likes, dislikes);
         let result = await mongoConnect.getDBCollection(POSTS).insertOne(post);

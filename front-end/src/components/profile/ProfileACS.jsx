@@ -1,21 +1,27 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import './ProfileACS.css';
 
 class ProfileACS extends Component {
-  constructor(props) {
-    super(props);
-    //get ACS and such from props
-    console.log(props.ACS);
-    this.state = { ACS: props.ACS, ACSChange: props.ACSChange };
-  }
+
+    renderError(){
+        return <ProfileACSLabel message={'Error getting ACS'} />;
+    }
+
+    renderNormal(){
+        return(<React.Fragment>
+            <ProfileACSLabel message={'Your ACS is ' + this.props.ACS} />
+            <br />
+            <ProfileACSLabel message={'Tier: ' + ACSTier(this.props.ACS)} />
+            {/* <br />//remove for now
+            <ProfileACSLabel message={this.props.ACSChange + ' ACS score today'} />
+            */}
+            </React.Fragment>);
+    }
 
   render() {
     return (
       <div className="ProfileACS">
-        <ProfileACSLabel message={"Your ACS is " + this.state.ACS} />
-        <br />
-        <ProfileACSLabel message={"Tier: " + ACSTier(this.state.ACS)} />
-        <br />
-        <ProfileACSLabel message={this.state.ACSChange + " ACS score today"} />
+        {this.props.ACSError ? this.renderError():this.renderNormal()}
       </div>
     );
   }
@@ -24,18 +30,18 @@ class ProfileACS extends Component {
 function ACSTier(ACS) {
   //high to low, same length arrays
   let minACS = [900, 600, 300, 100];
-  let tier = ["Expert Analyst", "Pro Analyst", "Analyst", "Fanalyst"];
+  let tier = ['Expert Analyst', 'Pro Analyst', 'Analyst', 'Fanalyst'];
   var i;
   for (i = 0; i < minACS.length; i++) {
     if (ACS >= minACS[i]) {
       return tier[i];
     }
   }
-  return "Untiered";
+  return 'Untiered';
 }
 
 function ProfileACSLabel(props) {
-  return <label className="ACSlabel">{props.message}</label>;
+  return <label className="ProfileACSLabel">{props.message}</label>;
 }
 
 export default ProfileACS;

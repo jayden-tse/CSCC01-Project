@@ -47,17 +47,15 @@ exports.debate_submission_put = async function(req, res) {
     if (req.user) {
         try {
             // take user's ACS and converts it to a tier
-            let profile = await dbRead.getProfile({ user: req.session.passport.user });
+            let profile = await dbRead.getProfile(req.session.passport.user);
             console.log("user ACS: " + profile.ACS);
             let tier = await dbRead.ACSToTier(profile.ACS);
             console.log(req.session.passport);
-            await dbCreate.createAnalysis(req.session.passport.user, tier, profile.debateQuestion.question, req.body.answer);
+            await dbCreate.createAnalysis(req.session.passport.user, tier, profile.debateQuestion, req.body.answer);
 
-            // delete unused variables (for the user only)
             let result = {
-                username: req.session.passport.user,
                 tier: tier,
-                question: profile.debateQuestion.question,
+                question: profile.debateQuestion,
                 answer: req.body.answer
             }
 

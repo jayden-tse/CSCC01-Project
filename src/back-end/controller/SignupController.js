@@ -8,7 +8,7 @@ const { WRITE_FAILED, USERNAME_EXISTS, EMAIL_EXISTS, PHONENUM_EXISTS } = require
 // const DatabaseUpdate = require('../model/DatabaseUpdate.js');
 // const DatabaseDelete = require('../model/DatabaseDelete.js');
 
-exports.user_put = async function (req, res) {
+exports.user_put = async function(req, res) {
     // Get user data from the input, but don't create the actual User yet.
     let questionnaireAnswers = {
         q1: req.body.q1,
@@ -33,25 +33,25 @@ exports.user_put = async function (req, res) {
             console.log(e);
             res.status(500).send(WRITE_FAILED);
         }
-    }
-    let body = "";
-    if (newUsername !== null) {
-        body = body.concat(USERNAME_EXISTS);
-    }
-    if (newEmail !== null) {
-        if (body === "") {
-            body = body.concat(EMAIL_EXISTS);
-        } else {
-            body = body.concat("\r\n" + EMAIL_EXISTS);
+    } else {
+        let body = "";
+        if (newUsername !== null) {
+            body = body.concat(USERNAME_EXISTS);
         }
-    }
-    if (newNum !== null) {
-        if (body === "") {
-            body = body.concat(PHONENUM_EXISTS);
-        } else {
-            body = body.concat("\r\n" + PHONENUM_EXISTS);
+        if (newEmail !== null) {
+            if (body === "") {
+                body = body.concat(EMAIL_EXISTS);
+            } else {
+                body = body.concat("\r\n" + EMAIL_EXISTS);
+            }
         }
+        if (newNum !== null) {
+            if (body === "") {
+                body = body.concat(PHONENUM_EXISTS);
+            } else {
+                body = body.concat("\r\n" + PHONENUM_EXISTS);
+            }
+        }
+        res.status(400).send(body);
     }
-    res.status(400).send(body);
-
 };

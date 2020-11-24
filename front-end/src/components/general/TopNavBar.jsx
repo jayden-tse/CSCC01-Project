@@ -20,6 +20,7 @@ class TopNavBar extends React.Component{
           currentUser={this.props.currentUser}
           handleLogout={this.props.handleLogout}
           redirectToProfile={this.props.redirectToProfile}
+          handleViewProfile={this.props.handleViewProfile}
         />
       </nav>
     )

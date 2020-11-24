@@ -1,13 +1,13 @@
-import React from "react";
-import SignupPage from "./components/SignupPage";
-import LoginPage from "./components/LoginPage";
-import TheZonePage from "./components/TheZonePage";
-import TriviaPage from "./components/TriviaPage";
-import DebatePage from "./components/DebatePage";
-import PicksAndPredictionsPage from "./components/PicksAndPredictionsPage";
-import OpenCourtPage from "./components/OpenCourtPage";
-import TopNavBar from "./components/general/TopNavBar";
-import ProfilePage from "./components/profile/ProfilePage";
+import React from 'react';
+import SignupPage from './components/SignupPage';
+import LoginPage from './components/LoginPage';
+import TheZonePage from './components/TheZonePage';
+import TriviaPage from './components/TriviaPage';
+import DebatePage from './components/DebatePage';
+import PicksAndPredictionsPage from './components/PicksAndPredictionsPage';
+import OpenCourtPage from './components/OpenCourtPage';
+import TopNavBar from './components/general/TopNavBar';
+import ProfilePage from './components/profile/ProfilePage';
 
 //Main page that display different pages depending on current state
 class App extends React.Component {
@@ -15,8 +15,9 @@ class App extends React.Component {
     super(props);
     this.state = {
       auth: false,
-      currentPage: "Login",
-      currentUser: "hello",
+      currentPage: 'Login',
+      currentUser: 'hello',
+      profileView: '',
     };
     this.loginSuccess = this.loginSuccess.bind(this);
     this.redirectToLogin = this.redirectToLogin.bind(this);
@@ -30,6 +31,7 @@ class App extends React.Component {
     this.redirectToPicksAndPredictions = this.redirectToPicksAndPredictions.bind(
       this
     );
+    this.handleViewProfile = this.handleViewProfile.bind(this);
   }
 
   loginSuccess(username) {
@@ -41,57 +43,76 @@ class App extends React.Component {
 
   redirectToLogin() {
     this.setState({
-      currentPage: "Login",
+      currentPage: 'Login',
     });
   }
 
   redirectToSignup() {
     this.setState({
-      currentPage: "Signup",
+      currentPage: 'Signup',
     });
   }
 
   handleLogout() {
     this.setState({
-      currentPage: "Login",
+      currentPage: 'Login',
       auth: false,
     });
   }
 
   redirectToTheZone() {
     this.setState({
-      currentPage: "TheZone",
+      currentPage: 'TheZone',
     });
   }
 
   redirectToProfile() {
     this.setState({
-      currentPage: "Profile",
+      currentPage: 'Profile',
+      profileView: this.state.currentUser,
     });
   }
 
   redirectToTrivia() {
     this.setState({
-      currentPage: "Trivia",
+      currentPage: 'Trivia',
     });
   }
 
   redirectToDebate() {
     this.setState({
-      currentPage: "Debate",
+      currentPage: 'Debate',
     });
   }
 
   redirectToPicksAndPredictions() {
     this.setState({
-      currentPage: "PicksAndPredictions",
+      currentPage: 'PicksAndPredictions',
     });
   }
 
   redirectToOpenCourt() {
     this.setState({
-      currentPage: "OpenCourt",
+      currentPage: 'OpenCourt',
     });
+  }
+
+  handleViewProfile(username) {
+    //view any specified profile
+    this.setState({
+      currentPage: 'Profile',
+      profileView: username,
+    });
+  }
+
+  singleTopNavBar(){
+    return <TopNavBar
+        currentUser={this.state.currentUser}
+        handleLogout={this.handleLogout}
+        redirectToTheZone={this.redirectToTheZone}
+        redirectToProfile={this.redirectToProfile}
+        handleViewProfile={this.handleViewProfile}
+    />
   }
 
   render() {
@@ -99,7 +120,7 @@ class App extends React.Component {
 
     if (!this.state.auth) {
       // logic to determine which page
-      if (this.state.currentPage === "Signup") {
+      if (this.state.currentPage === 'Signup') {
         page = (
           <SignupPage
             onSignup={this.redirectToLogin}
@@ -116,15 +137,10 @@ class App extends React.Component {
         );
       }
     } else {
-      if (this.state.currentPage === "TheZone") {
+      if (this.state.currentPage === 'TheZone') {
         page = (
           <div>
-            <TopNavBar
-              currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout}
-              redirectToTheZone={this.redirectToTheZone}
-              redirectToProfile={this.redirectToProfile}
-            />
+            {this.singleTopNavBar()}
             <TheZonePage
               currentUser={this.state.currentUser}
               redirectToDebate={this.redirectToDebate}
@@ -133,64 +149,44 @@ class App extends React.Component {
             />
           </div>
         );
-      } else if (this.state.currentPage === "OpenCourt") {
+      } else if (this.state.currentPage === 'OpenCourt') {
         page = (
           <div>
-            <TopNavBar
-              currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout}
-              redirectToTheZone={this.redirectToTheZone}
-              redirectToProfile={this.redirectToProfile}
-            />
+            {this.singleTopNavBar()}
             <OpenCourtPage />
           </div>
         );
-      } else if (this.state.currentPage === "Trivia") {
+      } else if (this.state.currentPage === 'Trivia') {
         page = (
           <div>
-            <TopNavBar
-              currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout}
-              redirectToTheZone={this.redirectToTheZone}
-              redirectToProfile={this.redirectToProfile}
-            />
+            {this.singleTopNavBar()}
             <TriviaPage />
           </div>
         );
-      } else if (this.state.currentPage === "PicksAndPredictions") {
+      } else if (this.state.currentPage === 'PicksAndPredictions') {
         page = (
           <div>
-            <TopNavBar
-              currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout}
-              redirectToTheZone={this.redirectToTheZone}
-              redirectToProfile={this.redirectToProfile}
-            />
+            {this.singleTopNavBar()}
             <PicksAndPredictionsPage />
           </div>
         );
-      } else if (this.state.currentPage === "Debate") {
+      } else if (this.state.currentPage === 'Debate') {
         page = (
           <div>
-            <TopNavBar
-              currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout}
-              redirectToTheZone={this.redirectToTheZone}
-              redirectToProfile={this.redirectToProfile}
-            />
+            {this.singleTopNavBar()}
             <DebatePage />
           </div>
         );
-      } else if (this.state.currentPage === "Profile") {
+      } else if (this.state.currentPage === 'Profile') {
         page = (
           <div>
-            <TopNavBar
+            {this.singleTopNavBar()}
+            <ProfilePage
               currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout}
-              redirectToTheZone={this.redirectToTheZone}
-              redirectToProfile={this.redirectToProfile}
+              wantedUser={this.state.profileView}
+              editable={this.state.currentUser === this.state.profileView}
+              handleViewProfile={this.handleViewProfile}
             />
-            page = <ProfilePage ACS="800" ACSChange="-10" />
           </div>
         );
       }
