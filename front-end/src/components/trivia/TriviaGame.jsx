@@ -55,6 +55,8 @@ class TriviaGame extends React.Component {
       content = (
         <TriviaQuestion
           question={questions[this.state.questionCount]}
+          questionNumber={this.state.questionCount + 1}
+          questionTotal={this.state.total}
           previewTimer={previewTimer}
           answerTimer={answerTimer}
           onAnswer={this.handleAnswer}
