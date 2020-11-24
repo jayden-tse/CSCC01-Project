@@ -258,7 +258,7 @@ class DatabaseUpdate {
                 "other": other
             }
         });
-        if (result.modifiedCount > 0) {
+        if (result.matchedCount > 0) {
             let updatedQuestion = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "_id": ObjectId(id) });
             return updatedQuestion;
         } else {
