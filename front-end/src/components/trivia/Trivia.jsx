@@ -41,7 +41,6 @@ class Trivia extends React.Component {
         if(res.ok){
             const questions = await res.json();
             this.setState({state: 'trivia', questions: questions});
-            console.log(this.state);
         } else {
             throw new Error("");
         }
