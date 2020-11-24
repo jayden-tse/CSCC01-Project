@@ -3,6 +3,7 @@ import { Typography } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import TriviaStart from './TriviaStart';
 import TriviaGame from './TriviaGame';
+import LoadingScreen from '../general/LoadingScreen';
 import {get10TriviaQuestions} from '../../api/TriviaCalls.js';
 
 const theme = createMuiTheme({
@@ -27,6 +28,9 @@ class Trivia extends React.Component {
     this.state = {
       // The current game state.
       state: 'start',
+      // The questions (question objects) for the trivia game.
+      // Needs to be loaded from the backend
+      questions: []
     };
     this.loadSolo = this.loadSolo.bind(this);
     this.loadHeadToHead = this.loadHeadToHead.bind(this);
