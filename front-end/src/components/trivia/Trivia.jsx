@@ -3,6 +3,7 @@ import { Typography } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import TriviaStart from './TriviaStart';
 import TriviaGame from './TriviaGame';
+import LoadingScreen from '../general/LoadingScreen';
 // TODO: replace with API
 import TEMP_QUESTIONS from './SampleTrivia';
 
@@ -36,12 +37,16 @@ class Trivia extends React.Component {
   
   loadSolo() {
     console.log('Loading Solo Trivia');
-    this.setState({state: 'trivia'});
+    this.setState({state: 'load'});
+    // TODO: make async call to get the 10 questions and store it in state
+    // and after that's done update the game state to trivia
+    setTimeout(() => this.setState({state: 'trivia'}), 2000);
   }
 
+  // Disabled for now
   loadHeadToHead() {
-    console.log('Loading Head to Head Trivia');
-    this.setState({state: 'load'});
+    // console.log('Loading Head to Head Trivia');
+    // this.setState({state: 'load'});
   }
 
   handleTriviaComplete() {
@@ -62,7 +67,7 @@ class Trivia extends React.Component {
         );
         break;
       case 'load':
-        content = <Typography variant="body1">Loading...</Typography>
+        content = <LoadingScreen text='Starting Trivia...'/>
         break;
       case 'trivia':
         content = (
