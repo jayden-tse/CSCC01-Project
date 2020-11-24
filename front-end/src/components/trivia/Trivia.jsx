@@ -35,6 +35,9 @@ class Trivia extends React.Component {
   
   loadSolo() {
     console.log('Loading Solo Trivia');
+    this.setState({state: 'load'});
+    // make async call to get the 10 questions and store it in state
+    // and after that's done update the game state to trivia
     get10TriviaQuestions().then(async (res)=>{
         if(typeof res !== 'undefined' && res.ok){
             const questions = await res.json();
@@ -44,12 +47,14 @@ class Trivia extends React.Component {
         }
     }).catch((error)=>{
         console.log(`Error Loading Trivia Questions: ${error}`)
+        this.setState({state: 'start'});
     });
   }
 
+  // Disabled for now
   loadHeadToHead() {
-    console.log('Loading Head to Head Trivia');
-    this.setState({state: 'load'});
+    // console.log('Loading Head to Head Trivia');
+    // this.setState({state: 'load'});
   }
 
   handleTriviaComplete() {
@@ -70,7 +75,7 @@ class Trivia extends React.Component {
         );
         break;
       case 'load':
-        content = <Typography variant="body1">Loading...</Typography>
+        content = <LoadingScreen text='Starting Trivia...'/>
         break;
       case 'trivia':
         content = (

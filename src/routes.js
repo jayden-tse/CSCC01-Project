@@ -136,9 +136,6 @@ router.get('/trivia/question/10', triviaController.question_random_10_get);
 // Get all questions
 router.get('/trivia/question/all', triviaController.question_all_get);
 
-// Get answer to a question
-router.get('/trivia/question/answer', triviaController.question_answer_get);
-
 // Update question
 router.put('/trivia/update/question', triviaController.question_update_put);
 

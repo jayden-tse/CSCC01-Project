@@ -43,6 +43,7 @@ class TriviaStart extends React.Component {
 
           <Grid item xs={6}>
             <Button
+              disabled
               variant='contained'
               color='primary'
               onClick={this.props.onHeadToHead}
