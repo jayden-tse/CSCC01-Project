@@ -29,6 +29,9 @@ class Trivia extends React.Component {
     this.state = {
       // The current game state.
       state: 'start',
+      // The questions (question objects) for the trivia game.
+      // Needs to be loaded from the backend
+      questions: []
     };
     this.loadSolo = this.loadSolo.bind(this);
     this.loadHeadToHead = this.loadHeadToHead.bind(this);
@@ -40,7 +43,10 @@ class Trivia extends React.Component {
     this.setState({state: 'load'});
     // TODO: make async call to get the 10 questions and store it in state
     // and after that's done update the game state to trivia
-    setTimeout(() => this.setState({state: 'trivia'}), 2000);
+    setTimeout(
+      () => this.setState({questions: TEMP_QUESTIONS, state: 'trivia'}),
+      2000
+    );
   }
 
   // Disabled for now
@@ -72,7 +78,7 @@ class Trivia extends React.Component {
       case 'trivia':
         content = (
           <TriviaGame
-            triviaQuestions={TEMP_QUESTIONS}
+            triviaQuestions={this.state.questions}
             previewTimer={3}
             answerTimer={14}
             onFinish={this.handleTriviaComplete}
