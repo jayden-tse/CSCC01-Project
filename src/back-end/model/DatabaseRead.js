@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 var passport = require('passport');
 
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, FANALYST, Q, DEBATES } = require('./DatabaseHelper');
 
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
@@ -112,18 +112,45 @@ class DatabaseRead {
         return await mongoConnect.getDBCollection(USERS).findOne({ "phonenum": num });
     }
 
-
-    async findEmail(email) {
-        return await mongoConnect.getDBCollection("Users").findOne({ "email": email });
-    }
-
-    async findPhoneNum(num) {
-        return await mongoConnect.getDBCollection("Users").findOne({ "phonenum": num });
-    }
-
     passwordChecker(password, hashedPassword) {
         let state = bcrypt.compareSync(password, hashedPassword);
         return state
+    }
+
+    ACSToTier(acs) {
+        if (acs < 300) {
+            return FANALYST;
+        } else if (acs < 600) {
+            return ANALYST;
+        } else if (acs < 900) {
+            return PRO;
+        } else {
+            return EXPERT;
+        }
+    }
+    async getAllDebateQuestions(tier) {
+        let cursor = await mongoConnect.getDBCollection(DEBATES).find({ tier: tier });
+        let questions = [];
+        await cursor.forEach(function(doc) {
+            questions.push(doc);
+        });
+        return questions;
+    }
+
+    async getRandomDebateQuestion(tier) {
+        let questions = await this.getAllDebateQuestions(tier);
+        let rand = Math.floor(Math.random() * questions.length);
+        console.log(questions[rand]);
+        return questions[rand];
+    }
+
+    async getAnalysis(username) {
+        let query = {
+            username: username
+        };
+        let user = await mongoConnect.getDBCollection(USERS).findOne(query);
+        let analysis = user.profile.analysis;
+        return analysis; // contains username, question, answer, score, and voters
     }
 }
 

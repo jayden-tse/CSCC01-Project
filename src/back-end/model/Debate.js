@@ -1,8 +1,7 @@
 class Debate {
-    constructor(question, start, end) {
+    constructor(tier, question) {
+        this.tier = tier;
         this.question = question;
-        this.start = start;
-        this.end = end;
     }
 }
 

@@ -6,7 +6,7 @@ const dbDelete = new DatabaseDelete();
 const dbUpdate = new DatabaseUpdate();
 const dbRead = new DatabaseRead();
 
-exports.profile_get = async function (req, res) {
+exports.profile_get = async function(req, res) {
     if (req.user) {
         // user is authenticated
         try {
@@ -20,7 +20,7 @@ exports.profile_get = async function (req, res) {
     }
 };
 
-exports.profile_picks_get = async function (req, res) {
+exports.profile_picks_get = async function(req, res) {
     if (req.user) {
         // user is authenticated
         try {
@@ -34,7 +34,7 @@ exports.profile_picks_get = async function (req, res) {
     }
 };
 
-exports.profile_tracker_get = async function (req, res) {
+exports.profile_tracker_get = async function(req, res) {
     if (req.user) {
         // user is authenticated
         try {
@@ -48,11 +48,7 @@ exports.profile_tracker_get = async function (req, res) {
     }
 };
 
-exports.profile_update_picture_put = function (req, res) {
-    res.send('NOT IMPLEMENTED');
-};
-
-exports.profile_get_picture = async function (req, res) {
+exports.profile_get_picture = async function(req, res) {
     if (req.user) {
         try {
             let url = await dbRead.getProfilePicture(req.session.passport);
@@ -66,7 +62,7 @@ exports.profile_get_picture = async function (req, res) {
 
 }
 
-exports.profile_update_about_put = async function (req, res) {
+exports.profile_update_about_put = async function(req, res) {
     if (req.user) {
         // user is authenticated
         try {
@@ -80,7 +76,7 @@ exports.profile_update_about_put = async function (req, res) {
     }
 };
 
-exports.profile_update_status_put = async function (req, res) {
+exports.profile_update_status_put = async function(req, res) {
     if (req.user) {
         // user is authenticated
         try {
@@ -94,7 +90,7 @@ exports.profile_update_status_put = async function (req, res) {
     }
 };
 
-exports.profile_update_ACS_put = async function (req, res) {
+exports.profile_update_ACS_put = async function(req, res) {
     if (req.user) {
         // user is authenticated
         try {
@@ -108,7 +104,7 @@ exports.profile_update_ACS_put = async function (req, res) {
     }
 };
 
-exports.profile_update_picture_put = async function (req, res) {
+exports.profile_update_picture_put = async function(req, res) {
     if (req.user) {
         // user is authenticated
         try {
@@ -122,7 +118,7 @@ exports.profile_update_picture_put = async function (req, res) {
     }
 };
 
-exports.profile_update_picks_put = async function (req, res) {
+exports.profile_update_picks_put = async function(req, res) {
     if (req.user) {
         // user is authenticated
         try {
@@ -136,7 +132,7 @@ exports.profile_update_picks_put = async function (req, res) {
     }
 };
 
-exports.profile_update_tracker_put = async function (req, res) {
+exports.profile_update_tracker_put = async function(req, res) {
     if (req.user) {
         // user is authenticated
         try {
@@ -150,7 +146,7 @@ exports.profile_update_tracker_put = async function (req, res) {
     }
 };
 
-exports.profile_tracker_del = async function (req, res) {
+exports.profile_tracker_del = async function(req, res) {
     if (req.user) {
         // user is authenticated
         try {

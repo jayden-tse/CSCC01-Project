@@ -12,7 +12,8 @@ const Analysis = require('./Analysis.js')
 const ObjectId = require('mongodb').ObjectID;
 
 const DatabaseRead = require('./DatabaseRead.js');
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, FANALYST, ANALYST, EXPERT, PRO, Q, A, DEBATES } = require('./DatabaseHelper');
+const { WRITE_FAILED } = require('../controller/StatusMessages');
 const dbRead = new DatabaseRead();
 
 // Business email from which users will get the confirmation.
@@ -32,8 +33,10 @@ class DatabaseCreate {
     async createUser(user, questionnaire) {
         // Only store this user in the database if there exists no other accounts with
         // the same phone numbers and email.
-        // default image
-        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 100);
+        // new users get a random fanalyst question
+        let debate = await dbRead.getRandomDebateQuestion(FANALYST);
+        // image, about, status, questionnaire, picks, tracker, debateQuestion, analysis, ACS
+        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], debate, "", 100);
         user.profile = userProfile;
         let hashedPassword = this.passwordHasher(user.password);
         user.password = hashedPassword;
@@ -64,7 +67,7 @@ class DatabaseCreate {
         return hashedPassword;
     }
 
-    // the Zone
+    // The Zone
     async createPost(user, date, content, agrees, disagrees, comments, agreeusers, disagreeusers, likes, dislikes) {
         let post = new Post(user, date, content, agrees, disagrees, comments, agreeusers, disagreeusers, likes, dislikes);
         let result = await mongoConnect.getDBCollection(POSTS).insertOne(post);
@@ -85,33 +88,19 @@ class DatabaseCreate {
     }
 
     // Debate
-    async addDebateQuestion(tier, question, start, end) {
-        // Only for creating the questions, normal users shouldn't have access to this
-        let debate = new Debate(tier, question, start, end);
-        let query = { "tier": tier }
-        let result = await mongoConnect.getDBCollection(DEBATES).updateOne(
-            query, {
-                $push: {
-                    [tier]: debate
-                }
-            }, {
-                upsert: true
-            }); // upsert creates the debate tier if it doesn't exist (it should after the first few inserts)
-        return result;
+    async createDebateQuestion(tier, question) {
+        // Only for creating the questions, normal users shouldn't have access to this when website is live
+        //      for demo purposes, any user will be able to make questions
+        // Prereq's: tier is an actual tier (Fanalyst, Analyst, Expert/Pro Analyst)
+        let debate = new Debate(tier, question);
+        await mongoConnect.getDBCollection(DEBATES).insertOne(debate);
     }
 
-    async addAnalysis(username, tier, question, answer) {
-        let analysis = new Analysis(username, tier, question, answer, new Date());
-        let query = { "tier": tier }
-        let result = await mongoConnect.getDBCollection(ANALYSES).updateOne(
-            query, {
-                $push: {
-                    [tier]: analysis
-                }
-            }, {
-                upsert: true
-            }); // upsert creates the debate tier if it doesn't exist (it should after the first few inserts)
-        return result;
+    async createAnalysis(username, tier, question, answer) {
+        // user, tier, question, answer, score, voters, numvoters
+        let analysis = new Analysis(username, tier, question, answer, 0, [], 0);
+        let collection = tier + A; // e.g. fanalyst collection = "Fanalyst A"
+        await mongoConnect.getDBCollection(collection).insertOne(analysis);
     }
 
 }
