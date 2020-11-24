@@ -5,6 +5,7 @@ import TriviaStart from './TriviaStart';
 import TriviaGame from './TriviaGame';
 // TODO: replace with API
 import TEMP_QUESTIONS from './SampleTrivia';
+import {get10TriviaQuestions} from '../../api/TriviaCalls.js';
 
 const theme = createMuiTheme({
   palette: {
@@ -36,7 +37,17 @@ class Trivia extends React.Component {
   
   loadSolo() {
     console.log('Loading Solo Trivia');
-    this.setState({state: 'trivia'});
+    get10TriviaQuestions().then(async (res)=>{
+        if(res.ok){
+            const questions = await res.json();
+            this.setState({state: 'trivia', questions: questions});
+            console.log(this.state);
+        } else {
+            throw new Error("");
+        }
+    }).catch((error)=>{
+        console.log(`Error Loading Trivia Questions: ${error}`)
+    });
   }
 
   loadHeadToHead() {
@@ -67,7 +78,7 @@ class Trivia extends React.Component {
       case 'trivia':
         content = (
           <TriviaGame
-            triviaQuestions={TEMP_QUESTIONS}
+            triviaQuestions={this.state.questions}
             previewTimer={3}
             answerTimer={14}
             onFinish={this.handleTriviaComplete}
