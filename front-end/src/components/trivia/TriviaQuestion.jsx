@@ -21,8 +21,9 @@ class TriviaQuestion extends React.Component {
       // Number of seconds elapsed
       time: 0,
       // Disables the answer buttons if true. The index corresponds to an
-      // index in the answer array (see componentDidMount())
-      disabled: [false, false, false, false],
+      // index in the answer array (see componentDidMount()). It is set in
+      // componentDidMount since there are a variable number of answers
+      disabled: [],
       // The index of the answer that the player selected
       selected: null
     }
@@ -39,6 +40,12 @@ class TriviaQuestion extends React.Component {
     // Collect trivia answers into one for easy iterating
     // TODO: randomize order
     this.answers = [this.props.question.answer, ...this.props.question.other];
+    // Populate the disabled array to match the number of answers given
+    let disable = [];
+    for (let i = 0; i < this.answers.length; i++) {
+      disable.push(false);
+    }
+    this.setState({disabled: disable});
   }
 
   componentWillUnmount() {
@@ -57,7 +64,10 @@ class TriviaQuestion extends React.Component {
   handleAnswerSelect(answerIndex) {
     // Since an answer can only be selected once, disable the other options
     // and record the answer
-    let disable = [true, true, true, true];
+    let disable = [];
+    for (let i = 0; i < this.answers.length; i++) {
+      disable.push(true);
+    }
     disable[answerIndex] = false;
     this.setState({disabled: disable, selected: answerIndex});
   }
@@ -134,12 +144,12 @@ class TriviaQuestion extends React.Component {
         >
           <Grid item xs={12}>{question}</Grid>
           <Grid item xs={12}>{questionCount}</Grid>
-          {/* The 4 answers */}
+          {/* The possible answers */}
           <Grid container item xs={12} spacing={2}>
             {triviaAnswers}
           </Grid>
           <Grid item xs={12}>
-            {this.state.selected ? <p>Selected</p> : answerTimer}
+            {this.state.selected === null ? answerTimer : <p>Selected</p>}
           </Grid>
         </Grid>
       );
