@@ -3,8 +3,6 @@ import { Typography } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import TriviaStart from './TriviaStart';
 import TriviaGame from './TriviaGame';
-// TODO: replace with API
-import TEMP_QUESTIONS from './SampleTrivia';
 import {get10TriviaQuestions} from '../../api/TriviaCalls.js';
 
 const theme = createMuiTheme({
