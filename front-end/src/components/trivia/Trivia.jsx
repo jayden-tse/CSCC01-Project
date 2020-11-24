@@ -4,8 +4,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import TriviaStart from './TriviaStart';
 import TriviaGame from './TriviaGame';
 import LoadingScreen from '../general/LoadingScreen';
-// TODO: replace with API
-import TEMP_QUESTIONS from './SampleTrivia';
+import {get10TriviaQuestions} from '../../api/TriviaCalls.js';
 
 const theme = createMuiTheme({
   palette: {
@@ -41,12 +40,19 @@ class Trivia extends React.Component {
   loadSolo() {
     console.log('Loading Solo Trivia');
     this.setState({state: 'load'});
-    // TODO: make async call to get the 10 questions and store it in state
+    // make async call to get the 10 questions and store it in state
     // and after that's done update the game state to trivia
-    setTimeout(
-      () => this.setState({questions: TEMP_QUESTIONS, state: 'trivia'}),
-      2000
-    );
+    get10TriviaQuestions().then(async (res)=>{
+        if(typeof res !== 'undefined' && res.ok){
+            const questions = await res.json();
+            this.setState({state: 'trivia', questions: questions});
+        } else {
+            throw new Error("Bad Response From Backend");
+        }
+    }).catch((error)=>{
+        console.log(`Error Loading Trivia Questions: ${error}`)
+        this.setState({state: 'start'});
+    });
   }
 
   // Disabled for now
