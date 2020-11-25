@@ -73,88 +73,91 @@ class TriviaQuestion extends React.Component {
   }
 
   render() {
-    let content = null;
-    const question = (
+    return(
+      <Grid
+        container
+        className='TriviaQuestion'
+        spacing={2}
+        direction='column'
+        justify='center'
+        alignItems='center'
+      >
+        <Grid item xs={12}>{this.renderQuestion()}</Grid>
+        <Grid item xs={12}>{this.renderQuestionCount()}</Grid>
+        {/* The possible answers */}
+        <Grid container item xs={12} spacing={2}>
+          {
+            this.state.time >= this.props.previewTimer 
+            ? this.renderAnswers()
+            : null
+          }
+        </Grid>
+        {/* The countdown, or icon for correct/incorrect answer */}
+        <Grid item xs={12}>
+          {this.state.selected === null ? this.renderTimer() : <p>Selected</p>}
+        </Grid>
+      </Grid>
+    );
+  }
+
+  renderQuestion() {
+    return (
       <Typography variant='h2' color='textPrimary'>
         {this.props.question.question}
       </Typography>
     );
-    // Which question the player is on eg. 2/10
-    const questionCount = (
+  }
+
+  renderQuestionCount() {
+    return (
       <Typography variant='subtitle1' color='textSecondary'>
         {this.props.questionNumber + '/' + this.props.questionTotal}
       </Typography>
     );
+  }
 
-    // Preview the question for the given seconds
-    if (this.state.time < this.props.previewTimer) {
-      // Time remaining for question preview
-      const previewTimer = (
+  renderAnswers() {
+    return this.answers.map((answer, index) => (
+      <Grid item xs={12} sm={6} key={'TriviaAnswer-' + index}>
+        <Button
+          disabled={this.state.disabled[index]}
+          value={index}
+          onClick={() => this.handleAnswerSelect(index)}
+          variant='contained'
+          color='primary'
+        >
+          {answer}
+        </Button>
+      </Grid>
+    ));
+  }
+
+  renderTimer() {
+    let timer = null;
+    const previewTime = this.props.previewTimer;
+    const answerTime = this.props.answerTimer;
+    // Render the countdown for each phase
+    if (this.state.time < previewTime) {
+      // Question preview
+      timer = (
         <Typography variant='h2' color='secondary'>
-          {this.props.previewTimer - this.state.time}
+          {previewTime - this.state.time}
         </Typography>
       );
-      content = (
-        <Grid
-          container
-          className='TriviaQuestionPreview'
-          spacing={2}
-          direction='column'
-          justify='center'
-          alignItems='center'
-        >
-          <Grid item xs={12}>{question}</Grid>
-          <Grid item xs={12}>{questionCount}</Grid>
-          <Grid item xs={12}>{previewTimer}</Grid>
-        </Grid>
+    } else if (this.state.time < (answerTime + previewTime)) {
+      // Answer phase
+      // Want the time since the preview phase ended
+      const decrement = this.state.time - previewTime;
+      timer = (
+        <Typography variant='h2' color='secondary'>
+          {answerTime - decrement}
+        </Typography>
       );
-    // Then prompt user to choose an answer within the given seconds
     } else {
-      // Time remaining for answer phase (need to factor in the elapsed time
-      // from the preview so we can get the elapsed time since preview ended)
-      const decrement = this.state.time - this.props.previewTimer;
-      const answerTimer = (
-        <Typography variant='h2' color='secondary'>
-          {this.props.answerTimer - decrement}
-        </Typography>
-      );
-      const triviaAnswers = this.answers.map((answer, index) => {
-        return (
-        <Grid item xs={12} sm={6} key={'TriviaAnswer-' + index}>
-          <Button
-            disabled={this.state.disabled[index]}
-            value={index}
-            onClick={() => this.handleAnswerSelect(index)}
-            variant='contained'
-            color='primary'
-          >
-            {answer}
-          </Button>
-        </Grid>
-        );
-      });
-      content = (
-        <Grid
-          container
-          className='TriviaQuestionAnswers'
-          spacing={2}
-          direction='column'
-          justify='center'
-          alignItems='center'
-        >
-          <Grid item xs={12}>{question}</Grid>
-          <Grid item xs={12}>{questionCount}</Grid>
-          {/* The possible answers */}
-          <Grid container item xs={12} spacing={2}>
-            {triviaAnswers}
-          </Grid>
-          <Grid item xs={12}>
-            {this.state.selected === null ? answerTimer : <p>Selected</p>}
-          </Grid>
-        </Grid>
-      );
+      // Time ran out, so done with the timer
+      clearInterval(this.timerId);
     }
-    return content;
+    return timer;
   }
 }
 
