@@ -35,7 +35,7 @@ class DatabaseCreate {
         // the same phone numbers and email.
         // default image
         let debate = await dbRead.getRandomDebateQuestion(FANALYST);
-        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 200, { facebook: '', instagram: '', twitter: '' }, debate.question, {});
+        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 200, { facebook: '', instagram: '', twitter: '' }, debate.question, FANALYST);
         user.profile = userProfile;
         let hashedPassword = this.passwordHasher(user.password);
         user.password = hashedPassword;
@@ -123,7 +123,7 @@ class DatabaseCreate {
         // user, tier, question, answer, score, voters, numvoters
         let analysis = new Analysis(username, tier, question, answer, 0, [], 0);
         let collection = tier + A; // e.g. fanalyst collection = "Fanalyst A"
-        await mongoConnect.getDBCollection(collection).insertOne(analysis);
+        return await mongoConnect.getDBCollection(collection).insertOne(analysis);
     }
 
 }

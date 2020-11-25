@@ -23,8 +23,6 @@ exports.debate_topics_put = async function(req, res) {
 
     if (req.user) { // need to change to admin account later?
         try {
-            console.log(TIERS);
-            console.log(FANALYST);
             if (TIERS.indexOf(req.body.tier) > -1) { // matches one of the tiers
                 await dbCreate.createDebateQuestion(req.body.tier, req.body.question); // will throw an error if it fails
                 res.sendStatus(200);
@@ -48,19 +46,8 @@ exports.debate_submission_put = async function(req, res) {
         try {
             // take user's ACS and converts it to a tier
             let profile = await dbRead.getProfile(req.session.passport.user);
-            console.log("user ACS: " + profile.ACS);
             let tier = await dbRead.ACSToTier(profile.ACS);
-            console.log(req.session.passport);
-            await dbCreate.createAnalysis(req.session.passport.user, tier, profile.debateQuestion, req.body.answer);
-
-            let result = {
-                tier: tier,
-                question: profile.debateQuestion,
-                answer: req.body.answer
-            }
-
-            // add to user's profile; saves their tier to ensure ACS changing won't affect user's score
-            await dbUpdate.updateUser(req.session.passport, 'profile.analysis', result) // appends to user.profile.analysis
+            await dbCreate.createAnalysis(req.session.passport.user, tier, profile.debatequestion, req.body.answer);
             res.sendStatus(200);
         } catch (e) {
             console.log(e);
@@ -71,51 +58,96 @@ exports.debate_submission_put = async function(req, res) {
     }
 };
 
-exports.debate_topics_get = function(req, res) {
+exports.debate_topics_get = async function(req, res) {
+    res.set({
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        })
+        // to get a user's debate topic
+    if (req.user) {
+        try {
+            let q = await dbRead.getCurrentUserDebate(req.session.passport.user);
+            res.status(200).json({ "question": q });
+        } catch (e) {
+            res.status(500).send(WRITE_FAILED);
+        }
+    } else {
+        res.status(401).send(NOT_AUTHENTICATED);
+    }
+};
+
+exports.debate_submission_get = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
     })
     if (req.user) {
         try {
-
+            let result = await dbRead.getAnalysis(req.session.passport.user);
+            if (result && result.answer) {
+                res.status(200).send(result);
+            } else {
+                res.status(400).send(NOT_FOUND); // user hasn't submitted a question today
+            }
         } catch (e) {
+            console.log(e);
             res.status(500).send(WRITE_FAILED);
         }
+    } else {
+        res.status(401).send(NOT_AUTHENTICATED);
     }
 };
 
-exports.debate_submission_get = function(req, res) {
+exports.debate_submission_time_limit_get = async function(req, res) {
     res.set({
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin': 'http://localhost:3000'
-    })
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        })
+        // tomorrow 0000 - new Date()
 };
 
-exports.debate_submission_time_limit_get = function(req, res) {
+exports.debate_update_topics_put = async function(req, res) {
     res.set({
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin': 'http://localhost:3000'
-    })
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        })
+        // update the daily questions
 };
 
-exports.debate_update_topics_put = function(req, res) {
+exports.debate_submission_update_score_put = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
     })
+
+    // update debate score based on votes
+    // require submission user and current user's vote
+    if (req.user) {
+        try {
+            let analysis = await dbRead.getAnalysis(req.body.username);
+            if (analysis && analysis.username !== req.session.passport.user) { // exists + not the owner
+                let result = await dbUpdate.voteOnAnalysis(analysis, req.session.passport.user, req.body.vote);
+                if (result && result.modifiedCount) {
+                    res.sendStatus(200);
+                } else {
+                    res.status(400).send(BAD_INPUT);
+                }
+            } else {
+                res.status(404).send(NOT_FOUND);
+            }
+        } catch (e) {
+            console.log(e);
+            res.status(500).send(WRITE_FAILED);
+        }
+    } else {
+        res.status(401).send(NOT_AUTHENTICATED);
+    }
 };
 
-exports.debate_submission_update_score_put = function(req, res) {
+exports.debate_topics_del = async function(req, res) {
     res.set({
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin': 'http://localhost:3000'
-    })
-};
-
-exports.debate_topics_del = function(req, res) {
-    res.set({
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin': 'http://localhost:3000'
-    })
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        })
+        // delete the daily topics
 };

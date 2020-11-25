@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 var passport = require('passport');
 
-const { USERS, POSTS, FANALYST, Q, DEBATES } = require('./DatabaseHelper');
+const { USERS, POSTS, FANALYST, Q, A, DEBATES } = require('./DatabaseHelper');
 
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
@@ -125,6 +125,7 @@ class DatabaseRead {
         }
     }
     async getAllDebateQuestions(tier) {
+        // helper fcn.
         let cursor = await mongoConnect.getDBCollection(DEBATES).find({ tier: tier });
         let questions = [];
         await cursor.forEach(function(doc) {
@@ -133,19 +134,46 @@ class DatabaseRead {
         return questions;
     }
 
+    async getTwoDebateQuestions(tier) {
+        // used in the event loop; get 2 unique questions from a tier.
+        // note that arr.splice(i, 2) could be used, but the two questions would
+        // always be adjacent, which makes it less random.
+        let questions = await this.getAllDebateQuestions(tier);
+
+        let q1 = Math.floor(Math.random() * questions.length);
+        let result = [];
+        result.push(questions[q1]);
+        questions.splice(q1, 1);
+
+        let q2 = Math.floor(Math.random() * questions.length);
+        result.push(questions[q2]);
+        questions.splice(q2, 1);
+        return result;
+    }
+
     async getRandomDebateQuestion(tier) {
+        // used in the event loop; get a random question in the daily set of questions.
         let questions = await this.getAllDebateQuestions(tier);
         let rand = Math.floor(Math.random() * questions.length);
         return questions[rand];
     }
 
     async getAnalysis(username) {
+        // get a user's analysis
         let query = {
             username: username
         };
         let user = await mongoConnect.getDBCollection(USERS).findOne(query);
-        let analysis = user.profile.analysis;
-        return analysis; // contains username, question, answer, score, and voters
+        if (!user) return null;
+        let collection = user.profile.debatetier + A;
+        let analysis = await mongoConnect.getDBCollection(collection).findOne(query);
+        return analysis; // contains username, tier, question, answer, score, voters, and numvoters. 
+    }
+
+    async getCurrentUserDebate(username) {
+        // get user's debate question of the day
+        let profile = await this.getProfile(username);
+        return profile.debatequestion;
     }
 }
 

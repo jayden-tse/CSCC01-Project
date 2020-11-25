@@ -1,7 +1,7 @@
 var mongoConnect = require('../../mongoConnect');
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, A } = require('./DatabaseHelper');
 const DatabaseRead = require('./DatabaseRead');
 const dbRead = new DatabaseRead();
 class DatabaseUpdate {
@@ -250,12 +250,50 @@ class DatabaseUpdate {
         }
     }
 
-    async updateAnalysis() {
+    async voteOnAnalysis(analysis, username, vote) {
+        // username will be voting on analysis with vote as their value (value between 0 and 100 that is divisible by 10)
+        // if user voted
+        //      if the user wants to remove their vote
+        //          score = (score*numvoters - uservote)/(numvoters-1)
+        //          numvoters -= 1;
+        //          update
+        //      else
+        //          score = (score*numvoters - oldvote + newvote)/numvoters
+        //          update
+        // if user hasn't voted
+        //      score = (score*numvoters + newvote)/(numvoters+1)
+        //      numvoters += 1;
+        //      update
+        let collection = analysis.tier + A;
+        // https://stackoverflow.com/questions/12462318/find-a-value-in-an-array-of-objects-in-javascript 2nd ans
+        let index = analysis.voters.findIndex(o => o.username === username);
+        if (index >= 0) {
+            // user already voted
+            if (vote >= 0 && vote <= 100) { // if user wants to change their vote
+                analysis.score = (analysis.score * analysis.numvoters - analysis.voters[index].vote + vote) / analysis.numvoters;
+                analysis.voters[index] = { username: username, vote: vote };
+            } else if (vote < 0) { // if user wants to remove their vote
+                analysis.score = analysis.numvoters - 1 === 0 ? 0 : (analysis.score * analysis.numvoters - analysis.voters[index].vote) / (analysis.numvoters - 1);
+                analysis.voters.splice(index, 1);
+                analysis.numvoters -= 1;
+            }
+            // treat as bad input (vote > 100)
+        } else {
+            if (vote >= 0) {
+                // user hasn't voted yet
+                analysis.score = (analysis.score * analysis.numvoters + vote) / (analysis.numvoters + 1);
+                analysis.voters.push({ username: username, vote: vote });
+                analysis.numvoters += 1;
+            }
+            // treat as bad input if vote < 0 when user hasn't voted
+        }
+        // update
+        return await mongoConnect.getDBCollection(collection).updateOne({
+            "_id": new ObjectId(analysis._id)
+        }, {
+            $set: analysis
+        });
 
-    }
-
-    async voteOnAnalysis(username, vote) {
-        // TODO: Implement this fcn.
     }
 
 }
