@@ -267,15 +267,19 @@ class DatabaseUpdate {
         let collection = analysis.tier + A;
         // https://stackoverflow.com/questions/12462318/find-a-value-in-an-array-of-objects-in-javascript 2nd ans
         let index = analysis.voters.findIndex(o => o.username === username);
+        let profile = await dbRead.getProfile(username)
+
         if (index >= 0) {
             // user already voted
             if (vote >= 0 && vote <= 100) { // if user wants to change their vote
                 analysis.score = (analysis.score * analysis.numvoters - analysis.voters[index].vote + vote) / analysis.numvoters;
                 analysis.voters[index] = { username: username, vote: vote };
             } else if (vote < 0) { // if user wants to remove their vote
+                // avoids division by 0
                 analysis.score = analysis.numvoters - 1 === 0 ? 0 : (analysis.score * analysis.numvoters - analysis.voters[index].vote) / (analysis.numvoters - 1);
                 analysis.voters.splice(index, 1);
                 analysis.numvoters -= 1;
+                profile.votes -= 1;
             }
             // treat as bad input (vote > 100)
         } else {
@@ -284,16 +288,23 @@ class DatabaseUpdate {
                 analysis.score = (analysis.score * analysis.numvoters + vote) / (analysis.numvoters + 1);
                 analysis.voters.push({ username: username, vote: vote });
                 analysis.numvoters += 1;
+                profile.votes += 1;
             }
             // treat as bad input if vote < 0 when user hasn't voted
         }
         // update
+        await mongoConnect.getDBCollection(USERS).updateOne({ username: username }, { $set: { "profile.$.votes": profile.votes } })
+
         return await mongoConnect.getDBCollection(collection).updateOne({
             "_id": new ObjectId(analysis._id)
         }, {
             $set: analysis
         });
 
+    }
+
+    async archiveDatabase() {
+        // to complete
     }
 
 }

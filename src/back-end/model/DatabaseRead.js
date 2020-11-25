@@ -175,6 +175,15 @@ class DatabaseRead {
         let profile = await this.getProfile(username);
         return profile.debatequestion;
     }
+
+    async getAllSubmissions(tier) {
+        let cursor = mongoConnect.getDBCollection(tier + A).find({});
+        let result = [];
+        await cursor.forEach(function(doc) {
+            result.push(doc.username);
+        })
+        return result;
+    }
 }
 
 module.exports = DatabaseRead;

@@ -179,8 +179,11 @@ router.put(
 // Get debate topic for a user
 router.get('/debates/topic', debateController.debate_topics_get);
 
-// Get debate submission for a user
+// Get debate submission for any user (query)
 router.get('/debates/submission', debateController.debate_submission_get);
+
+// Get all debate submissions within the user's tier
+router.get('/debates/submission/all', debateController.debate_submission_get_all);
 
 // Get debate submission time limit
 router.get(

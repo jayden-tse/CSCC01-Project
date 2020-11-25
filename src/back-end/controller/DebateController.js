@@ -47,8 +47,12 @@ exports.debate_submission_put = async function(req, res) {
             // take user's ACS and converts it to a tier
             let profile = await dbRead.getProfile(req.session.passport.user);
             let tier = await dbRead.ACSToTier(profile.ACS);
-            await dbCreate.createAnalysis(req.session.passport.user, tier, profile.debatequestion, req.body.answer);
-            res.sendStatus(200);
+            let result = await dbCreate.createAnalysis(req.session.passport.user, tier, profile.debatequestion, req.body.answer);
+            if (result) {
+                res.sendStatus(200);
+            } else {
+                res.status(400).send(BAD_INPUT); // already submitted
+            }
         } catch (e) {
             console.log(e);
             res.status(500).send(WRITE_FAILED);
@@ -60,10 +64,11 @@ exports.debate_submission_put = async function(req, res) {
 
 exports.debate_topics_get = async function(req, res) {
     res.set({
-            'Access-Control-Allow-Credentials': true,
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-        })
-        // to get a user's debate topic
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    })
+
+    // to get a user's debate topic
     if (req.user) {
         try {
             let q = await dbRead.getCurrentUserDebate(req.session.passport.user);
@@ -75,19 +80,45 @@ exports.debate_topics_get = async function(req, res) {
         res.status(401).send(NOT_AUTHENTICATED);
     }
 };
-
 exports.debate_submission_get = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
     })
+
+    // get all submissions within the same tier
     if (req.user) {
         try {
-            let result = await dbRead.getAnalysis(req.session.passport.user);
+            let result = await dbRead.getAnalysis(req.query.username);
             if (result && result.answer) {
                 res.status(200).send(result);
             } else {
-                res.status(400).send(NOT_FOUND); // user hasn't submitted a question today
+                res.status(400).send(NOT_FOUND); // no one has submitted anything in this tier.
+            }
+        } catch (e) {
+            console.log(e);
+            res.status(500).send(WRITE_FAILED);
+        }
+    } else {
+        res.status(401).send(NOT_AUTHENTICATED);
+    }
+};
+
+exports.debate_submission_get_all = async function(req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    })
+
+    // get all submissions within the same tier
+    if (req.user) {
+        try {
+            let profile = await dbRead.getProfile(req.session.passport.user);
+            let result = await dbRead.getAllSubmissions(profile.debatetier);
+            if (result) {
+                res.status(200).send(result);
+            } else {
+                res.status(400).send(NOT_FOUND); // no one has submitted anything in this tier.
             }
         } catch (e) {
             console.log(e);

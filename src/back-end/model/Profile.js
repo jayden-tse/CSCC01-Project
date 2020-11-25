@@ -1,5 +1,5 @@
 class Profile {
-    constructor(picture, about, status, questionnaire, picks, tracker, ACS, links, debatequestion, debatetier) {
+    constructor(picture, about, status, questionnaire, picks, tracker, ACS, links, debatequestion, debatetier, votes) {
         this.picture = picture;
         this.about = about;
         this.status = status;
@@ -10,6 +10,7 @@ class Profile {
         this.debatetier = debatetier;
         this.ACS = ACS;
         this.links = links;
+        this.votes = votes;
     }
 }
 
