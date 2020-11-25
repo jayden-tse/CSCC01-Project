@@ -1,14 +1,27 @@
 import React from 'react';
-// replace whatever is in render with components
-// needed for the page
+import DailyPicks from './PicksAndPredictions/DailyPicks';
 
 class PicksAndPredictionsPage extends React.Component {
   constructor(props) {
     super(props);
+    this.state={
+        screen:'default'
+    }
+  }
+
+  selectScreen(){
+    switch(this.state.screen){
+        case 'daily':
+            return <DailyPicks/>;
+        default:
+            return <DailyPicks/>;
+    }
   }
   
   render() {
-    return<h1>PicksAndPredictions</h1>
+    return (<div>
+                {this.selectScreen()}
+            </div>)
   }
 }
 

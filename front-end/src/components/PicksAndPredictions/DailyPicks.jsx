@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import SinglePick from './SinglePick';
 
+const PICKABLE='pickable', ONGOING='ongoing', COMPLETED='completed';
 class DailyPicks extends Component {
     constructor(props){
         super(props);
@@ -10,7 +12,9 @@ class DailyPicks extends Component {
 
     //TODO: render list of daily picks as single picks
     render() { 
-        return null;
+        return <div>
+            <SinglePick pickState={COMPLETED} option1='tom' option2='jerry' picked='tom' result='tom' ACSChange={5}/>
+        </div>;
     }
 }
  

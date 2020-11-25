@@ -7,28 +7,38 @@ class SinglePick extends Component {
     constructor(props){
         super(props);
         this.state={
-            state:'loading'
+            pickState: props.pickState
         };
     }
 
     //will have buttons to select pick
     renderPickable(){
-        return null;
+        return (<div>
+                    <button>{this.props.option1}</button>
+                    <button>{this.props.option2}</button>
+                </div>);
     }
 
     //will have your pick and an 'ongoing' message
     renderOngoing(){
-        return null;
+        return (<span>
+                Currently Ongoing<br/>
+                Your Pick: {this.props.picked}
+                </span>);
     }
 
     //show result of the pick, and any acs gained/lost
     renderCompleted(){
-        return null;
+        return (<span>
+            Result: {this.props.result}<br/>
+            Your Pick: {this.props.picked}<br/>
+            {this.props.ACSChange} ACS Gained
+            </span>);
     }
 
     //will select the correct renderable
     selectRender(){
-        switch(this.state.state){
+        switch(this.state.pickState){
             case PICKABLE:
                 return this.renderPickable();
             case ONGOING:
@@ -44,9 +54,9 @@ class SinglePick extends Component {
         return(
             <div>
                 <div>
-                    <img/>
+                    <img alt={this.props.option1}/>
                     VS
-                    <img/>
+                    <img alt={this.props.option2}/>
                 </div>
             {this.selectRender()}
             </div>
