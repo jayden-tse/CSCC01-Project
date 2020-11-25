@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import SinglePick from './SinglePick';
+//tempdata not reflective of database since not created yet
+import tempData from './tempData.json';
 
 const PICKABLE='pickable', ONGOING='ongoing', COMPLETED='completed';
 class DailyPicks extends Component {
@@ -12,8 +14,12 @@ class DailyPicks extends Component {
 
     //TODO: render list of daily picks as single picks
     render() { 
+        const i = 0;
         return <div>
-            <SinglePick pickState={COMPLETED} option1='tom' option2='jerry' picked='tom' result='tom' ACSChange={5}/>
+            <SinglePick pickState={tempData[i].condition}
+            option1={tempData[i].option1} option2={tempData[i].option2}
+            picked={tempData[i].picked} result={tempData[i].result}
+            ACSChange={tempData[i].ACSChange}/>
         </div>;
     }
 }

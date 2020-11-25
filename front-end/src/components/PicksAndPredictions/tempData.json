@@ -1,0 +1,5 @@
+[
+    {"_id":"a","condition":"pickable","option1":"tom", "option2":"jerry", "picked":""},
+    {"_id":"b","condition":"ongoing","option1":"galakrond", "option2":"zork", "picked":"zork"},
+    {"_id":"c","condition":"completed","option1":"jing jameson", "option2":"wank tranzonian", "picked":"wank tranzonian", "result":"wank is winner", "ACSChange":-10}
+]
