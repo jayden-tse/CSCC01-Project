@@ -26,7 +26,8 @@ class SinglePick extends Component {
         return null;
     }
 
-    render() { 
+    //will select the correct renderable
+    selectRender(){
         switch(this.state.state){
             case PICKABLE:
                 return this.renderPickable();
@@ -37,6 +38,19 @@ class SinglePick extends Component {
             default:
                 return null;
         }
+    }
+
+    render() { 
+        return(
+            <div>
+                <div>
+                    <img/>
+                    VS
+                    <img/>
+                </div>
+            {this.selectRender()}
+            </div>
+        );
     }
 }
  
