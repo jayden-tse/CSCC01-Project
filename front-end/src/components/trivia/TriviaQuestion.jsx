@@ -8,6 +8,9 @@ const PREVIEW = 0;  // Preview the question
 const SELECT = 1;  // Select an answer within the alloted time
 const RESULTS = 2;  // Answer was selected or time ran out
 
+// Minimum amount of milliseconds to display results before calling onAnswer
+const RESULTS_DELAY = 1500;
+
 /**
  * Shows the given question `props.question.question` for `props.previewTimer`
  * seconds, then gives `props.answerTimer` seconds for the player to choose an
@@ -16,11 +19,10 @@ const RESULTS = 2;  // Answer was selected or time ran out
  */
 class TriviaQuestion extends React.Component {
   /**
-   * @param {*} props.onAnswer callback when an answer is selected or time ran
-   * out. Accepts 1 argument: `answer`: string or `null`.
-   * `answer` is `null` when the player does not choose an answer in time,
-   * otherwise it's one of the possible answer strings for this question
-   * (`props.question.answer` or one of `props.question.other`)
+   * @param {*} props.onAnswer callback when an answer is selected or time runs
+   * out. Accepts 1 argument: `correct`: boolean. `correct` is true when the
+   * selected answer matches `props.question.answer`, otherwise false. If no
+   * answer is selected, that is the time runs out, then false.
    */
   constructor(props) {
     super(props);
@@ -69,8 +71,6 @@ class TriviaQuestion extends React.Component {
     const preview = this.props.previewTimer;
     const answer = this.props.answerTimer;
     if (time === preview + answer - 1 ) {
-      // No longer need the timer
-      clearInterval(this.timerId);
       if (this.state.selected === null) {
         let disableAll = [];
         for (let i = 0; i < this.answers.length; i++) {
@@ -81,6 +81,13 @@ class TriviaQuestion extends React.Component {
           disabled: disableAll
         }));
       }
+    // Display result for specified milliseconds before indicating an answer
+    // is selected or timeout
+    } else if (this.getPhase() === RESULTS) {
+      // No longer need to update state every second
+      clearInterval(this.timerId);
+      const result = this.isCorrect();
+      setTimeout(this.props.onAnswer, RESULTS_DELAY, result);
     // Otherwise just elapse 1 second
     } else {
       this.setState((state) => ({
@@ -165,6 +172,7 @@ class TriviaQuestion extends React.Component {
     );
   }
 
+  // TODO: Handle long questions causing text to overflow
   renderQuestion() {
     return (
       <Typography variant='h2' color='textPrimary'>

@@ -61,9 +61,9 @@ class Trivia extends React.Component {
     // this.setState({state: 'load'});
   }
 
-  handleTriviaComplete() {
-    // TODO:
-    console.log('Finished answering trivia questions')
+  handleTriviaComplete(results) {
+    // TODO: send results to server to update ACS
+    console.log('Trivia complete. Results: ' + results);
     this.setState({state: 'results'});
   }
   
