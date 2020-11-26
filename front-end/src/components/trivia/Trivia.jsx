@@ -3,6 +3,7 @@ import { Typography } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import TriviaStart from './TriviaStart';
 import TriviaGame from './TriviaGame';
+import TriviaResults from './TriviaResults';
 import LoadingScreen from '../general/LoadingScreen';
 import {get10TriviaQuestions} from '../../api/TriviaCalls.js';
 
@@ -30,11 +31,16 @@ class Trivia extends React.Component {
       state: 'start',
       // The questions (question objects) for the trivia game.
       // Needs to be loaded from the backend
-      questions: []
+      questions: [],
+      // The player's answer to each question. Filled after all questions are
+      // answered
+      results: []
     };
     this.loadSolo = this.loadSolo.bind(this);
     this.loadHeadToHead = this.loadHeadToHead.bind(this);
     this.handleTriviaComplete = this.handleTriviaComplete.bind(this);
+    this.handlePlayAgain = this.handlePlayAgain.bind(this);
+    this.reset = this.reset.bind(this);
   }
   
   loadSolo() {
@@ -61,10 +67,22 @@ class Trivia extends React.Component {
     // this.setState({state: 'load'});
   }
 
-  handleTriviaComplete() {
-    // TODO:
-    console.log('Finished answering trivia questions')
-    this.setState({state: 'results'});
+  handleTriviaComplete(results) {
+    // TODO: send results to server to update ACS
+    console.log('Trivia complete. Results: ' + results);
+    this.setState({state: 'results', results: results});
+  }
+
+  // After finishing a trivia game, load another one
+  handlePlayAgain() {
+    // Clear previous questions and answers
+    this.setState({questions: [], results: []});
+    this.loadSolo();
+  }
+
+  // Reset state to initial state (goes back to start)
+  reset() {
+    this.setState({state: 'start', questions: [], results: []});
   }
   
   render() {
@@ -92,7 +110,13 @@ class Trivia extends React.Component {
         );
         break;
       case 'results':
-        content = <Typography variant="body1">Results</Typography>
+        content = (
+          <TriviaResults
+            results={this.state.results}
+            onPlayAgain={this.handlePlayAgain}
+            onMainMenu={this.reset}
+          />
+        );
         break;
       default:
         content = (
