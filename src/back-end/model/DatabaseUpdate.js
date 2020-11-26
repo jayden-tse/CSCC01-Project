@@ -287,7 +287,7 @@ class DatabaseUpdate {
             }
             // treat as bad input (vote > 100)
         } else {
-            if (vote >= 0) {
+            if (vote >= 0 && vote <= 100) {
                 // user hasn't voted yet
                 analysis.score = (analysis.score * analysis.numvoters + vote) / (analysis.numvoters + 1);
                 analysis.voters.push({ username: username, vote: vote });
@@ -297,7 +297,7 @@ class DatabaseUpdate {
             // treat as bad input if vote < 0 when user hasn't voted
         }
         // update
-        await mongoConnect.getDBCollection(USERS).updateOne({ username: username }, { $set: { "profile.$.votes": profile.votes } })
+        await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": profile._id }, { $set: { "profile.votes": profile.votes } })
 
         return await mongoConnect.getDBCollection(collection).updateOne({
             "_id": new ObjectId(analysis._id)
@@ -362,7 +362,7 @@ class DatabaseUpdate {
                         profile = await dbRead.getProfile(best.username);
                         profile.ACS = addToACS(ACS, BESTPTS);
                         // update
-                        await mongoConnect.getDBCollection(USERS).updateOne({ username: username }, { $set: { "profile.$.ACS": profile.ACS } });
+                        await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": profile._id }, { $set: { "profile.$.ACS": profile.ACS } });
                     }
 
                     // reset groupings
@@ -377,7 +377,7 @@ class DatabaseUpdate {
                 profile = await dbRead.getProfile(best.username);
                 profile.ACS = addToACS(ACS, BESTPTS);
                 // update
-                await mongoConnect.getDBCollection(USERS).updateOne({ username: username }, { $set: { "profile.$.ACS": profile.ACS } });
+                await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": profile._id }, { $set: { "profile.$.ACS": profile.ACS } });
             }
 
             // all scoring is done; archive/log the debates

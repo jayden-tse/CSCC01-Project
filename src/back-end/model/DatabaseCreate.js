@@ -35,7 +35,7 @@ class DatabaseCreate {
         // the same phone numbers and email.
         // default image
         let debate = await dbRead.getRandomDebateQuestion(FANALYST);
-        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 200, { facebook: '', instagram: '', twitter: '' }, debate.question, FANALYST, 0);
+        let userProfile = new Profile(new ObjectId(), 'https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 200, { facebook: '', instagram: '', twitter: '' }, debate.question, FANALYST, 0);
         user.profile = userProfile;
         let hashedPassword = this.passwordHasher(user.password);
         user.password = hashedPassword;

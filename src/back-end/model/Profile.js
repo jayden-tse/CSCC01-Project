@@ -1,5 +1,6 @@
 class Profile {
-    constructor(picture, about, status, questionnaire, picks, tracker, ACS, links, debatequestion, debatetier, votes) {
+    constructor(_id, picture, about, status, questionnaire, picks, tracker, ACS, links, debatequestion, debatetier, votes) {
+        this._id = _id;
         this.picture = picture;
         this.about = about;
         this.status = status;
