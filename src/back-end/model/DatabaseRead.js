@@ -60,6 +60,10 @@ class DatabaseRead {
         return result.profile.links;
     }
 
+    async getACS(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username });
+        return result.profile.ACS;
+    }
     async getAllPosts(req) {
         const posts = [];
         const cursor = await mongoConnect.getDBCollection(POSTS).find(req);

@@ -142,6 +142,9 @@ router.put('/trivia/update/question', triviaController.question_update_put);
 // Delete question
 router.delete('/trivia/delete/question', triviaController.question_del);
 
+// Calculate ACS after a Solo Trivia game
+router.put('/trivia/update/ACS/solo', triviaController.update_acs_solo);
+
 /* PICKS & PREDICTIONS */
 
 // Create matches

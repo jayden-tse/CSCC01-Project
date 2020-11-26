@@ -61,11 +61,12 @@ export async function getAnswer(question) {
         });
 }
 
-// Update a user's ACS (will be returned at the same time?)
-export async function updateACS(score) {
-    const newUrl = new URL(BASE_URL + '/profile/update/ACS');
+// Send amount of correct and incorrect answers to backend to update a user's ACS.
+// Input will be: [false, true, true, ...]. Return the updated ACS as a string.
+export async function updateACS(rightAndWrong) {
+    const newUrl = new URL(BASE_URL + '/trivia/update/ACS/solo');
     const params = {
-        ACS: score
+        responses: rightAndWrong
     };
     const options = {
         method: 'PUT',

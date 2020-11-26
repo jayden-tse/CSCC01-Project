@@ -51,10 +51,11 @@ class DatabaseUpdate {
         return message;
     }
 
-    async updateACS(username, ACS) {
-        await mongoConnect.getDBCollection(USERS).updateOne({ "username": username }, {
+    async updateACS(req, ACS) {
+        let username = { 'username': req.user };
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
             $set: {
-                "profile.ACS": ACS
+                'profile.ACS': ACS
             }
         });
         return ACS;
