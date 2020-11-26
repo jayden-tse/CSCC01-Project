@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 
 // The 3 possible phases
 const PREVIEW = 0;  // Preview the question
@@ -107,6 +109,18 @@ class TriviaQuestion extends React.Component {
     return phase;
   }
 
+  // Returns true if the selected answer is correct, otherwise false.
+  // If no answer is selected, then false.
+  isCorrect() {
+    let correct = false;
+    const selected = this.state.selected;
+    const correctAnswer = this.props.question.answer;
+    if (selected != null && this.answers[selected] === correctAnswer) {
+      correct = true;
+    }
+    return correct;
+  }
+
   // When an answer is selected
   handleAnswerSelect(answerIndex) {
     // Since an answer can only be selected once, disable the other options
@@ -144,7 +158,7 @@ class TriviaQuestion extends React.Component {
           {
             this.state.selected === null && this.getPhase() !== RESULTS
             ? this.renderTimer()
-            : <p>Result</p>
+            : this.renderResult()
           }
         </Grid>
       </Grid>
@@ -206,6 +220,17 @@ class TriviaQuestion extends React.Component {
       );
     }
     return timer;
+  }
+
+  renderResult() {
+    // Checkmark for correct answer, X for incorrect
+    const hugeSize = { fontSize: 100 };
+    let result = <CloseIcon color='error' style={hugeSize} />;
+    if (this.isCorrect()) {
+      // Perhaps set a theme color for success and use that instead?
+      result = <CheckIcon color='primary' style={hugeSize} />;
+    }
+    return result;
   }
 }
 
