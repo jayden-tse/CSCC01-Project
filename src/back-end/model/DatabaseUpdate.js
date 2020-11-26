@@ -1,9 +1,13 @@
 var mongoConnect = require('../../mongoConnect');
+
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
-const { USERS, POSTS, A } = require('./DatabaseHelper');
+const { USERS, POSTS, A, FANALYST, ANALYST, EXPERT } = require('./DatabaseHelper');
 const DatabaseRead = require('./DatabaseRead');
 const dbRead = new DatabaseRead();
+const DatabaseDelete = require('./DatabaseDelete');
+const dbDelete = new DatabaseDelete();
+
 class DatabaseUpdate {
 
     async updateUserTracker(userToUpdate) {
@@ -307,5 +311,113 @@ class DatabaseUpdate {
         // to complete
     }
 
+    getHiScore(group) {
+        // gets the debate with the highest score of a group
+        let bestDebate = { score: -1 };
+        for (debate in group) {
+            if (debate.score > bestDebate.score) {
+                bestDebate = debate;
+            }
+        }
+        if (bestDebate.score < 0) return null;
+        else return bestDebate;
+    }
+
+    addToACS(ACS, points) {
+        // helper to add points to ACS and keep it within the bounds.
+        // what should the order of points be?
+        // should it only round at the end of the day? 
+        // edge case: user is at 1100 and had a net gain of points but forgot to submit their analysis/vote
+        //      now the user will be < 1100 even though they've been gaining points all day
+        if (ACS + points < 100) return 100;
+        else if (ACS + points > 1100) return 1100;
+        else return ACS + points;
+    }
+
+    async finalizeDebates() {
+        let groupCtr = 0;
+        let group = [];
+        let tiers = [FANALYST, ANALYST, EXPERT, PRO];
+        let cursor;
+        let best = null;
+        let BESTPTS = 5; // constant
+        let username = "";
+        let profile = "";
+        for (collection in tiers) {
+            cursor = await mongoConnect.getDBCollection(collection + A).find({});
+            best = null;
+            username = "";
+            await cursor.forEach(async function(doc) {
+                // group in 3's unless unavailable
+                if (groupCtr < 2) { // 0, 1
+                    group.push(doc);
+                    groupCtr += 1;
+                } else {
+                    // add last member
+                    group.push(doc);
+                    // compare values
+                    best = getHiScore(group);
+                    if (best) {
+                        // add 5 pts to best ACS
+                        profile = await dbRead.getProfile(best.username);
+                        profile.ACS = addToACS(ACS, BESTPTS);
+                        // update
+                        await mongoConnect.getDBCollection(USERS).updateOne({ username: username }, { $set: { "profile.$.ACS": profile.ACS } });
+                    }
+
+                    // reset groupings
+                    group = [];
+                    groupCtr = 0;
+                }
+            });
+            // in case there's a group of 1 or 2
+            best = getHiScore(group);
+            if (best) {
+                // add 5 pts to best ACS
+                profile = await dbRead.getProfile(best.username);
+                profile.ACS = addToACS(ACS, BESTPTS);
+                // update
+                await mongoConnect.getDBCollection(USERS).updateOne({ username: username }, { $set: { "profile.$.ACS": profile.ACS } });
+            }
+
+            // all scoring is done; archive/log the debates
+            //      TODO: implement archiving
+
+            // archiving done; delete submissions/questions and get new set
+            await dbDelete.deleteCollectionContent(collection + Q);
+            await dbDelete.deleteCollectionContent(collection + A);
+
+            // deleting done; repopulate questions
+            let newQuestions = await dbRead.getTwoDebateQuestions(collection);
+            await mongoConnect.getDBCollection(collection + Q).insertMany(newQuestions, { ordered: true }); // ordered makes it stop if one fails
+        }
+    }
+
+    async updateDaily() {
+        // anything that changes on a daily basis should change here.
+        this.finalizeDebates();
+
+        let userCursor = await mongoConnect.getDBCollection(USERS).find({});
+        let MINVOTES = 3; // can be changed later depending on the min. # of votes required to be considered as "participating"
+        let PPTS = 10; // same as above
+        let newTier = FANALYST; // default value
+        await userCursor.forEach(async function(doc) {
+            // voting
+            if (doc.profile.votes >= MINVOTES) {
+                doc.profile.ACS = addToACS(doc.profile.ACS, PPTS)
+            } else {
+                doc.profile.ACS = addToACS(doc.profile.ACS, -PPTS / 2)
+            }
+            doc.profile.votes = 0;
+
+            // after all ACS updates
+            newTier = await dbRead.ACSToTier(doc.profile.ACS);
+            doc.profile.debatetier = newTier;
+            doc.profile.debatequestion = await dbRead.getRandomDebateQuestion(newTier);
+
+            // update user
+            await mongoConnect.getDBCollection(Users).updateOne({ username: doc.username }, { $set: { profile: doc.profile } });
+        });
+    }
 }
 module.exports = DatabaseUpdate;

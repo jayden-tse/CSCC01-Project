@@ -1,6 +1,6 @@
 var mongoConnect = require('../../mongoConnect');
 
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, Q, A } = require('./DatabaseHelper');
 
 class DatabaseDelete {
 
@@ -27,6 +27,10 @@ class DatabaseDelete {
             }
         })
         return result;
+    }
+
+    async deleteCollectionContent(collection) {
+        return await mongoConnect.getDBCollection(collection).deleteMany({});
     }
 }
 
