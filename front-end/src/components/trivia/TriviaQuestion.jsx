@@ -1,6 +1,11 @@
 import React from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
 
+// The 3 possible phases
+const PREVIEW = 0;  // Preview the question
+const SELECT = 1;  // Select an answer within the alloted time
+const RESULTS = 2;  // Answer was selected or time ran out
+
 /**
  * Shows the given question `props.question.question` for `props.previewTimer`
  * seconds, then gives `props.answerTimer` seconds for the player to choose an
@@ -55,9 +60,51 @@ class TriviaQuestion extends React.Component {
 
   // Updates state every second
   tick() {
-    this.setState((state) => ({
-      time: state.time + 1
-    }));
+    // Need to disable all answers if one wasn't selected during SELECT phase
+    // Have to check the second before the SELECT phase ends, otherwise the
+    // change will occur 1 second after RESULTS begins
+    const time = this.state.time;
+    const preview = this.props.previewTimer;
+    const answer = this.props.answerTimer;
+    if (time === preview + answer - 1 ) {
+      // No longer need the timer
+      clearInterval(this.timerId);
+      if (this.state.selected === null) {
+        let disableAll = [];
+        for (let i = 0; i < this.answers.length; i++) {
+          disableAll.push(true);
+        }
+        this.setState((state) => ({
+          time: state.time + 1,
+          disabled: disableAll
+        }));
+      }
+    // Otherwise just elapse 1 second
+    } else {
+      this.setState((state) => ({
+        time: state.time + 1
+      }));
+    }
+  }
+
+  // Returns the current phase: `PREVIEW`, `SELECT`, or `RESULTS`
+  getPhase() {
+    let phase = null;
+    const time = this.state.time;
+    const preview = this.props.previewTimer;
+    const answer = this.props.answerTimer;
+    // Preview phase is within the first `props.previewTimer` seconds
+    if (time < preview) {
+      phase = PREVIEW;
+    // Selection phase comes right after preview for `props.answerTimer` seconds
+    } else if (this.state.selected === null && (time < answer + preview)) {
+      phase = SELECT;
+    // Results phase when an answer is selected within the given time or
+    // time runs out before an answer is selected
+    } else {
+      phase = RESULTS;
+    }
+    return phase;
   }
 
   // When an answer is selected
@@ -87,14 +134,18 @@ class TriviaQuestion extends React.Component {
         {/* The possible answers */}
         <Grid container item xs={12} spacing={2}>
           {
-            this.state.time >= this.props.previewTimer 
+            this.getPhase() !== PREVIEW
             ? this.renderAnswers()
             : null
           }
         </Grid>
         {/* The countdown, or icon for correct/incorrect answer */}
         <Grid item xs={12}>
-          {this.state.selected === null ? this.renderTimer() : <p>Selected</p>}
+          {
+            this.state.selected === null && this.getPhase() !== RESULTS
+            ? this.renderTimer()
+            : <p>Result</p>
+          }
         </Grid>
       </Grid>
     );
@@ -137,15 +188,15 @@ class TriviaQuestion extends React.Component {
     const previewTime = this.props.previewTimer;
     const answerTime = this.props.answerTimer;
     // Render the countdown for each phase
-    if (this.state.time < previewTime) {
+    if (this.getPhase() === PREVIEW) {
       // Question preview
       timer = (
         <Typography variant='h2' color='secondary'>
           {previewTime - this.state.time}
         </Typography>
       );
-    } else if (this.state.time < (answerTime + previewTime)) {
-      // Answer phase
+    // Answer phase
+    } else if (this.getPhase() === SELECT) {
       // Want the time since the preview phase ended
       const decrement = this.state.time - previewTime;
       timer = (
@@ -153,9 +204,6 @@ class TriviaQuestion extends React.Component {
           {answerTime - decrement}
         </Typography>
       );
-    } else {
-      // Time ran out, so done with the timer
-      clearInterval(this.timerId);
     }
     return timer;
   }
