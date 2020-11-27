@@ -130,7 +130,8 @@ exports.update_acs_solo = async function (req, res) {
             let newScore = acs.maintain(oldScore + acs.soloTriviaScore(req.body.responses));
             let result = await dbUpdate.updateACS(req.session.passport, newScore);
             if (result !== null) {
-                res.status(200).send(newScore.toString()); // OK
+                let response = newScore.toString();
+                res.status(200).send({"score": response}); // OK
             } else {
                 res.status(404).send(NOT_FOUND); // NOT FOUND
             }

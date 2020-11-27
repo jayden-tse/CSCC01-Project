@@ -5,7 +5,7 @@ import TriviaStart from './TriviaStart';
 import TriviaGame from './TriviaGame';
 import TriviaResults from './TriviaResults';
 import LoadingScreen from '../general/LoadingScreen';
-import {get10TriviaQuestions} from '../../api/TriviaCalls.js';
+import {get10TriviaQuestions, updateACS} from '../../api/TriviaCalls.js';
 
 const theme = createMuiTheme({
   palette: {
@@ -34,7 +34,9 @@ class Trivia extends React.Component {
       questions: [],
       // The player's answer to each question. Filled after all questions are
       // answered
-      results: []
+      results: [],
+      // The player's ACS score.
+      score: ''
     };
     this.loadSolo = this.loadSolo.bind(this);
     this.loadHeadToHead = this.loadHeadToHead.bind(this);
@@ -71,6 +73,21 @@ class Trivia extends React.Component {
     // TODO: send results to server to update ACS
     console.log('Trivia complete. Results: ' + results);
     this.setState({state: 'results', results: results});
+    // Update the user's ACS score in the backend based on
+    // the results and store it into the state.
+    updateACS(results).then(async (res)=>{
+      // console.log(res);
+      if(typeof res !== 'undefined' && res.ok){
+          const score = await res.json();
+          this.setState({state: 'results', score: score.score});
+          // console.log(this.state);
+      } else {
+          throw new Error("Bad Response From Backend");
+      }
+    }).catch((error)=>{
+      console.log(`Error Updating ACS: ${error}`)
+      this.setState({state: 'start'});
+    });
   }
 
   // After finishing a trivia game, load another one
@@ -82,7 +99,7 @@ class Trivia extends React.Component {
 
   // Reset state to initial state (goes back to start)
   reset() {
-    this.setState({state: 'start', questions: [], results: []});
+    this.setState({state: 'start', questions: [], results: [], score: ''});
   }
   
   render() {

@@ -62,7 +62,7 @@ export async function getAnswer(question) {
 }
 
 // Send amount of correct and incorrect answers to backend to update a user's ACS.
-// Input will be: [false, true, true, ...]. Return the updated ACS as a string.
+// Input will be: [false, true, true, ...]. Return the updated ACS as: {"score":""}.
 export async function updateACS(rightAndWrong) {
     const newUrl = new URL(BASE_URL + '/trivia/update/ACS/solo');
     const params = {
@@ -82,7 +82,7 @@ export async function updateACS(rightAndWrong) {
     };
     return fetch(newUrl, options)
         .then((response) => {
-            return response.text;
+            return response;
         })
         .catch((error) => {
             console.log('Error connecting to backend API: ' + error);
