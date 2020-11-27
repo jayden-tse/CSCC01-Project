@@ -1,5 +1,6 @@
 import React from 'react';
 import DailyPicks from './PicksAndPredictions/DailyPicks';
+import PreseasonPicks from './PicksAndPredictions/PreseasonPicks';
 
 class PicksAndPredictionsPage extends React.Component {
   constructor(props) {
@@ -13,8 +14,10 @@ class PicksAndPredictionsPage extends React.Component {
     switch(this.state.screen){
         case 'daily':
             return <DailyPicks/>;
+        case 'preseason':
+            return <PreseasonPicks/>;
         default:
-            return <DailyPicks/>;
+            return <PreseasonPicks/>;
     }
   }
   
