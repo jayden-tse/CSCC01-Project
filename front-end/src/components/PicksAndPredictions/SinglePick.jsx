@@ -4,18 +4,11 @@ import React, { Component } from 'react';
 const PICKABLE='pickable', ONGOING='ongoing', COMPLETED='completed';
 
 class SinglePick extends Component {
-    constructor(props){
-        super(props);
-        this.state={
-            pickState: props.pickState
-        };
-    }
-
     //will have buttons to select pick
     renderPickable(){
         return (<div>
-                    <button>{this.props.option1}</button>
-                    <button>{this.props.option2}</button>
+                    <button className="PickButton" onClick={this.props.handleSelectOption1}>{this.props.option1}</button>
+                    <button className="PickButton" onClick={this.props.handleSelectOption2}>{this.props.option2}</button>
                 </div>);
     }
 
@@ -38,7 +31,7 @@ class SinglePick extends Component {
 
     //will select the correct renderable
     selectRender(){
-        switch(this.state.pickState){
+        switch(this.props.pickState){
             case PICKABLE:
                 return this.renderPickable();
             case ONGOING:
