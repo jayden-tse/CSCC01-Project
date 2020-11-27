@@ -1,9 +1,11 @@
 import React from 'react';
 import DailyPicks from './PicksAndPredictions/DailyPicks';
 import PreseasonPicks from './PicksAndPredictions/PreseasonPicks';
+import PlayoffPicks from './PicksAndPredictions/PlayoffPicks';
 
 const DAILY='Daily Picks',
-    PRESEASON='Preseason Picks';
+    PRESEASON='Preseason Picks',
+    PLAYOFF='Playoff Picks';
 
 class PicksAndPredictionsPage extends React.Component {
   constructor(props) {
@@ -24,6 +26,8 @@ class PicksAndPredictionsPage extends React.Component {
             return <DailyPicks/>;
         case PRESEASON:
             return <PreseasonPicks/>;
+        case PLAYOFF:
+            return <PlayoffPicks/>;
         default:
             return null;
     }
@@ -43,6 +47,7 @@ function ScreenChanger(props){
         <select value={props.screen} onChange={props.handleChange}>
             <option value={DAILY}>{DAILY}</option>
             <option value={PRESEASON}>{PRESEASON}</option>
+            <option value={PLAYOFF}>{PLAYOFF}</option>
         </select>
     );
 }
