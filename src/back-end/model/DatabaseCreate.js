@@ -7,6 +7,7 @@ const saltRounds = 10;
 const Profile = require('./Profile.js');
 const Post = require('./Post.js');
 const Comment = require('./Comment.js');
+const Match = require('./Match.js');
 const ObjectId = require('mongodb').ObjectID;
 
 const DatabaseRead = require('./DatabaseRead.js');
@@ -31,7 +32,7 @@ class DatabaseCreate {
         // Only store this user in the database if there exists no other accounts with
         // the same phone numbers and email.
         // default image
-        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 200, {facebook: '', instagram: '', twitter: ''});
+        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 200, { facebook: '', instagram: '', twitter: '' });
         user.profile = userProfile;
         let hashedPassword = this.passwordHasher(user.password);
         user.password = hashedPassword;
@@ -47,7 +48,7 @@ class DatabaseCreate {
             text: 'Your SportCred account has been created successfully.'
         };
 
-        transporter.sendMail(mailOptions, function(error, info) {
+        transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.log(error);
             } else {
@@ -98,12 +99,19 @@ class DatabaseCreate {
         let post = { "_id": ObjectId(postId) };
         let result = await mongoConnect.getDBCollection(POSTS).updateOne(
             post, {
-                $push: {
-                    comments: comment
-                }
+            $push: {
+                comments: comment
             }
+        }
         );
         return result;
+    }
+
+    async createComment(collection, team1, team2, start, end) {
+        let newMatch = new Match(team1, team2, start, end);
+        await mongoConnect.getDBCollection(collection).insertOne(newMatch);
+        let match = await mongoConnect.getDBCollection(collection).findOne(newMatch);
+        return match;
     }
 }
 
