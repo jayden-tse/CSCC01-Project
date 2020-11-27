@@ -38,7 +38,6 @@ class DailyPicks extends Component {
 
     render() { 
         return <div>
-            <h1 className="DailyPicksHeader">Daily Picks</h1>
            {this.formatList()}
         </div>;
     }

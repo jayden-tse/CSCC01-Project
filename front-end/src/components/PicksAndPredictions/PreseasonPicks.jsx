@@ -27,7 +27,6 @@ class PreseasonPicks extends Component {
 
     render() { 
         return (<div>
-                    <h1 className="PreseasonPicksHeader">Preseason Picks</h1>
                     <PreseasonAll data={PreseasonTemp} handleSubmit={this.handleSubmit}/>
                 </div>
             );
