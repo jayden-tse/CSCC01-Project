@@ -17,8 +17,12 @@ class PreseasonPicks extends Component {
     handleSubmit(event){
         event.preventDefault();//stops redirect
         console.log('Submit Preseason Picks');
+        //transform formdata to json for submission
         const data = new FormData(event.target);
-        console.log(...data);
+        var object = {};
+        data.forEach((value, key) => object[key] = value);
+        var json = JSON.stringify(object);
+        console.log(json);
     }
 
     render() { 
