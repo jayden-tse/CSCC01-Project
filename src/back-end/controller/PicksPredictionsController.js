@@ -78,25 +78,6 @@ exports.matches_preseason_picks_put = function (req, res) {
     }
 };
 
-exports.matches_get = function (req, res) {
-    res.set({
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin': 'http://localhost:3000'
-    });
-    if (req.user) {
-        // user is authenticated
-        try {
-            let match = await dbRead.getMatch(req.query.matchid);
-            res.status(200).send(match); // OK
-        } catch (e) {
-            console.error(e);
-            res.status(500).send(READ_FAILED); // Internal server error
-        }
-    } else {
-        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
-    }
-};
-
 exports.matches_daily_picks_get = function (req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
@@ -124,7 +105,7 @@ exports.matches_playoffs_picks_get = function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let playoffsPicks = await dbRead.getplayoffsPicks();
+            let playoffsPicks = await dbRead.getPlayoffsPicks();
             res.status(200).send(playoffsPicks); // OK
         } catch (e) {
             console.error(e);
@@ -154,7 +135,7 @@ exports.matches_preseason_picks_get = function (req, res) {
     }
 };
 
-exports.matches_all_get = function (req, res) {
+exports.matches_update_daily_picks_put = function (req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -162,26 +143,7 @@ exports.matches_all_get = function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let matches = await dbRead.getMatchesAll();
-            res.status(200).send(matches); // OK
-        } catch (e) {
-            console.error(e);
-            res.status(500).send(READ_FAILED); // Internal server error
-        }
-    } else {
-        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
-    }
-};
-
-exports.matches_update_put = function (req, res) {
-    res.set({
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin': 'http://localhost:3000'
-    });
-    if (req.user) {
-        // user is authenticated
-        try {
-            let match = await dbUpdate.updateMatch(req.body.matchid, req.body.team1, req.body.team2, req.body.start, req.body.end);
+            let match = await dbUpdate.updateMatch(DAILY, req.body.matchid, req.body.team1, req.body.team2, req.body.start, req.body.end);
             if (match) {
                 res.status(200).send(match); // OK
             } else {
@@ -196,7 +158,7 @@ exports.matches_update_put = function (req, res) {
     }
 };
 
-exports.matches_del = function (req, res) {
+exports.matches_update_playoffs_picks_put = function (req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -204,7 +166,53 @@ exports.matches_del = function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let result = await dbDelete.deleteMatch(req.body.matchid);
+            let match = await dbUpdate.updateMatch(PLAYOFFS, req.body.matchid, req.body.team1, req.body.team2, req.body.start, req.body.end);
+            if (match) {
+                res.status(200).send(match); // OK
+            } else {
+                res.status(404).send(NOT_FOUND); //NOT FOUND
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(500).send(WRITE_FAILED); // Internal server error
+        }
+    } else {
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
+    }
+};
+
+exports.matches_update_preseason_picks_put = function (req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    });
+    if (req.user) {
+        // user is authenticated
+        try {
+            let match = await dbUpdate.updateMatch(PRESEASON, req.body.matchid, req.body.team1, req.body.team2, req.body.start, req.body.end);
+            if (match) {
+                res.status(200).send(match); // OK
+            } else {
+                res.status(404).send(NOT_FOUND); //NOT FOUND
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(500).send(WRITE_FAILED); // Internal server error
+        }
+    } else {
+        res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
+    }
+};
+
+exports.matches_daily_picks_del = function (req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    });
+    if (req.user) {
+        // user is authenticated
+        try {
+            let result = await dbDelete.deleteDailyPicks(req.body.matchid);
             if (result === 1) {
                 res.sendStatus(200); // OK
             } else {
@@ -250,7 +258,7 @@ exports.matches_playoffs_picks_all_del = function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let result = await dbDelete.deleteAllplayoffsPicks();
+            let result = await dbDelete.deleteAllPlayoffsPicks();
             if (result > 0) {
                 res.sendStatus(200); // OK
             } else {
