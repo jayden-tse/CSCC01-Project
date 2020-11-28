@@ -141,29 +141,84 @@ router.delete('/trivia/delete/question', triviaController.questions_del);
 
 /* PICKS & PREDICTIONS */
 
-// Create matches
+// Create matches for daily picks
 router.put(
-  '/picksandpredictions/create/match',
-  pickspredictionsController.matches_put
+  '/picksandpredictions/create/daily',
+  pickspredictionsController.matches_daily_picks_put
 );
 
-// Get matches
+// Create matches for playoffs picks
+router.put(
+  '/picksandpredictions/create/playoffs',
+  pickspredictionsController.matches_playoffs_picks_put
+);
+
+// Create matches for preseason picks
+router.put(
+  '/picksandpredictions/create/preseason',
+  pickspredictionsController.matches_preseason_picks_put
+);
+
+// Get matches from daily picks
 router.get(
-  '/picksandpredictions/match',
-  pickspredictionsController.matches_get
+  '/picksandpredictions/daily',
+  pickspredictionsController.matches_daily_picks_get
 );
 
-// Update matches
+// Get matches from playoffs picks
+router.get(
+  '/picksandpredictions/playoffs',
+  pickspredictionsController.matches_playoffs_picks_get
+);
+
+// Get matches from preseason picks
+router.get(
+  '/picksandpredictions/preseason',
+  pickspredictionsController.matches_preseason_picks_get
+);
+
+// Update matches for daily picks
 router.put(
-  '/picksandpredictions/update/match',
-  pickspredictionsController.matches_update_put
+  '/picksandpredictions/update/daily',
+  pickspredictionsController.matches_update_daily_picks_put
 );
 
-// Delete matches
-router.delete(
-  '/picksandpredictions/delete/match',
-  pickspredictionsController.matches_del
+// Update matches for playoffs picks
+router.put(
+  '/picksandpredictions/update/playoffs',
+  pickspredictionsController.matches_update_playoffs_picks_put
 );
+
+// Update matches for preseason picks
+router.put(
+  '/picksandpredictions/update/preseason',
+  pickspredictionsController.matches_update_preseason_picks_put
+);
+
+// Delete a match in daily picks
+router.delete(
+  '/picksandpredictions/delete/daily/match',
+  pickspredictionsController.matches_daily_picks_del
+);
+
+// Delete all matches in daily picks
+router.delete(
+  '/picksandpredictions/delete/daily/all',
+  pickspredictionsController.matches_daily_picks_all_del
+);
+
+// Delete all matches in playoffs picks
+router.delete(
+  '/picksandpredictions/delete/playoffs',
+  pickspredictionsController.matches_playoffs_picks_all_del
+);
+
+// Delete all matches in preseason picks
+router.delete(
+  '/picksandpredictions/delete/preseason',
+  pickspredictionsController.matches_preseason_picks_all_del
+);
+
 
 /* DEBATE */
 
