@@ -7,6 +7,7 @@ import { Button, Grid, Typography } from '@material-ui/core';
  * 
  * @param {*} props.results array of booleans where true is a correct answer
  * and false is an incorrect answer
+ * @param {string} props.newAcs the player's new ACS after playing trivia
  * 
  * @param {*} props.onPlayAgain callback when player requests to play again
  * @param {*} props.onMainMenu callback when main menu is requested
@@ -25,13 +26,17 @@ class TriviaResults extends React.Component {
   render() {
     // Success color if more correct than incorrect, normal if same amount,
     // red/error color if less
+    // Text reflects whether the ACS stayed the same, increased, or decreased
     const correctCount = this.countCorrect();
     let correctColor = 'textPrimary';
+    let acsTextPrefix = 'Your ACS did not change: ';
     const neutralThreshold = this.props.results.length / 2;
     if (correctCount > neutralThreshold) {
       correctColor = 'primary';
+      acsTextPrefix = 'Your ACS increased to ';
     } else if (correctCount < neutralThreshold) {
       correctColor = 'error';
+      acsTextPrefix = 'Your ACS decreased to ';
     }
     return (
       <Grid
@@ -46,7 +51,12 @@ class TriviaResults extends React.Component {
             {correctCount + '/' + this.props.results.length + ' Correct'}
           </Typography>
         </Grid>
-        {/* TODO: incorporate text about ACS increase/decrease? */}
+        {/* Text about the updated ACS */}
+        <Grid item xs={12}>
+          <Typography variant='h6' color='secondary'>
+            {acsTextPrefix + this.props.newAcs}
+          </Typography>
+        </Grid>
         {/* Play Again and Main Menu buttons */}
         <Grid item container direction='row' spacing={2} xs={12}>
           <Grid item xs={6}>

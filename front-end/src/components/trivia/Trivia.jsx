@@ -35,7 +35,7 @@ class Trivia extends React.Component {
       // The player's answer to each question. Filled after all questions are
       // answered
       results: [],
-      // The player's ACS score.
+      // The player's updated ACS score after playing trivia.
       score: '',
       // Error text when a server call failed
       error: ''
@@ -148,6 +148,7 @@ class Trivia extends React.Component {
         content = (
           <TriviaResults
             results={this.state.results}
+            newAcs={this.state.score}
             onPlayAgain={this.handlePlayAgain}
             onMainMenu={this.reset}
           />

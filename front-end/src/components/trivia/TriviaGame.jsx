@@ -39,6 +39,13 @@ class TriviaGame extends React.Component {
     this.handleAnswer = this.handleAnswer.bind(this);
   }
 
+  componentDidUpdate() {
+    // If there are no questions left, then invoke the callback
+    if (this.state.questionCount >= this.state.total) {
+      this.props.onFinish(this.state.results);
+    }
+  }
+
   // When a trivia question is answered.
   handleAnswer(correct) {
     // Record the result
@@ -74,9 +81,6 @@ class TriviaGame extends React.Component {
           key={'TQ-' + this.state.questionCount}
         />
       );
-    } else {
-      // Done answering all the questions
-      this.props.onFinish(this.state.results);
     }
     return content;
   }
