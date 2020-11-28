@@ -7,6 +7,7 @@ import { Button, Grid, Typography } from '@material-ui/core';
  * 
  * @param props.onSolo callback when Solo Trivia is selected
  * @param props.onHeadToHead callback when Head to Head Trivia is selected
+ * @param props.errorText optional error text to display
  */
 class TriviaStart extends React.Component {
   // constructor(props) {
@@ -52,6 +53,13 @@ class TriviaStart extends React.Component {
             </Button>
           </Grid>
         </Grid> {/* Solo and Head to Head buttons */}
+
+        {/* Optional error text */}
+        <Grid item xs={12}>
+          <Typography variant='body1' color='error'>
+            {this.props.errorText}
+          </Typography>
+        </Grid>
       </Grid>
     );
   }

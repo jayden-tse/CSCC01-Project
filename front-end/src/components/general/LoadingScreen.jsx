@@ -17,7 +17,7 @@ class LoadingScreen extends React.Component {
       >
         {/* Loading text */}
         <Grid item xs={12}>
-          <Typography variant='h1' color='textPrimary'>
+          <Typography variant='h2' color='textPrimary'>
             {this.props.text}
           </Typography>
         </Grid>

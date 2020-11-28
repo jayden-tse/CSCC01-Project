@@ -36,7 +36,9 @@ class Trivia extends React.Component {
       // answered
       results: [],
       // The player's ACS score.
-      score: ''
+      score: '',
+      // Error text when a server call failed
+      error: ''
     };
     this.loadSolo = this.loadSolo.bind(this);
     this.loadHeadToHead = this.loadHeadToHead.bind(this);
@@ -47,7 +49,7 @@ class Trivia extends React.Component {
   
   loadSolo() {
     console.log('Loading Solo Trivia');
-    this.setState({state: 'load'});
+    this.setState({state: 'load', error: ''});
     // make async call to get the 10 questions and store it in state
     // and after that's done update the game state to trivia
     get10TriviaQuestions().then(async (res)=>{
@@ -58,8 +60,10 @@ class Trivia extends React.Component {
             throw new Error("Bad Response From Backend");
         }
     }).catch((error)=>{
-        console.log(`Error Loading Trivia Questions: ${error}`)
-        this.setState({state: 'start'});
+        console.log(`Error Loading Trivia Questions: ${error}`);
+        const errorText = 'There was an error loading the game.' +
+          ' Please try again.';
+        this.setState({state: 'start', error: errorText});
     });
   }
 
@@ -70,23 +74,27 @@ class Trivia extends React.Component {
   }
 
   handleTriviaComplete(results) {
-    // TODO: send results to server to update ACS
     console.log('Trivia complete. Results: ' + results);
-    this.setState({state: 'results', results: results});
+    this.setState({state: 'submit', error: ''});
     // Update the user's ACS score in the backend based on
     // the results and store it into the state.
     updateACS(results).then(async (res)=>{
       // console.log(res);
       if(typeof res !== 'undefined' && res.ok){
           const score = await res.json();
-          this.setState({state: 'results', score: score.score});
-          // console.log(this.state);
+          this.setState({
+            state: 'results',
+            results: results,
+            score: score.score
+          });
       } else {
           throw new Error("Bad Response From Backend");
       }
     }).catch((error)=>{
-      console.log(`Error Updating ACS: ${error}`)
-      this.setState({state: 'start'});
+      console.log(`Error Updating ACS: ${error}`);
+      const errorText = 'There was a problem submitting your answers.';
+      this.reset();
+      this.setState({error: errorText});
     });
   }
 
@@ -99,7 +107,13 @@ class Trivia extends React.Component {
 
   // Reset state to initial state (goes back to start)
   reset() {
-    this.setState({state: 'start', questions: [], results: [], score: ''});
+    this.setState({
+      state: 'start',
+      questions: [],
+      results: [],
+      score: '',
+      error: ''
+    });
   }
   
   render() {
@@ -110,6 +124,7 @@ class Trivia extends React.Component {
           <TriviaStart
             onSolo={this.loadSolo}
             onHeadToHead={this.loadHeadToHead}
+            errorText={this.state.error}
           />
         );
         break;
@@ -125,6 +140,9 @@ class Trivia extends React.Component {
             onFinish={this.handleTriviaComplete}
           />
         );
+        break;
+      case 'submit':
+        content = <LoadingScreen text='Submitting answers...'/>;
         break;
       case 'results':
         content = (
