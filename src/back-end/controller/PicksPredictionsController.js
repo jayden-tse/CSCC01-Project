@@ -86,7 +86,7 @@ exports.matches_daily_picks_get = function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let dailyPicks = await dbRead.getDailyPicks();
+            let dailyPicks = await dbRead.getPicks(DAILY);
             res.status(200).send(dailyPicks); // OK
         } catch (e) {
             console.error(e);
@@ -105,7 +105,7 @@ exports.matches_playoffs_picks_get = function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let playoffsPicks = await dbRead.getPlayoffsPicks();
+            let playoffsPicks = await dbRead.getPicks(PLAYOFFS);
             res.status(200).send(playoffsPicks); // OK
         } catch (e) {
             console.error(e);
