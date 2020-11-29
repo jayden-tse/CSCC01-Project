@@ -107,8 +107,8 @@ class DatabaseCreate {
         return result;
     }
 
-    async createComment(collection, team1, team2, start, end) {
-        let newMatch = new Match(team1, team2, start, end);
+    async createMatch(collection, team1, team2, start, end, date) {
+        let newMatch = new Match(team1, team2, start, end, date);
         await mongoConnect.getDBCollection(collection).insertOne(newMatch);
         let match = await mongoConnect.getDBCollection(collection).findOne(newMatch);
         return match;

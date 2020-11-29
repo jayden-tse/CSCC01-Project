@@ -250,13 +250,14 @@ class DatabaseUpdate {
         }
     }
 
-    async updateMatch(collection, id, team1, team2, start, end) {
+    async updateMatch(collection, id, team1, team2, start, end, date) {
         let result = await mongoConnect.getDBCollection(collection).updateOne({ "_id": ObjectId(id) }, {
             $set: {
                 "team1": team1,
                 "team2": team2,
                 "start": start,
-                "end": end
+                "end": end,
+                "date": date
             }
         });
         if (result.matchedCount > 0) {
