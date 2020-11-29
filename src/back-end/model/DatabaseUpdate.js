@@ -250,5 +250,22 @@ class DatabaseUpdate {
         }
     }
 
+    async updateMatch(collection, id, team1, team2, start, end) {
+        let result = await mongoConnect.getDBCollection(collection).updateOne({ "_id": ObjectId(id) }, {
+            $set: {
+                "team1": team1,
+                "team2": team2,
+                "start": start,
+                "end": end
+            }
+        });
+        if (result.matchedCount > 0) {
+            let updatedMatch = await mongoConnect.getDBCollection(collection).findOne({ "_id": ObjectId(id) });
+            return updatedMatch;
+        } else {
+            return null;
+        }
+    }
+
 }
 module.exports = DatabaseUpdate;
