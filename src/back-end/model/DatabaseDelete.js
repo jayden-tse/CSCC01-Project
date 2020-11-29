@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 var mongoConnect = require('../../mongoConnect');
 
 const { USERS, POSTS } = require('./DatabaseHelper');
@@ -27,6 +28,16 @@ class DatabaseDelete {
             }
         })
         return result;
+    }
+
+    async deleteDailyPicks(matchid) {
+        let result = await mongoConnect.getDBCollection(DAILY).deleteOne({ "_id": ObjectId(matchid) });
+        return result.deletedCount;
+    }
+
+    async deleteAllPicks(collection) {
+        let result = await mongoConnect.getDBCollection(collection).deleteOne({});
+        return result.nRemoved;
     }
 }
 

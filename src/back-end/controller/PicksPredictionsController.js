@@ -235,7 +235,7 @@ exports.matches_daily_picks_all_del = function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let result = await dbDelete.deleteAllDailyPicks();
+            let result = await dbDelete.deleteAllPicks(DAILY);
             if (result > 0) {
                 res.sendStatus(200); // OK
             } else {
@@ -258,7 +258,7 @@ exports.matches_playoffs_picks_all_del = function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let result = await dbDelete.deleteAllPlayoffsPicks();
+            let result = await dbDelete.deleteAllPicks(PLAYOFFS);
             if (result > 0) {
                 res.sendStatus(200); // OK
             } else {
