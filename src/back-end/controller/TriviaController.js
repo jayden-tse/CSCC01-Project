@@ -2,13 +2,13 @@ const DatabaseCreate = require('../model/DatabaseCreate');
 const DatabaseDelete = require('../model/DatabaseDelete');
 const DatabaseUpdate = require('../model/DatabaseUpdate');
 const DatabaseRead = require('../model/DatabaseRead');
-const Acs = require('../model/Acs');
+const ACS = require('../model/ACS');
 const { WRITE_FAILED, READ_FAILED, NOT_AUTHENTICATED, NOT_FOUND, QUESTION_EXISTS } = require('./StatusMessages');
 const dbCreate = new DatabaseCreate();
 const dbDelete = new DatabaseDelete();
 const dbUpdate = new DatabaseUpdate();
 const dbRead = new DatabaseRead();
-const acs = new Acs();
+const acs = new ACS();
 
 exports.question_put = async function (req, res) {
     res.set({
@@ -22,7 +22,7 @@ exports.question_put = async function (req, res) {
             if (question !== null) {
                 res.status(200).send(question); // OK
             } else {
-                res.status(409).send(QUESTION_EXISTS)
+                res.status(409).send(QUESTION_EXISTS) // QUESTION EXISTS
             }
         } catch (e) {
             console.error(e);
@@ -82,8 +82,10 @@ exports.question_update_put = async function (req, res) {
             let question = await dbUpdate.updateQuestion(req.body.questionid, req.body.question, req.body.answer, req.body.other);
             if (question) {
                 res.status(200).send(question); // OK
-            } else {
+            } else if (question === 0) {
                 res.status(404).send(NOT_FOUND); //NOT FOUND
+            } else {
+                res.status(409).send(QUESTION_EXISTS); // QUESTION EXISTS
             }
         } catch (e) {
             console.error(e);
@@ -131,7 +133,7 @@ exports.update_acs_solo = async function (req, res) {
             let result = await dbUpdate.updateACS(req.session.passport, newScore);
             if (result !== null) {
                 let response = newScore.toString();
-                res.status(200).send({"score": response}); // OK
+                res.status(200).send({ "score": response }); // OK
             } else {
                 res.status(404).send(NOT_FOUND); // NOT FOUND
             }
