@@ -1,6 +1,8 @@
 var mongoConnect = require('../../mongoConnect');
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
+const Match = require('./Match.js');
+
 const { USERS, POSTS } = require('./DatabaseHelper');
 const DatabaseRead = require('./DatabaseRead');
 const dbRead = new DatabaseRead();
@@ -251,18 +253,24 @@ class DatabaseUpdate {
     }
 
     async updateMatch(collection, id, team1, team2, start, end, date) {
-        let result = await mongoConnect.getDBCollection(collection).updateOne({ "_id": ObjectId(id) }, {
-            $set: {
-                "team1": team1,
-                "team2": team2,
-                "start": start,
-                "end": end,
-                "date": date
+        let newMatch = new Match(team1, team2, start, end, date);
+        let result = await mongoConnect.getDBCollection(collection).findOne(newMatch)
+        if (result === null) {
+            let result = await mongoConnect.getDBCollection(collection).updateOne({ "_id": ObjectId(id) }, {
+                $set: {
+                    "team1": team1,
+                    "team2": team2,
+                    "start": start,
+                    "end": end,
+                    "date": date
+                }
+            });
+            if (result.matchedCount > 0) {
+                let updatedMatch = await mongoConnect.getDBCollection(collection).findOne({ "_id": ObjectId(id) });
+                return updatedMatch;
+            } else {
+                return 0;
             }
-        });
-        if (result.matchedCount > 0) {
-            let updatedMatch = await mongoConnect.getDBCollection(collection).findOne({ "_id": ObjectId(id) });
-            return updatedMatch;
         } else {
             return null;
         }
