@@ -355,6 +355,7 @@ class DatabaseUpdate {
         let group2Ctr = 0;
         let group1 = []; // q1 analyses go here
         let group2 = []; // q2 analyses go here
+        let bestProfile;
         for (let collection of tiers) {
             cursor = await mongoConnect.getDBCollection(collection + A).find({}).toArray();
             questions = await mongoConnect.getDBCollection(collection + Q).find({}).toArray();
