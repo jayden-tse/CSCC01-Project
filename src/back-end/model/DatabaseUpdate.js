@@ -252,11 +252,11 @@ class DatabaseUpdate {
         }
     }
 
-    async updateMatch(collection, id, team1, team2, start, end, date) {
+    async updateMatch(collection, matchid, team1, team2, start, end, date) {
         let newMatch = new Match(team1, team2, start, end, date);
         let result = await mongoConnect.getDBCollection(collection).findOne(newMatch)
         if (result === null) {
-            let result = await mongoConnect.getDBCollection(collection).updateOne({ "_id": ObjectId(id) }, {
+            let result = await mongoConnect.getDBCollection(collection).updateOne({ "_id": ObjectId(matchid) }, {
                 $set: {
                     "team1": team1,
                     "team2": team2,
@@ -266,13 +266,29 @@ class DatabaseUpdate {
                 }
             });
             if (result.matchedCount > 0) {
-                let updatedMatch = await mongoConnect.getDBCollection(collection).findOne({ "_id": ObjectId(id) });
+                let updatedMatch = await mongoConnect.getDBCollection(collection).findOne({ "_id": ObjectId(matchid) });
                 return updatedMatch;
             } else {
                 return 0;
             }
         } else {
             return null;
+        }
+    }
+
+    async updateMatchPicks(collection, matchid, username, team) {
+        let result = await mongoConnect.getDBCollection(collection).updateOne({ "_id": ObjectId(matchid) }, {
+            $set: {
+                "picks": {
+                    [username]: team
+                }
+            }
+        });
+        if (result.matchedCount > 0) {
+            let updatedMatch = await mongoConnect.getDBCollection(collection).findOne({ "_id": ObjectId(matchid) });
+            return updatedMatch;
+        } else {
+            return 0;
         }
     }
 

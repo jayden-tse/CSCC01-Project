@@ -168,6 +168,12 @@ router.put('/picksandpredictions/update/playoffs', pickspredictionsController.ma
 // Update matches for preseason picks
 // router.put('/picksandpredictions/update/preseason', pickspredictionsController.matches_update_preseason_picks_put);
 
+// Update users picks for matches in daily picks
+router.put('/picksandpredictions/update/daily/users', pickspredictionsController.matches_update_picks_daily_picks_put);
+
+// Update users picks for matches in playoffs picks
+router.put('/picksandpredictions/update/playoffs/users', pickspredictionsController.matches_update_picks_playoffs_picks_put);
+
 // Delete a match in daily picks
 router.delete('/picksandpredictions/delete/daily/match', pickspredictionsController.matches_daily_picks_del);
 

@@ -108,7 +108,7 @@ class DatabaseCreate {
     }
 
     async createMatch(collection, team1, team2, start, end, date) {
-        let newMatch = new Match(team1, team2, start, end, date);
+        let newMatch = new Match(team1, team2, start, end, date, []);
         let result = await mongoConnect.getDBCollection(collection).findOne(newMatch)
         if (result === null) {
             await mongoConnect.getDBCollection(collection).insertOne(newMatch);
@@ -119,17 +119,6 @@ class DatabaseCreate {
         }
     }
 
-    async createQuestion(question, answer, other) {
-        let result = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "question": question });
-        if (result === null) {
-            let newQuestion = new Question(question, answer, other);
-            await mongoConnect.getDBCollection(QUESTIONS).insertOne(newQuestion);
-            let findQuestion = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "question": question });
-            return findQuestion;
-        } else {
-            return null;
-        }
-    }
 }
 
 module.exports = DatabaseCreate;
