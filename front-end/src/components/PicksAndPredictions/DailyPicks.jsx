@@ -42,14 +42,18 @@ class DailyPicks extends Component {
     componentDidMount(){
         this.updateStateDaily();
     }
+    
+    formatDate(date,time){
+        const mdy = date.split("/"); //month day year formate
+        //time in hh:mm format, assume startTime<endTime
+        return new Date(`${mdy[2]}-${mdy[0]}-${mdy[1]}T${time}:00`);
+    }
 
     pickStateForMatch(date,startTime, endTime){
         const currentDate = new Date();
         //set date
-        const mdy = date.split("/"); //month day year formate
-        //time in hh:mm format, assume startTime<endTime
-        var matchStart = new Date(`${mdy[2]}-${mdy[0]}-${mdy[1]}T${startTime}:00`);
-        var matchEnd = new Date(`${mdy[2]}-${mdy[0]}-${mdy[1]}T${endTime}:00`);
+        var matchStart = this.formatDate(date,startTime);
+        var matchEnd = this.formatDate(date,endTime);
 
         if(currentDate<=matchStart){
             return PICKABLE;
@@ -83,6 +87,7 @@ class DailyPicks extends Component {
             option2={data.team2}
             pickState={this.pickStateForMatch(data.date, data.start, data.end)}
             picked={this.getUserPickSingle(data.picks)}
+            matchTime={`${this.formatDate(data.date,data.start).toDateString()} ${data.start}-${data.end} EST`}
             //change later
             result={data.team1}
             ACSChange={this.getUserACSChange(data.picks, data.team1)}

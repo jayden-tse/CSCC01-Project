@@ -65,6 +65,8 @@ class SinglePick extends Component {
                     VS
                     <img alt={this.props.option2}/>
                 </div>
+                {this.props.matchTime}
+                <br/>
             {this.selectRender()}
             </div>
         );
