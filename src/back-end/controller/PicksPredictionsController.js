@@ -151,8 +151,8 @@ exports.matches_update_picks_daily_picks_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            await dbUpdate.updateMatchPicks(DAILY, req.body.matchid, req.body.username, req.body.team);
-            res.status(200).send(match); // OK
+            let picks = await dbUpdate.updateMatchPicks(DAILY, req.body.matchid, req.body.username, req.body.team);
+            res.status(200).send(picks); // OK
         } catch (e) {
             console.error(e);
             res.status(500).send(WRITE_FAILED); // Internal server error
@@ -170,8 +170,8 @@ exports.matches_update_picks_playoffs_picks_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            await dbUpdate.updateMatchPicks(PLAYOFFS, req.body.matchid, req.body.username, req.body.team);
-            res.status(200).send(match); // OK
+            let picks = await dbUpdate.updateMatchPicks(PLAYOFFS, req.body.matchid, req.body.username, req.body.team);
+            res.status(200).send(picks); // OK
         } catch (e) {
             console.error(e);
             res.status(500).send(WRITE_FAILED); // Internal server error

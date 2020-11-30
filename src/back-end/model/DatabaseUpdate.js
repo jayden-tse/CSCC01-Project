@@ -277,19 +277,15 @@ class DatabaseUpdate {
     }
 
     async updateMatchPicks(collection, matchid, username, team) {
-        let result = await mongoConnect.getDBCollection(collection).updateOne({ "_id": ObjectId(matchid) }, {
+        await mongoConnect.getDBCollection(collection).updateOne({ "_id": ObjectId(matchid) }, {
             $set: {
                 "picks": {
                     [username]: team
                 }
             }
         });
-        if (result.matchedCount > 0) {
-            let updatedMatch = await mongoConnect.getDBCollection(collection).findOne({ "_id": ObjectId(matchid) });
-            return updatedMatch;
-        } else {
-            return 0;
-        }
+        let updatedMatch = await mongoConnect.getDBCollection(collection).findOne({ "_id": ObjectId(matchid) });
+        return updatedMatch;
     }
 
 }
