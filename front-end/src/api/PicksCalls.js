@@ -1,4 +1,4 @@
-import { BASE_URL, fetchList, fetchText, fetchOptionsGet, fetchOptionsWithBody, PUT} from './HttpClient.js';
+import { BASE_URL, fetchList, fetchText, fetchJson, fetchOptionsGet, fetchOptionsWithBody, PUT} from './HttpClient.js';
 
 const 
     //get
@@ -31,7 +31,7 @@ export async function getPreseason() {
     let newUrl = new URL(BASE_URL + UPDATEUSERDAILY);
     const params = { matchid: matchid, username: username, team:team };
     newUrl.search = new URLSearchParams(params).toString();
-    return await fetchText(newUrl, fetchOptionsWithBody(PUT, params));
+    return await fetchJson(newUrl, fetchOptionsWithBody(PUT, params));
   }
 
   export async function updateUserPlayoffs(matchid, username, team) {

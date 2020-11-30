@@ -21,7 +21,7 @@ class PicksAndPredictionsPage extends React.Component {
   selectScreen(){
     switch(this.state.screen){
         case DAILY:
-            return <DailyPicks/>;
+            return <DailyPicks currentUser={this.props.currentUser}/>;
         case PRESEASON:
             return <PreseasonPicks/>;
         default:

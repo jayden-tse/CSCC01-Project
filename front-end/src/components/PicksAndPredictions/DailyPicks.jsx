@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SinglePick from './SinglePick';
-import {getDaily} from '../../api/PicksCalls';
+import {getDaily, updateUserDaily} from '../../api/PicksCalls';
 
 //will have to shape implementation to backend when thats ready
 class DailyPicks extends Component {
@@ -9,20 +9,7 @@ class DailyPicks extends Component {
         this.state={state:'loading', dailies:[]}
     }
 
-    pickOption(event, id){
-        console.log(`${id} ${event.target.value}`);
-        //change picked option for user here
-        let newDailies = this.state.dailies;
-        const pos = newDailies.map(function(e) { return e._id; }).indexOf(id);
-        newDailies[pos].picked=event.target.value;
-        console.log(newDailies);
-        //change this so that it goes into picks array and changes yours only
-        this.setState({dailies:[...newDailies]});
-    }
-
-    //TODO: get picks from backend and show whichever picks are sent back
-    componentDidMount(){
-        // this.setState({state: 'ready', });
+    updateStateDaily(){
         getDaily().then((res)=>{
             if(!res.success){
                 throw new Error('Error with getting dailies');
@@ -32,6 +19,26 @@ class DailyPicks extends Component {
         }).catch((error) => {
             console.log(error);
         });
+    }
+
+    pickOption(event, id){
+        console.log(`${id} ${event.target.value}`);
+        //change picked option for user here
+        updateUserDaily(id, this.props.currentUser, event.target.value).then((res)=>{
+            if(!res.success){
+                throw new Error();
+            }
+            //easist way rn, not efficient
+            this.updateStateDaily();
+        }).catch((error) => {
+            console.log(error);
+        });
+
+    }
+
+    //TODO: get picks from backend and show whichever picks are sent back
+    componentDidMount(){
+        this.updateStateDaily();
     }
 
     formatList(){
