@@ -357,9 +357,8 @@ class DatabaseUpdate {
             for (let doc of cursor) {
                 // give user 
                 profile = await dbRead.getProfile(doc.username);
-                profile.ACS = this.addToACS(profile.ACS, scoreToACS(doc.profile.score));
+                profile.ACS = this.addToACS(profile.ACS, this.scoreToACS(doc.score));
                 // group in 3's unless unavailable
-                await mongoConnect.getDBCollection(USERS).updateOne({ username: username }, { $set: {} });
                 if (groupCtr < 2) { // 0, 1
                     group.push(doc);
                     groupCtr += 1;
