@@ -1,62 +1,42 @@
-import { BASE_URL, ORIGIN } from './HttpClient.js';
+import { BASE_URL, fetchList, fetchText, fetchOptionsGet, fetchOptionsWithBody, PUT} from './HttpClient.js';
 
-const
-    //key words
-    GET = 'GET',
-    PUT = 'PUT';
+const 
+    //get
+    GETDAILY = '/picksandpredictions/daily',
+    GETPLAYOFFS = '/picksandpredictions/playoffs',
+    GETPRESEASON = '/picksandpredictions/preseason',
+    //update
+    UPDATEUSERDAILY = '/picksandpredictions/update/daily/users',
+    UPDATEUSERPLAYOFF = '/picksandpredictions/update/playoffs/users';
 
 //ensure status fields have no overlap with profile in db
 const statusDef = { success: false, reason: '' };
 
-function statusCatcher(resStatus){
-    // Convert server response to appropriate status object
-    let status = {...statusDef};
-    switch(resStatus) {
-        // Call successful
-        case 200:
-            status.success = true;
-            break;
-        // Not authenticated
-        case 401:
-            status.reason = 'Not Authenticated';
-            break;
-        // Not authenticated
-        case 404:
-            status.reason = 'Not Found';
-            break;
-        // Unexpected error with database
-        case 500:
-            status.reason = 'Unexpected Database Failure';
-            break;
-        // Some other error
-        default:
-            status.reason = 'other';
-            // DEBUG ONLY
-            // console.error(
-            //     `Sign Up fetch had unexpected response code: ${response.status}
-            //     with status text: ${response.statusText}`
-            // );
-            break;
-    }
-    return status;
-}
+export async function getDaily() {
+    let newUrl = new URL(BASE_URL + GETDAILY);
+    return await fetchList(newUrl, fetchOptionsGet());
+  }
 
-async function fetchJson(url, options){
-    //handle calls that return json
-    return await fetch(url, options)
-    .then(async(res) => {
-    let status = statusCatcher(res.status);
-    if (status.success){
-    //expect a json body with wanted information, merge with status
-    Object.assign(status, await res.json());
-    return status;
-    } else {
-    //on failure, (debug)
-        console.log(status.reason);
-        return status;
-    }
-    }).catch((error) => {
-    console.log('Error connecting to backend service: ' + error);
-    return {...statusDef};
-    });
-}
+export async function getPlayoffs() {
+    let newUrl = new URL(BASE_URL + GETPLAYOFFS);
+    return await fetchList(newUrl, fetchOptionsGet());
+  }
+
+export async function getPreseason() {
+    let newUrl = new URL(BASE_URL + GETPRESEASON);
+    return await fetchList(newUrl, fetchOptionsGet());
+  }
+
+  export async function updateUserDaily(matchid, username, team) {
+    let newUrl = new URL(BASE_URL + UPDATEUSERDAILY);
+    const params = { matchid: matchid, username: username, team:team };
+    newUrl.search = new URLSearchParams(params).toString();
+    return await fetchText(newUrl, fetchOptionsWithBody(PUT, params));
+  }
+
+  export async function updateUserPlayoffs(matchid, username, team) {
+    let newUrl = new URL(BASE_URL + UPDATEUSERPLAYOFF);
+    const params = { matchid: matchid, username: username, team:team };
+    newUrl.search = new URLSearchParams(params).toString();
+    return await fetchText(newUrl, fetchOptionsWithBody(PUT, params));
+  }
