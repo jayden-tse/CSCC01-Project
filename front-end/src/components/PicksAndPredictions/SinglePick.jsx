@@ -7,8 +7,22 @@ class SinglePick extends Component {
     //will have buttons to select pick
     renderPickable(){
         return (<div>
-                    <button className="PickButton" onClick={this.props.handleSelectOption1}>{this.props.option1}</button>
-                    <button className="PickButton" onClick={this.props.handleSelectOption2}>{this.props.option2}</button>
+                    <input
+                        className="PickRadio"
+                        type="radio"
+                        value={this.props.option1}
+                        onChange={this.props.handleSelect}
+                        checked={this.props.picked === this.props.option1}
+                        />
+                    {this.props.option1}
+                    <input
+                        className="PickRadio"
+                        type="radio"
+                        value={this.props.option2}
+                        onChange={this.props.handleSelect}
+                        checked={this.props.picked === this.props.option2}
+                        />
+                    {this.props.option2}
                 </div>);
     }
 

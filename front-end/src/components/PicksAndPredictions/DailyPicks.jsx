@@ -10,9 +10,13 @@ class DailyPicks extends Component {
         this.state={state:'loading', dailies:[]}
     }
 
-    pickOption(id, option){
-        console.log(`${id} ${option}`);
+    pickOption(event, id){
+        console.log(`${id} ${event.target.value}`);
         //change picked option for user here
+        let newDailies = this.state.dailies;
+        const pos = newDailies.map(function(e) { return e._id; }).indexOf(id);
+        newDailies[pos].picked=event.target.value;
+        this.setState({dailies:[...newDailies]});
     }
 
     //TODO: get picks from backend and show whichever picks are sent back
@@ -29,8 +33,7 @@ class DailyPicks extends Component {
             picked={data.picked}
             result={data.result}
             ACSChange={data.ACSChange}
-            handleSelectOption1={()=>this.pickOption(data._id, data.option1)}
-            handleSelectOption2={()=>this.pickOption(data._id, data.option2)}
+            handleSelect={(event)=>this.pickOption(event, data._id)}
             />
         );
         return dailies;
