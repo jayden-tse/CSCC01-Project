@@ -48,7 +48,7 @@ class DailyPicks extends Component {
             option2={data.team2}
             //change later
             pickState={'pickable'}
-            picked={data.picked}
+            picked={data.picks===undefined?"":data.picks[this.props.currentUser]}
             result={data.team1}
             ACSChange={5}
             handleSelect={(event)=>this.pickOption(event, data._id)}
