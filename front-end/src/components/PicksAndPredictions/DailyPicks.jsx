@@ -69,7 +69,6 @@ class DailyPicks extends Component {
 
     getUserACSChange(picks, result){
         const pick = this.getUserPickSingle(picks);
-        console.log(pick);
         if(pick === ""){
             return 0;
         }
