@@ -350,50 +350,73 @@ class DatabaseUpdate {
         let BESTPTS = 5; // constant
         let profile;
         let best;
+        let questions;
+        let group1Ctr = 0;
+        let group2Ctr = 0;
+        let group1 = []; // q1 analyses go here
+        let group2 = []; // q2 analyses go here
         for (let collection of tiers) {
             cursor = await mongoConnect.getDBCollection(collection + A).find({}).toArray();
-            let groupCtr = 0;
-            let group = [];
+            questions = await mongoConnect.getDBCollection(collection + Q).find({}).toArray();
+            group1Ctr = 0;
+            group2Ctr = 0;
+            group1 = [];
+            group2 = [];
             for (let doc of cursor) {
                 // give user 
                 profile = await dbRead.getProfile(doc.username);
                 profile.ACS = this.addToACS(profile.ACS, this.scoreToACS(doc.score));
-                // group in 3's unless unavailable
-                if (groupCtr < 2) { // 0, 1
-                    group.push(doc);
-                    groupCtr += 1;
-                } else {
+                await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": profile._id }, { $set: { "profile.ACS": profile.ACS } }); // updates each profile by debate score
+                if (doc.question.question === questions[0].question && group1Ctr < 2) {
+                    group1.push(doc)
+                    group1Ctr += 1;
+                } else if (doc.question.question === questions[1].question && group2Ctr < 2) {
+                    group2.push(doc)
+                    group2Ctr += 1;
+                } else if (doc.question.question === questions[0].question && group1Ctr >= 2) {
                     // add last member
-                    group.push(doc);
+                    group1.push(doc);
                     // compare values
-                    best = this.getBestDebate(group);
-                    console.log(best);
+                    best = this.getBestDebate(group1);
                     if (best) {
                         // add 5 pts to best ACS
-                        profile = await dbRead.getProfile(best.username);
-                        console.log(profile === null);
-                        profile.ACS = this.addToACS(profile.ACS, BESTPTS);
+                        bestProfile = await dbRead.getProfile(best.username);
+                        bestProfile.ACS = this.addToACS(profile.ACS, BESTPTS);
                         // update
+                        await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": bestProfile._id }, { $set: { "profile.ACS": bestProfile.ACS } }); // updates best of the group's debate score
                     }
                     // reset groupings
-                    group.length = 0;
-                    groupCtr = 0;
-                    console.log(groupCtr);
+                    group1.length = 0;
+                    group1Ctr = 0;
+                } else if (doc.question.question === questions[1].question && group2Ctr >= 2) {
+                    // add last member
+                    group2.push(doc);
+                    // compare values
+                    best = this.getBestDebate(group2);
+                    if (best) {
+                        // add 5 pts to best ACS
+                        bestProfile = await dbRead.getProfile(best.username);
+                        bestProfile.ACS = this.addToACS(profile.ACS, BESTPTS);
+                        // update
+                        await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": bestProfile._id }, { $set: { "profile.ACS": bestProfile.ACS } });
+                    }
+                    // reset groupings
+                    group2.length = 0;
+                    group2Ctr = 0;
                 }
-                await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": profile._id }, { $set: { "profile.ACS": profile.ACS } });
             };
 
-            // in case there's a group of 1 or 2
-            best = this.getBestDebate(group);
-            if (best) {
-                // add 5 pts to best ACS
-                console.log(best);
-                profile = await dbRead.getProfile(best.username);
-                profile.ACS = this.addToACS(profile.ACS, BESTPTS);
-                // update
-                await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": profile._id }, { $set: { "profile.ACS": profile.ACS } });
+            // in case there's a group of 1 or 2 in either groups
+            let leftover = [this.getBestDebate(group1), this.getBestDebate(group2)]
+            for (let best of leftover) {
+                if (best) {
+                    // add 5 pts to best ACS
+                    profile = await dbRead.getProfile(best.username);
+                    profile.ACS = this.addToACS(profile.ACS, BESTPTS);
+                    // update
+                    await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": profile._id }, { $set: { "profile.ACS": profile.ACS } });
+                }
             }
-
             // all scoring is done; archive/log the debates
             //      TODO: implement archiving
 

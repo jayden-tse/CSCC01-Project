@@ -177,5 +177,6 @@ exports.debate_daily = async function(req, res) {
         res.sendStatus(200);
     } catch (e) {
         console.log(e);
+        res.status(500).send(WRITE_FAILED);
     }
 }

@@ -152,8 +152,8 @@ class DatabaseRead {
     }
 
     async getRandomDebateQuestion(tier) {
-        // used in the event loop; get a random question in the daily set of questions.
-        let questions = await this.getAllDebateQuestions(tier);
+        // used in the event loop and when creating a new user; get a random question in the daily set of questions.
+        let questions = await mongoConnect.getDBCollection(tier + Q).find({}).toArray();
         let rand = Math.floor(Math.random() * questions.length);
         return questions[rand];
     }
@@ -177,7 +177,7 @@ class DatabaseRead {
     }
 
     async getAllSubmissions(tier) {
-        let cursor = mongoConnect.getDBCollection(tier + A).find({});
+        let cursor = mongoConnect.getDBCollection(tier + A).find({}).sort({ "question.question": -1 });
         let result = [];
         await cursor.forEach(function(doc) {
             result.push(doc.username);

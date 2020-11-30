@@ -41,6 +41,7 @@ async function main() {
             });
 
             // https://www.npmjs.com/package/node-schedule
+            // uncomment code below to set up daily resets for debates
             // let daily = schedule.scheduleJob('* 0 * * *', async function() {
             //     console.log("New day, set up new questions.");
             //     await dbUpdate.updateDaily();
