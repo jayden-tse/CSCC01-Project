@@ -30,12 +30,12 @@ class DatabaseDelete {
         return result;
     }
 
-    async deleteDailyPicks(matchid) {
+    async deleteDailyMatches(matchid) {
         let result = await mongoConnect.getDBCollection(DAILY).deleteOne({ "_id": ObjectId(matchid) });
         return result.deletedCount;
     }
 
-    async deleteAllPicks(collection) {
+    async deleteAllMatches(collection) {
         let result = await mongoConnect.getDBCollection(collection).deleteMany({});
         return result.result.n;
     }
