@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 var passport = require('passport');
 
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, PRESEASON } = require('./DatabaseHelper');
 
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
@@ -25,11 +25,11 @@ passport.use(new LocalStrategy(
             });
     }
 ));
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     done(null, user.username);
 });
 
-passport.deserializeUser(function(username, done) {
+passport.deserializeUser(function (username, done) {
     done(null, mongoConnect.getDBCollection(USERS).findOne({ "username": username }));
 });
 
@@ -63,7 +63,7 @@ class DatabaseRead {
     async getAllPosts(req) {
         const posts = [];
         const cursor = await mongoConnect.getDBCollection(POSTS).find(req);
-        await cursor.forEach(function(doc) {
+        await cursor.forEach(function (doc) {
             posts.push(doc._id);
         });
         return posts;
@@ -74,7 +74,7 @@ class DatabaseRead {
         const cursor = await mongoConnect.getDBCollection(POSTS).find({
             _id: ObjectId(req)
         });
-        await cursor.forEach(function(doc) {
+        await cursor.forEach(function (doc) {
             posts.push(doc);
         });
         return posts;
@@ -94,6 +94,20 @@ class DatabaseRead {
             }
         }
         return null;
+    }
+
+    async getPicks(collection) {
+        let picks = [];
+        let cursor = await mongoConnect.getDBCollection(collection).find();
+        await cursor.forEach(function (match) {
+            picks.push(match);
+        });
+        return picks;
+    }
+
+    async getPreseasonAwards(season) {
+        let preseasonAwards = await mongoConnect.getDBCollection(PRESEASON).findOne({ "season": season });
+        return preseasonAwards;
     }
 
     async findUsername(username) {
