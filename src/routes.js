@@ -147,6 +147,12 @@ router.put('/picksandpredictions/create/daily', pickspredictionsController.match
 // Create matches for playoffs picks
 router.put('/picksandpredictions/create/playoffs', pickspredictionsController.matches_playoffs_picks_put);
 
+// Create preseason objects for user picks
+router.put('/picksandpredictions/create/preseason/user', pickspredictionsController.matches_preseason_user_picks_put);
+
+// Create preseason awards for end of season
+router.put('/picksandpredictions/create/preseason/awards', pickspredictionsController.matches_preseason_awards_put);
+
 // Get matches from daily picks
 router.get('/picksandpredictions/daily', pickspredictionsController.matches_daily_picks_get);
 
@@ -173,6 +179,9 @@ router.delete('/picksandpredictions/delete/daily/all', pickspredictionsControlle
 
 // Delete all matches in playoffs picks
 router.delete('/picksandpredictions/delete/playoffs', pickspredictionsController.matches_playoffs_picks_all_del);
+
+// Delete preseason object in all users
+router.delete('/picksandpredictions/delete/preseason/users', pickspredictionsController.matches_preseason_picks_all_del);
 
 
 /* DEBATE */

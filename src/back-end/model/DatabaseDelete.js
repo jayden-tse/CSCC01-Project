@@ -39,6 +39,17 @@ class DatabaseDelete {
         let result = await mongoConnect.getDBCollection(collection).deleteMany({});
         return result.result.n;
     }
+
+    async deleteAllUserPreseasonObjects() {
+        let cursor = await mongoConnect.getDBCollection(USERS).find();
+        await cursor.forEach(async function (user) {
+            await mongoConnect.getDBCollection(USERS).updateOne(user, {
+                $unset: {
+                    "profile.preseasonPicks": ""
+                }
+            });
+        });
+    }
 }
 
 module.exports = DatabaseDelete;

@@ -10,9 +10,7 @@ const Comment = require('./Comment.js');
 const Match = require('./Match.js');
 const ObjectId = require('mongodb').ObjectID;
 
-const DatabaseRead = require('./DatabaseRead.js');
-const { USERS, POSTS } = require('./DatabaseHelper');
-const dbRead = new DatabaseRead();
+const { USERS, POSTS, PRESEASON } = require('./DatabaseHelper');
 
 // Business email from which users will get the confirmation.
 const transporter = nodemailer.createTransport({
@@ -114,6 +112,26 @@ class DatabaseCreate {
             await mongoConnect.getDBCollection(collection).insertOne(newMatch);
             let match = await mongoConnect.getDBCollection(collection).findOne(newMatch);
             return match;
+        } else {
+            return null;
+        }
+    }
+
+    async createPreseasonObject(username, preseasonPicks) {
+        await mongoConnect.getDBCollection(USERS).updateOne({ "username": username }, {
+            $set: {
+                "profile.preseasonPicks": preseasonPicks
+            }
+        });
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username });
+        return result;
+    }
+
+    async createPreseasonAwardsObject(preseasonAwards) {
+        let result = await mongoConnect.getDBCollection(PRESEASON).findOne({ "SEASON": preseasonAwards.SEASON });
+        if (result === null) {
+            await mongoConnect.getDBCollection(PRESEASON).insertOne(preseasonAwards);
+            return preseasonAwards;
         } else {
             return null;
         }

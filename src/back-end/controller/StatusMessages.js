@@ -12,6 +12,7 @@ exports.USERNAME_EXISTS = "Username already exists.";
 exports.EMAIL_EXISTS = "Email address already exists.";
 exports.PHONENUM_EXISTS = "Phone number already exists.";
 exports.MATCH_EXISTS = "Match already exists.";
+exports.SEASON_EXISTS = "Season already exists.";
 
 // CODE 500
 exports.WRITE_FAILED = "WRITE FAILED";
