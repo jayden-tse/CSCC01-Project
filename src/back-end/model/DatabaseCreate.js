@@ -127,7 +127,7 @@ class DatabaseCreate {
         return result;
     }
 
-    async createPreseasonAwardsObject(preseasonAwards) {
+    async createPreseasonAwards(preseasonAwards) {
         let result = await mongoConnect.getDBCollection(PRESEASON).findOne({ "SEASON": preseasonAwards.SEASON });
         if (result === null) {
             await mongoConnect.getDBCollection(PRESEASON).insertOne(preseasonAwards);
