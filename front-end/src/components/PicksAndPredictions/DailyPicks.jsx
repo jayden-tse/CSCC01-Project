@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import SinglePick from './SinglePick';
 import {getDaily, updateUserDaily} from '../../api/PicksCalls';
 
-//will have to shape implementation to backend when thats ready
+//states for daily pick
+const PICKABLE='pickable', ONGOING='ongoing', COMPLETED='completed';
+
 class DailyPicks extends Component {
     constructor(props){
         super(props);
@@ -41,16 +43,50 @@ class DailyPicks extends Component {
         this.updateStateDaily();
     }
 
+    pickStateForMatch(date,startTime, endTime){
+        const currentDate = new Date();
+        //set date
+        const mdy = date.split("/"); //month day year formate
+        //time in hh:mm format, assume startTime<endTime
+        var matchStart = new Date(`${mdy[2]}-${mdy[0]}-${mdy[1]}T${startTime}:00`);
+        var matchEnd = new Date(`${mdy[2]}-${mdy[0]}-${mdy[1]}T${endTime}:00`);
+
+        if(currentDate<=matchStart){
+            return PICKABLE;
+        } else if(currentDate>=matchEnd){
+            return COMPLETED;
+        } else {
+            return ONGOING;
+        }
+    }
+
+    getUserPickSingle(picks){
+        if(picks != undefined && picks[this.props.currentUser] != undefined){
+            return picks[this.props.currentUser]
+        }
+        return "";
+    }
+
+    getUserACSChange(picks, result){
+        const pick = this.getUserPickSingle(picks);
+        console.log(pick);
+        if(pick === ""){
+            return 0;
+        }
+        return pick === result? 5:-5;
+    }
+
+
     formatList(){
         const dailies = this.state.dailies.map((data)=>
             <SinglePick key={data._id}
             option1={data.team1}
             option2={data.team2}
+            pickState={this.pickStateForMatch(data.date, data.start, data.end)}
+            picked={this.getUserPickSingle(data.picks)}
             //change later
-            pickState={'pickable'}
-            picked={data.picks===undefined?"":data.picks[this.props.currentUser]}
             result={data.team1}
-            ACSChange={5}
+            ACSChange={this.getUserACSChange(data.picks, data.team1)}
             handleSelect={(event)=>this.pickOption(event, data._id)}
             />
         );
