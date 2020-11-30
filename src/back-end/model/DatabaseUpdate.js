@@ -2,7 +2,7 @@ var mongoConnect = require('../../mongoConnect');
 
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
-const { USERS, POSTS, A, FANALYST, ANALYST, EXPERT } = require('./DatabaseHelper');
+const { USERS, POSTS, Q, A, FANALYST, ANALYST, EXPERT, PRO } = require('./DatabaseHelper');
 const DatabaseRead = require('./DatabaseRead');
 const dbRead = new DatabaseRead();
 const DatabaseDelete = require('./DatabaseDelete');
@@ -311,14 +311,15 @@ class DatabaseUpdate {
         // to complete
     }
 
-    getHiScore(group) {
+    getBestDebate(group) {
         // gets the debate with the highest score of a group
+        if (!group) return null;
         let bestDebate = { score: -1 };
-        for (debate in group) {
+        group.forEach(function(debate) {
             if (debate.score > bestDebate.score) {
                 bestDebate = debate;
             }
-        }
+        });
         if (bestDebate.score < 0) return null;
         else return bestDebate;
     }
@@ -334,21 +335,30 @@ class DatabaseUpdate {
         else return ACS + points;
     }
 
+    scoreToACS(score) {
+        // 0%-10%: 1pt
+        // 11%-20%: 2pts
+        // ...
+        // 91%-100%: 10pts
+        return Math.max(1, Math.ceil(score / 10)); // Math.max used in case user gets 0%.
+    }
+
     async finalizeDebates() {
-        let groupCtr = 0;
-        let group = [];
         let tiers = [FANALYST, ANALYST, EXPERT, PRO];
         let cursor;
-        let best = null;
         let BESTPTS = 5; // constant
-        let username = "";
-        let profile = "";
-        for (collection in tiers) {
-            cursor = await mongoConnect.getDBCollection(collection + A).find({});
-            best = null;
-            username = "";
-            await cursor.forEach(async function(doc) {
+        let profile;
+        let best;
+        for (let collection of tiers) {
+            cursor = await mongoConnect.getDBCollection(collection + A).find({}).toArray();
+            let groupCtr = 0;
+            let group = [];
+            for (let doc of cursor) {
+                // give user 
+                profile = await dbRead.getProfile(doc.username);
+                profile.ACS = this.addToACS(profile.ACS, scoreToACS(doc.profile.score));
                 // group in 3's unless unavailable
+                await mongoConnect.getDBCollection(USERS).updateOne({ username: username }, { $set: {} });
                 if (groupCtr < 2) { // 0, 1
                     group.push(doc);
                     groupCtr += 1;
@@ -356,37 +366,42 @@ class DatabaseUpdate {
                     // add last member
                     group.push(doc);
                     // compare values
-                    best = getHiScore(group);
+                    best = this.getBestDebate(group);
+                    console.log(best);
                     if (best) {
                         // add 5 pts to best ACS
                         profile = await dbRead.getProfile(best.username);
-                        profile.ACS = addToACS(ACS, BESTPTS);
+                        console.log(profile === null);
+                        profile.ACS = this.addToACS(profile.ACS, BESTPTS);
                         // update
-                        await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": profile._id }, { $set: { "profile.$.ACS": profile.ACS } });
                     }
-
                     // reset groupings
-                    group = [];
+                    group.length = 0;
                     groupCtr = 0;
+                    console.log(groupCtr);
                 }
-            });
+                await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": profile._id }, { $set: { "profile.ACS": profile.ACS } });
+            };
+
             // in case there's a group of 1 or 2
-            best = getHiScore(group);
+            best = this.getBestDebate(group);
             if (best) {
                 // add 5 pts to best ACS
+                console.log(best);
                 profile = await dbRead.getProfile(best.username);
-                profile.ACS = addToACS(ACS, BESTPTS);
+                profile.ACS = this.addToACS(profile.ACS, BESTPTS);
                 // update
-                await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": profile._id }, { $set: { "profile.$.ACS": profile.ACS } });
+                await mongoConnect.getDBCollection(USERS).updateOne({ "profile._id": profile._id }, { $set: { "profile.ACS": profile.ACS } });
             }
 
             // all scoring is done; archive/log the debates
             //      TODO: implement archiving
 
             // archiving done; delete submissions/questions and get new set
-            await dbDelete.deleteCollectionContent(collection + Q);
-            await dbDelete.deleteCollectionContent(collection + A);
+            let collQ = await dbDelete.deleteCollectionContent(collection + Q);
+            let collA = await dbDelete.deleteCollectionContent(collection + A);
 
+            console.log("DEBUG: deleted " + collQ.deletedCount + " Q's and " + collA.deletedCount + " A's for " + collection + ".");
             // deleting done; repopulate questions
             let newQuestions = await dbRead.getTwoDebateQuestions(collection);
             await mongoConnect.getDBCollection(collection + Q).insertMany(newQuestions, { ordered: true }); // ordered makes it stop if one fails
@@ -395,18 +410,18 @@ class DatabaseUpdate {
 
     async updateDaily() {
         // anything that changes on a daily basis should change here.
-        this.finalizeDebates();
+        await this.finalizeDebates();
 
-        let userCursor = await mongoConnect.getDBCollection(USERS).find({});
+        let userCursor = await mongoConnect.getDBCollection(USERS).find({}).toArray();
         let MINVOTES = 3; // can be changed later depending on the min. # of votes required to be considered as "participating"
         let PPTS = 10; // same as above
         let newTier = FANALYST; // default value
-        await userCursor.forEach(async function(doc) {
+        for (let doc of userCursor) {
             // voting
             if (doc.profile.votes >= MINVOTES) {
-                doc.profile.ACS = addToACS(doc.profile.ACS, PPTS)
+                doc.profile.ACS = this.addToACS(doc.profile.ACS, PPTS)
             } else {
-                doc.profile.ACS = addToACS(doc.profile.ACS, -PPTS / 2)
+                doc.profile.ACS = this.addToACS(doc.profile.ACS, -PPTS / 2)
             }
             doc.profile.votes = 0;
 
@@ -416,8 +431,8 @@ class DatabaseUpdate {
             doc.profile.debatequestion = await dbRead.getRandomDebateQuestion(newTier);
 
             // update user
-            await mongoConnect.getDBCollection(Users).updateOne({ username: doc.username }, { $set: { profile: doc.profile } });
-        });
+            await mongoConnect.getDBCollection(USERS).updateOne({ username: doc.username }, { $set: { profile: doc.profile } });
+        };
     }
 }
 module.exports = DatabaseUpdate;

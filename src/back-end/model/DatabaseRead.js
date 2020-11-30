@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 var passport = require('passport');
 
-const { USERS, POSTS, FANALYST, Q, A, DEBATES } = require('./DatabaseHelper');
+const { USERS, POSTS, FANALYST, ANALYST, PRO, EXPERT, Q, A, DEBATES } = require('./DatabaseHelper');
 
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 

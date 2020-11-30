@@ -129,22 +129,6 @@ exports.debate_submission_get_all = async function(req, res) {
     }
 };
 
-exports.debate_submission_time_limit_get = async function(req, res) {
-    res.set({
-            'Access-Control-Allow-Credentials': true,
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-        })
-        // tomorrow 0000 - new Date()
-};
-
-exports.debate_update_topics_put = async function(req, res) {
-    res.set({
-            'Access-Control-Allow-Credentials': true,
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-        })
-        // update the daily questions
-};
-
 exports.debate_submission_update_score_put = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
@@ -182,3 +166,16 @@ exports.debate_topics_del = async function(req, res) {
         })
         // delete the daily topics
 };
+
+exports.debate_daily = async function(req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    })
+    try {
+        await dbUpdate.updateDaily();
+        res.sendStatus(200);
+    } catch (e) {
+        console.log(e);
+    }
+}

@@ -185,23 +185,14 @@ router.get('/debates/submission', debateController.debate_submission_get);
 // Get all debate submissions within the user's tier
 router.get('/debates/submission/all', debateController.debate_submission_get_all);
 
-// Get debate submission time limit
-router.get(
-    '/debates/submission/time',
-    debateController.debate_submission_time_limit_get
-);
-
-// Update debate topics
-router.put('/debates/update/topic', debateController.debate_update_topics_put);
-
 // Update debate submission score
 router.put(
     '/debates/submission/update/score',
     debateController.debate_submission_update_score_put
 );
 
-// Delete debate topics
-router.delete('/debates/delete/topic', debateController.debate_topics_del);
+// TEMP: Reset debate analyses + get new topics
+router.get('/debates/daily', debateController.debate_daily);
 
 /* THE ZONE */
 
