@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 var passport = require('passport');
 
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, PRESEASON } = require('./DatabaseHelper');
 
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
@@ -103,6 +103,11 @@ class DatabaseRead {
             picks.push(match);
         });
         return picks;
+    }
+
+    async getPreseasonAwards(season) {
+        let preseasonAwards = await mongoConnect.getDBCollection(PRESEASON).findOne({ "season": season });
+        return preseasonAwards;
     }
 
     async findUsername(username) {

@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
 var mongoConnect = require('../../mongoConnect');
 
-const { USERS, POSTS, DAILY } = require('./DatabaseHelper');
+const { USERS, POSTS, DAILY, PRESEASON } = require('./DatabaseHelper');
 
 class DatabaseDelete {
 
@@ -50,6 +50,12 @@ class DatabaseDelete {
             });
         });
     }
+
+    async deletePreseasonAwards(season) {
+        let result = await mongoConnect.getDBCollection(PRESEASON).deleteOne({ "season": season });
+        return result.deletedCount;
+    }
+
 }
 
 module.exports = DatabaseDelete;

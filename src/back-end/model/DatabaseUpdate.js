@@ -3,7 +3,7 @@ const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
 const Match = require('./Match.js');
 
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, PRESEASON } = require('./DatabaseHelper');
 const DatabaseRead = require('./DatabaseRead');
 const dbRead = new DatabaseRead();
 class DatabaseUpdate {
@@ -286,6 +286,11 @@ class DatabaseUpdate {
         });
         let updatedMatch = await mongoConnect.getDBCollection(collection).findOne({ "_id": ObjectId(matchid) });
         return updatedMatch;
+    }
+
+    async updatePreseasonAwards(preseasonAwards) {
+        await mongoConnect.getDBCollection(PRESEASON).replaceOne({ "season": preseasonAwards.season }, preseasonAwards);
+        return preseasonAwards;
     }
 
 }

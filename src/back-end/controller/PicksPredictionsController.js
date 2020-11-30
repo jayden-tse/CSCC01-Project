@@ -144,7 +144,7 @@ exports.matches_preseason_awards_get = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let preseasonAwards = await dbRead.getPreseasonAwards(req.query.SEASON);
+            let preseasonAwards = await dbRead.getPreseasonAwards(req.query.season);
             if (preseasonAwards !== null) {
                 res.status(200).send(preseasonAwards); // OK
             } else {
@@ -255,12 +255,8 @@ exports.matches_update_preseason_awards_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let preseasonAwards = await dbUpdate.updatePreseasonAwards(req.body.SEASON, req.body.preseasonAwards);
-            if (preseasonAwards !== null) {
-                res.status(200).send(preseasonAwards); // OK
-            } else {
-                res.status(409).send(SEASON_EXISTS); // SEASON EXISTS
-            }
+            let preseasonAwards = await dbUpdate.updatePreseasonAwards(req.body.preseasonAwards);
+            res.status(200).send(preseasonAwards); // OK
         } catch (e) {
             console.error(e);
             res.status(500).send(WRITE_FAILED); // Internal server error
@@ -366,9 +362,9 @@ exports.matches_preseason_awards_del = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let preseasonAwards = await dbDelete.deletePreseasonAwards(req.body.SEASON);
-            if (preseasonAwards !== 0) {
-                res.status(200).send(preseasonAwards); // OK
+            let preseasonAwards = await dbDelete.deletePreseasonAwards(req.body.season);
+            if (preseasonAwards > 0) {
+                res.sendStatus(200); // OK
             } else {
                 res.status(404).send(NOT_FOUND); // NOT FOUND
             }
