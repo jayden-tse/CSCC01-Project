@@ -252,19 +252,25 @@ class DatabaseUpdate {
     }
 
     async updateQuestion(id, question, answer, other) {
-        let result = await mongoConnect.getDBCollection(QUESTIONS).updateOne({ "_id": ObjectId(id) }, {
-            $set: {
-                "question": question,
-                "answer": answer,
-                "other": other
+        let question = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "question": question });
+        if (question === null) {
+            let result = await mongoConnect.getDBCollection(QUESTIONS).updateOne({ "_id": ObjectId(id) }, {
+                $set: {
+                    "question": question,
+                    "answer": answer,
+                    "other": other
+                }
+            });
+            if (result.matchedCount > 0) {
+                let updatedQuestion = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "_id": ObjectId(id) });
+                return updatedQuestion;
+            } else {
+                return 0;
             }
-        });
-        if (result.matchedCount > 0) {
-            let updatedQuestion = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "_id": ObjectId(id) });
-            return updatedQuestion;
         } else {
             return null;
         }
     }
+
 }
 module.exports = DatabaseUpdate;
