@@ -3,6 +3,8 @@ import { Button, Grid, Typography } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
+import { shuffle } from '../../util/utilities';
+
 // The 3 possible phases
 const PREVIEW = 0;  // Preview the question
 const SELECT = 1;  // Select an answer within the alloted time
@@ -50,9 +52,10 @@ class TriviaQuestion extends React.Component {
       () => this.tick(),
       1000
     );
-    // Collect trivia answers into one for easy iterating
-    // TODO: randomize order
+    // Collect trivia answers into one for easy iterating, and randomly
+    // shuffle their order
     this.answers = [this.props.question.answer, ...this.props.question.other];
+    shuffle(this.answers);
     // Populate the disabled array to match the number of answers given
     let disable = [];
     for (let i = 0; i < this.answers.length; i++) {
