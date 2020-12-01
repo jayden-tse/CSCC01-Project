@@ -11,6 +11,10 @@ const RESULTS = 2;  // Answer was selected or time ran out
 // Minimum amount of milliseconds to display results before calling onAnswer
 const RESULTS_DELAY = 1500;
 
+// Max number of characters in a question before decreasing the Question
+// text size so it fits nicely on the screen
+const LARGE_CHARACTER_LIMIT = 145;
+
 /**
  * Shows the given question `props.question.question` for `props.previewTimer`
  * seconds, then gives `props.answerTimer` seconds for the player to choose an
@@ -172,10 +176,14 @@ class TriviaQuestion extends React.Component {
     );
   }
 
-  // TODO: Handle long questions causing text to overflow
   renderQuestion() {
+    // Lower font size if the question is long
+    let size = 'h2';
+    if (this.props.question.question.length > LARGE_CHARACTER_LIMIT) {
+      size = 'h4';
+    }
     return (
-      <Typography variant='h2' color='textPrimary'>
+      <Typography variant={size} color='textPrimary'>
         {this.props.question.question}
       </Typography>
     );
