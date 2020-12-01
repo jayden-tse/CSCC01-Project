@@ -2,6 +2,7 @@ import React from 'react';
 import TheZoneAgree from "./TheZoneAgree";
 import './TheZoneComment.css';
 import { deleteComment } from '../../api/TheZoneCalls';
+import AccessProfileText from '../general/AccessProfileText.jsx';
 
 class TheZoneComment extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class TheZoneComment extends React.Component {
     return (
       <div className="commentContainer">
         <TheZoneAgree postid={this.props.postid} commentid={this.props.commentid} like={this.props.agree - this.props.disagree} mode="comment" />
-        <div> <p>Posted by <span>{this.props.username}</span> on <span>{this.props.date}</span> </p> </div>
+        <div> <p>Posted by <AccessProfileText username={this.props.username} handleViewProfile={this.props.handleViewProfile}/> on <span>{this.props.date}</span> </p> </div>
         <div> <p>{this.props.text}</p> </div>
         {deleteButton}
       </div>	

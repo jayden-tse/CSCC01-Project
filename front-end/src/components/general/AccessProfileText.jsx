@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './AccessProfileText.css';
 
 //similar to AccessProfile, but text version
 class AccessProfileText extends Component {

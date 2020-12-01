@@ -16,7 +16,7 @@ class TheZone extends React.Component{
           <button className="redirect" onClick={this.props.redirectToPicksAndPredictions}>Picks & Predictions</button>
           <button className="redirect" onClick={this.props.redirectToDebate}>Debate</button>
         </div>
-        <TheZonePostList currentUser={this.props.currentUser}/>
+        <TheZonePostList currentUser={this.props.currentUser} handleViewProfile={this.props.handleViewProfile}/>
       </div>
     )
   }

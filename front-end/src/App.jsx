@@ -146,6 +146,7 @@ class App extends React.Component {
               redirectToDebate={this.redirectToDebate}
               redirectToPicksAndPredictions={this.redirectToPicksAndPredictions}
               redirectToTrivia={this.redirectToTrivia}
+              handleViewProfile={this.handleViewProfile}
             />
           </div>
         );
