@@ -3,7 +3,7 @@ import SinglePick from './SinglePick';
 import {getDaily, updateUserDaily} from '../../api/PicksCalls';
 
 //states for daily pick
-const PICKABLE='pickable', ONGOING='ongoing', COMPLETED='completed';
+const PICKABLE='pickable', ONGOING='ongoing', COMPLETED='completed', NA='N/A';
 
 class DailyPicks extends Component {
     constructor(props){
@@ -16,17 +16,24 @@ class DailyPicks extends Component {
             if(!res.success){
                 throw new Error('Error with getting dailies');
             }
-            this.setState({state:'ready',dailies: res.list})
+            this.setState({state:'ready',dailies: res.list.sort(compareDates)})
 
         }).catch((error) => {
             console.log(error);
         });
     }
 
-    pickOption(event, id){
-        console.log(`${id} ${event.target.value}`);
+    pickOption(id, option){
+        console.log(`${id} ${option}`);
+        //check if match over first
+        const dailies = this.state.dailies.filter(element => {return element._id===id} );
+        if(dailies===[] || this.pickStateForMatch(dailies[0].date, dailies[0].start, dailies[0].end) != PICKABLE){
+            console.log('MATCH CANNOT BE UPDATED!');
+            return;
+        }
+
         //change picked option for user here
-        updateUserDaily(id, this.props.currentUser, event.target.value).then((res)=>{
+        updateUserDaily(id, this.props.currentUser, option).then((res)=>{
             if(!res.success){
                 throw new Error();
             }
@@ -42,18 +49,12 @@ class DailyPicks extends Component {
     componentDidMount(){
         this.updateStateDaily();
     }
-    
-    formatDate(date,time){
-        const mdy = date.split("/"); //month day year formate
-        //time in hh:mm format, assume startTime<endTime
-        return new Date(`${mdy[2]}-${mdy[0]}-${mdy[1]}T${time}:00`);
-    }
 
     pickStateForMatch(date,startTime, endTime){
         const currentDate = new Date();
         //set date
-        var matchStart = this.formatDate(date,startTime);
-        var matchEnd = this.formatDate(date,endTime);
+        var matchStart = formatDate(date,startTime);
+        var matchEnd = formatDate(date,endTime);
 
         if(currentDate<=matchStart){
             return PICKABLE;
@@ -68,31 +69,31 @@ class DailyPicks extends Component {
         if(picks != undefined && picks[this.props.currentUser] != undefined){
             return picks[this.props.currentUser]
         }
-        return "";
+        return NA;
     }
 
     getUserACSChange(picks, result){
         const pick = this.getUserPickSingle(picks);
-        if(pick === ""){
+        if(pick === NA){
             return 0;
         }
         return pick === result? 5:-5;
     }
 
-
-    formatList(){
+    formatList(){        
         const dailies = this.state.dailies.map((data)=>
             <SinglePick key={data._id}
             option1={data.team1}
             option2={data.team2}
             pickState={this.pickStateForMatch(data.date, data.start, data.end)}
             picked={this.getUserPickSingle(data.picks)}
-            matchDate={`${this.formatDate(data.date,data.start).toDateString()}`}
+            matchDate={`${formatDate(data.date,data.start).toDateString()}`}
             matchTime={`${data.start}-${data.end} EST`}
             //change later
             result={data.team1}
             ACSChange={this.getUserACSChange(data.picks, data.team1)}
-            handleSelect={(event)=>this.pickOption(event, data._id)}
+            handleSelect1={()=>this.pickOption(data._id,data.team1)}
+            handleSelect2={()=>this.pickOption(data._id,data.team2)}
             />
         );
         return dailies;
@@ -103,6 +104,24 @@ class DailyPicks extends Component {
            {this.formatList()}
         </div>;
     }
+}
+
+function formatDate(date,time){
+    const mdy = date.split("/"); //month day year formate
+    //time in hh:mm format, assume startTime<endTime
+    return new Date(`${mdy[2]}-${mdy[0]}-${mdy[1]}T${time}:00`);
+}
+
+function compareDates(a, b){
+    let aform = formatDate(a.date,a.start);
+    let bform = formatDate(b.date,b.start);
+    if ( aform > bform ){
+        return -1;
+      }
+    if ( aform > bform ){
+        return 1;
+    }
+    return 0;
 }
  
 export default DailyPicks;
