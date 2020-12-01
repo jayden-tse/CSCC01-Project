@@ -217,7 +217,7 @@ exports.matches_update_picks_daily_picks_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let picks = await dbUpdate.updateMatchPicks(DAILY, req.body.matchid, req.body.username, req.body.team);
+            let picks = await dbUpdate.updateMatchPicks(DAILY, req.body.matchid, req.session.passport.user, req.body.team);
             res.status(200).send(picks); // OK
         } catch (e) {
             console.error(e);
@@ -236,7 +236,7 @@ exports.matches_update_picks_playoffs_picks_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let picks = await dbUpdate.updateMatchPicks(PLAYOFFS, req.body.matchid, req.body.username, req.body.team);
+            let picks = await dbUpdate.updateMatchPicks(PLAYOFFS, req.body.matchid, req.session.passport.user, req.body.team);
             res.status(200).send(picks); // OK
         } catch (e) {
             console.error(e);
