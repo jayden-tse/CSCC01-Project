@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './SinglePick.css';
+import images from './../../resources/teamLogos';
 
 //states for daily pick
 const PICKABLE='pickable', ONGOING='ongoing', COMPLETED='completed';
@@ -60,13 +61,29 @@ class SinglePick extends Component {
         }
     }
 
+    getImage(team){
+        if(team in images){
+            return images[team];
+        }else{
+            return null;
+        }
+    }
+
     render() { 
         return(
             <div className='PickContainer'>
                 <div className='PickImages'>
-                    <img alt={this.props.option1}/>
-                    VS
-                    <img alt={this.props.option2}/>
+                    <img
+                        className='PickImage1'
+                        src={this.getImage(this.props.option1)}
+                        alt={this.props.option1}
+                    />
+                    <span className='PickVS'>VS</span>
+                    <img
+                        className='PickImage2'
+                        src={this.getImage(this.props.option2)}
+                        alt={this.props.option2}
+                    />
                 </div>
                 <div className='PickSideOption'>
                     {this.props.matchDate}
