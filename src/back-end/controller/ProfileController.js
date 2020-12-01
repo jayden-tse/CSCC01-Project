@@ -56,7 +56,7 @@ exports.profile_get = async function (req, res) {
             let profile = await dbRead.getProfile(req.query.username);
             res.status(200).send(profile); // OK
         } catch {
-            res.status(500).send(WRITE_FAILED); // Internal server error
+            res.status(500).send(SEARCH_FAILED); // Internal server error
         }
     } else {
         res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
@@ -74,7 +74,7 @@ exports.profile_picks_get = async function (req, res) {
             let picks = await dbRead.getPickHistory(req.query.username);
             res.status(200).send({ picks }); // OK
         } catch {
-            res.status(500).send(WRITE_FAILED); // Internal server error
+            res.status(500).send(SEARCH_FAILED); // Internal server error
         }
     } else {
         res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
@@ -92,7 +92,7 @@ exports.profile_tracker_get = async function (req, res) {
             let tracker = await dbRead.getTracker(req.query.username);
             res.status(200).send({ tracker }); // OK
         } catch {
-            res.status(500).send(WRITE_FAILED); // Internal server error
+            res.status(500).send(SEARCH_FAILED); // Internal server error
         }
     } else {
         res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
@@ -110,7 +110,7 @@ exports.profile_links_get = async function (req, res) {
             let links = await dbRead.getLinks(req.query.username);
             res.status(200).send(links); // OK
         } catch {
-            res.status(500).send(WRITE_FAILED); // Internal server error
+            res.status(500).send(SEARCH_FAILED); // Internal server error
         }
     } else {
         res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
@@ -127,7 +127,7 @@ exports.profile_picture_get = async function (req, res) {
             let url = await dbRead.getProfilePicture(req.query.username);
             res.status(200).json({ picture: url }); // OK
         } catch {
-            res.status(500).send(WRITE_FAILED); // Internal server error
+            res.status(500).send(SEARCH_FAILED); // Internal server error
         }
     } else {
         res.status(401).send(NOT_AUTHENTICATED); // Unauthorized (not logged in)
@@ -230,7 +230,7 @@ exports.profile_update_tracker_put = async function (req, res) {
     if (req.user) {
         // user is authenticated
         try {
-            let tracker = await dbUpdate.updateUserTracker(req.session.passport);
+            let tracker = await dbUpdate.updateUserTracker(req.body.username);
             res.status(200).send({ tracker }); // OK
         } catch (e) {
             console.error(e);
@@ -250,7 +250,7 @@ exports.profile_update_links_facebook_put = async function (req, res) {
         // user is authenticated
         try {
             let link = await dbUpdate.updateSocialMediaLink(req.session.passport, 'facebook', req.body['facebook']);
-            res.status(200).send( link ); // OK
+            res.status(200).send(link); // OK
         } catch {
             res.status(500).send(WRITE_FAILED); // Internal server error
         }
@@ -268,7 +268,7 @@ exports.profile_update_links_instagram_put = async function (req, res) {
         // user is authenticated
         try {
             let link = await dbUpdate.updateSocialMediaLink(req.session.passport, 'instagram', req.body['instagram']);
-            res.status(200).send( link ); // OK
+            res.status(200).send(link); // OK
         } catch {
             res.status(500).send(WRITE_FAILED); // Internal server error
         }
@@ -286,7 +286,7 @@ exports.profile_update_links_twitter_put = async function (req, res) {
         // user is authenticated
         try {
             let link = await dbUpdate.updateSocialMediaLink(req.session.passport, 'twitter', req.body['twitter']);
-            res.status(200).send( link ); // OK
+            res.status(200).send(link); // OK
         } catch {
             res.status(500).send(WRITE_FAILED); // Internal server error
         }

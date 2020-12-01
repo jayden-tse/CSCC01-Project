@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './ProfileSocial.css';
 
 const EDIT = 'Edit',
   SAVE = 'Save',
@@ -50,10 +51,18 @@ class ProfileSocial extends Component {
   }
 }
 
+function HTTPSPrefix(link){
+    //if http or https is in string
+    if(/(http(s?)):\/\//i.test(link)){
+        return link;   
+    }
+    return 'https://' + link;
+}
+
 function SocialLink(props) {
   return (
     <div>
-      <a target="_blank" href={props.link}>
+      <a className="ProfileSocialClickable" target="_blank" href={HTTPSPrefix(props.link)}>
         {props.link}
       </a>
     </div>
@@ -62,9 +71,9 @@ function SocialLink(props) {
 
 function SocialEditable(props) {
   return (
-    <form className="ProfileSocialEditable">
+    <form className="ProfileSocialEditable" onSubmit={event => event.preventDefault()}>
       <input
-        className="ProfileSociableEditableText"
+        className="ProfileSocialEditableMessage"
         onChange={(e) => props.onChange(e, props.id)}
         defaultValue={props.link}
       />
@@ -75,10 +84,10 @@ function SocialEditable(props) {
 function SocialSaveCancel(props) {
   return (
       <React.Fragment>
-        <button className="ProfileSociableEditableSave" onClick={props.onSave}>
+        <button className="ProfileSocialSave" onClick={props.onSave}>
             {SAVE}
         </button>
-        <button className="ProfileSociableEditableCancel" onClick={props.onCancel}>
+        <button className="ProfileSocialCancel" onClick={props.onCancel}>
             {CANCEL}
         </button>
     </React.Fragment>
@@ -86,7 +95,7 @@ function SocialSaveCancel(props) {
 }
 
 function SocialEdit(props) {
-    return <button onClick={props.onClick}>{EDIT}</button>;
+    return <button className="ProfileSocialEdit" onClick={props.onClick}>{EDIT}</button>;
 }
 
 export default ProfileSocial;

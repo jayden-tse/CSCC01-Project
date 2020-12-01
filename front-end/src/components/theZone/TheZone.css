@@ -1,11 +1,12 @@
 .TheZoneContainer {
   width:100%;
-  height:7vh;
+  height:48px;
   border: 1px solid #000000;
 }
 .redirect {
   width: 33.3%;
   font-size: 20px;
+  height:100%;
   white-space: nowrap;
 }
 

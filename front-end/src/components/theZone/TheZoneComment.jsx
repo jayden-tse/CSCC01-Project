@@ -1,5 +1,6 @@
 import React from 'react';
 import TheZoneAgree from "./TheZoneAgree";
+import './TheZoneComment.css';
 import { deleteComment } from '../../api/TheZoneCalls';
 
 class TheZoneComment extends React.Component {

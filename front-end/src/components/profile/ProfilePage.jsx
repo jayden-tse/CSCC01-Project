@@ -6,8 +6,8 @@ import ProfileStatus from './ProfileStatus';
 import ProfileRadar from './ProfileRadar';
 import ProfileSocial from './ProfileSocial';
 import { getProfile, updateUserAbout, updateUserPicture, addProfileTracker, 
-    deleteProfileTracker, updateUserStatus, updateLinkFacebook, updateLinkTwitter,
-    updateLinkInstagram } from '../../api/ProfileCalls.js';
+    deleteProfileTracker, updateProfileTracker, updateUserStatus, 
+    updateLinkFacebook, updateLinkTwitter, updateLinkInstagram } from '../../api/ProfileCalls.js';
 import './ProfilePage.css';
 
 /*note: currentUser is the user logged in currently
@@ -112,6 +112,9 @@ updateCurrentTracker(){
 }
 
 updateShownUser(){
+    //update acs of tracker viewed, you get next anyways so update state in getProfile
+    updateProfileTracker(this.props.wantedUser).catch(()=>{console.log('Error with updating tracker ACS');});
+
     //expect to get json object with ACS, acs change later
     getProfile(this.props.wantedUser).then((profile)=>{
         if(!profile.success){//throw if not successful
@@ -147,7 +150,7 @@ updateShownUser(){
         //will throw if somethings missing
             console.log(error);
             console.log('Error with profile response');
-            this.setState({ ACSError: true });
+            //this.setState({ ACSError: true });
     });
 }
 
@@ -231,21 +234,51 @@ componentDidUpdate(prevProps) {
           //if successful, change field in state based on database
           let tempLinks = [...this.state.Social];  // copy social
           tempLinks[0] = res.text;      // set wanted link in state
-          console.log(tempLinks);
           //copy array into state
           this.setState({ [`${SOCIAL}`]: [...tempLinks],
                           [`${SOCIAL}${EDIT}`]: [...tempLinks],
                           [`${SOCIAL}${MODE}`]: VIEW });
-      } else {
-          throw new Error(`Unsuccessful update to ${SOCIAL}`);
-      }
-  }).catch((error) => {
+        } else {
+            throw new Error(`Unsuccessful update to ${SOCIAL}`);
+        }
+    }).catch((error) => {
       //unsuccessful, therefore reset
       this.GenericHandleCancel(SOCIAL);
-  });
+    });
   // ----------Twitter link-----------
-
+    calls[SOCIAL][1](this.state[`${[SOCIAL][0]}${EDIT}`][1]).then((res) => {
+      if(res.success){
+          //if successful, change field in state based on database
+          let tempLinks = [...this.state.Social];  // copy social
+          tempLinks[1] = res.text;      // set wanted link in state
+          //copy array into state
+          this.setState({ [`${SOCIAL}`]: [...tempLinks],
+                          [`${SOCIAL}${EDIT}`]: [...tempLinks],
+                          [`${SOCIAL}${MODE}`]: VIEW });
+        } else {
+            throw new Error(`Unsuccessful update to ${SOCIAL}`);
+        }
+    }).catch((error) => {
+      //unsuccessful, therefore reset
+      this.GenericHandleCancel(SOCIAL);
+    });
   // -----------Instagram link---------
+    calls[SOCIAL][2](this.state[`${[SOCIAL][0]}${EDIT}`][2]).then((res) => {
+        if(res.success){
+            //if successful, change field in state based on database
+            let tempLinks = [...this.state.Social];  // copy social
+            tempLinks[2] = res.text;      // set wanted link in state
+            //copy array into state
+            this.setState({ [`${SOCIAL}`]: [...tempLinks],
+                            [`${SOCIAL}${EDIT}`]: [...tempLinks],
+                            [`${SOCIAL}${MODE}`]: VIEW });
+        } else {
+            throw new Error(`Unsuccessful update to ${SOCIAL}`);
+        }
+    }).catch((error) => {
+        //unsuccessful, therefore reset
+        this.GenericHandleCancel(SOCIAL);
+    });
     // this.setState({ Social: this.state.SocialEdit });
     // this.setState({ SocialMode: VIEW });
   }

@@ -6,6 +6,7 @@ const
     DELETE = 'DELETE',
     //get
     GETPROFILE = '/profile',
+    GETPROFILEPICTURE = '/profile/picture',
     //update
     UPDATEPICTURE = '/profile/update/picture',
     UPDATEABOUT = '/profile/update/about',
@@ -15,7 +16,8 @@ const
     UPDATELINKINSTAGRAM = '/profile/update/links/instagram',
     //tracker
     ADDTRACKER = '/profile/add/tracker',
-    DELETETRACKER = '/profile/delete/tracker';
+    DELETETRACKER = '/profile/delete/tracker',
+    UPDATETRACKER = '/profile/update/tracker';
 
 //ensure status fields have no overlap with profile in db
 const statusDef = { success: false, reason: '' };
@@ -38,6 +40,13 @@ export async function updateUserAbout(about) {
 /*ACS*/
 
 /*Profile Picture*/
+export async function getUserPicture(username) {
+    let newUrl = new URL(BASE_URL + GETPROFILEPICTURE);
+    const params = { username: username };
+    newUrl.search = new URLSearchParams(params).toString();
+    return await fetchJson(newUrl, fetchOptionsGet());
+}
+
 export async function updateUserPicture(src) {
     let newUrl = new URL(BASE_URL + UPDATEPICTURE);
     const params = { picture: src };
@@ -55,6 +64,12 @@ export async function deleteProfileTracker(username){
     let newUrl = new URL(BASE_URL + DELETETRACKER);
     const params = { username: username };
     return await fetchText(newUrl, fetchOptionsWithBody(DELETE, params));
+}
+
+export async function updateProfileTracker(username){
+    let newUrl = new URL(BASE_URL + UPDATETRACKER);
+    const params = { username: username };
+    return await fetchJson(newUrl, fetchOptionsWithBody(PUT, params));
 }
 
 /*Social*/

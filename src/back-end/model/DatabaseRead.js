@@ -25,7 +25,7 @@ passport.use(new LocalStrategy(
             });
     }
 ));
-passport.serializeUser(function (user, done) {
+passport.serializeUser(function(user, done) {
     done(null, user.username);
 });
 
@@ -134,7 +134,7 @@ class DatabaseRead {
 
     passwordChecker(password, hashedPassword) {
         let state = bcrypt.compareSync(password, hashedPassword);
-        return state;
+        return state
     }
 }
 
