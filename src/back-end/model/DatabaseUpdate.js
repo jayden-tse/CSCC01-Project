@@ -252,8 +252,8 @@ class DatabaseUpdate {
     }
 
     async updateQuestion(id, question, answer, other) {
-        let question = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "question": question });
-        if (question === null) {
+        let findQuestion = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "question": question });
+        if (findQuestion === null) {
             let result = await mongoConnect.getDBCollection(QUESTIONS).updateOne({ "_id": ObjectId(id) }, {
                 $set: {
                     "question": question,
