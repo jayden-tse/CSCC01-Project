@@ -127,17 +127,23 @@ router.delete('/profile/delete/tracker', profileController.profile_tracker_del);
 
 /* TRIVIA */
 
-// Create questions
-router.put('/trivia/create/question', triviaController.questions_put);
+// Create question
+router.put('/trivia/create/question', triviaController.question_put);
 
-// Get questions
-router.get('/trivia/question', triviaController.questions_get);
+// Get 10 random questions
+router.get('/trivia/question/10', triviaController.question_random_10_get);
 
-// Update questions
-router.put('/trivia/update/question', triviaController.questions_update_put);
+// Get all questions
+router.get('/trivia/question/all', triviaController.question_all_get);
 
-// Delete questions
-router.delete('/trivia/delete/question', triviaController.questions_del);
+// Update question
+router.put('/trivia/update/question', triviaController.question_update_put);
+
+// Delete question
+router.delete('/trivia/delete/question', triviaController.question_del);
+
+// Calculate ACS after a Solo Trivia game
+router.put('/trivia/update/ACS/solo', triviaController.update_acs_solo);
 
 /* PICKS & PREDICTIONS */
 
@@ -231,4 +237,5 @@ router.delete('/thezone/delete/post', thezoneController.the_zone_post_del);
 
 // Delete the zone comment
 router.delete('/thezone/delete/comment', thezoneController.the_zone_comment_del);
+
 module.exports = router;

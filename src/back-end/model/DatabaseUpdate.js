@@ -1,7 +1,7 @@
 var mongoConnect = require('../../mongoConnect');
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, QUESTIONS } = require('./DatabaseHelper');
 const DatabaseRead = require('./DatabaseRead');
 const dbRead = new DatabaseRead();
 class DatabaseUpdate {
@@ -51,10 +51,11 @@ class DatabaseUpdate {
         return message;
     }
 
-    async updateACS(username, ACS) {
-        await mongoConnect.getDBCollection(USERS).updateOne({ "username": username }, {
+    async updateACS(req, ACS) {
+        let username = { 'username': req.user };
+        await mongoConnect.getDBCollection(USERS).updateOne(username, {
             $set: {
-                "profile.ACS": ACS
+                'profile.ACS': ACS
             }
         });
         return ACS;
@@ -191,7 +192,7 @@ class DatabaseUpdate {
             // nonempty post
             let comment = await dbRead.getComment(postId, commentId);
             if (comment) {
-                // nonempty list of comments was found and comment was found
+                // nonempty list of news was found and comment was found
                 // start modifying comment likes/dislikes etc
                 let agreed = comment.usersagreed;
                 let disagreed = comment.usersdisagreed;
@@ -247,6 +248,27 @@ class DatabaseUpdate {
 
                 }
             }
+        }
+    }
+
+    async updateQuestion(id, question, answer, other) {
+        let findQuestion = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "question": question });
+        if (findQuestion === null) {
+            let result = await mongoConnect.getDBCollection(QUESTIONS).updateOne({ "_id": ObjectId(id) }, {
+                $set: {
+                    "question": question,
+                    "answer": answer,
+                    "other": other
+                }
+            });
+            if (result.matchedCount > 0) {
+                let updatedQuestion = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "_id": ObjectId(id) });
+                return updatedQuestion;
+            } else {
+                return 0;
+            }
+        } else {
+            return null;
         }
     }
 

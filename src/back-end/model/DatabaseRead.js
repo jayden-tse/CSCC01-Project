@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 var passport = require('passport');
 
-const { USERS, POSTS } = require('./DatabaseHelper');
+const { USERS, POSTS, QUESTIONS } = require('./DatabaseHelper');
 
 const ObjectId = require('mongodb').ObjectID; // used to search by Id
 
@@ -29,7 +29,7 @@ passport.serializeUser(function(user, done) {
     done(null, user.username);
 });
 
-passport.deserializeUser(function(username, done) {
+passport.deserializeUser(function (username, done) {
     done(null, mongoConnect.getDBCollection(USERS).findOne({ "username": username }));
 });
 
@@ -60,10 +60,14 @@ class DatabaseRead {
         return result.profile.links;
     }
 
+    async getACS(username) {
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username });
+        return result.profile.ACS;
+    }
     async getAllPosts(req) {
         const posts = [];
         const cursor = await mongoConnect.getDBCollection(POSTS).find(req);
-        await cursor.forEach(function(doc) {
+        await cursor.forEach(function (doc) {
             posts.push(doc._id);
         });
         return posts;
@@ -74,7 +78,7 @@ class DatabaseRead {
         const cursor = await mongoConnect.getDBCollection(POSTS).find({
             _id: ObjectId(req)
         });
-        await cursor.forEach(function(doc) {
+        await cursor.forEach(function (doc) {
             posts.push(doc);
         });
         return posts;
@@ -94,6 +98,26 @@ class DatabaseRead {
             }
         }
         return null;
+    }
+
+    async getQuestions10() {
+        let questions = await this.getQuestionsAll();
+        let questions10 = new Set();
+        while (questions10.size < 10) {
+            let rand = Math.floor(Math.random() * questions.length);
+            questions10.add(questions[rand]);
+        }
+
+        return Array.from(questions10);
+    }
+
+    async getQuestionsAll() {
+        let questions = [];
+        let cursor = await mongoConnect.getDBCollection(QUESTIONS).find();
+        await cursor.forEach(function (question) {
+            questions.push(question);
+        });
+        return questions;
     }
 
     async findUsername(username) {
