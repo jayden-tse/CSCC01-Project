@@ -27,16 +27,16 @@ export async function getPreseason() {
     return await fetchList(newUrl, fetchOptionsGet());
   }
 
-  export async function updateUserDaily(matchid, username, team) {
+  export async function updateUserDaily(matchid, team) {
     let newUrl = new URL(BASE_URL + UPDATEUSERDAILY);
-    const params = { matchid: matchid, username: username, team:team };
+    const params = { matchid: matchid, team:team };
     newUrl.search = new URLSearchParams(params).toString();
     return await fetchJson(newUrl, fetchOptionsWithBody(PUT, params));
   }
 
-  export async function updateUserPlayoffs(matchid, username, team) {
+  export async function updateUserPlayoffs(matchid, team) {
     let newUrl = new URL(BASE_URL + UPDATEUSERPLAYOFF);
-    const params = { matchid: matchid, username: username, team:team };
+    const params = { matchid: matchid, team:team };
     newUrl.search = new URLSearchParams(params).toString();
     return await fetchText(newUrl, fetchOptionsWithBody(PUT, params));
   }

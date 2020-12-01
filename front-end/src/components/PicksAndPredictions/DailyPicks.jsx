@@ -33,7 +33,7 @@ class DailyPicks extends Component {
         }
 
         //change picked option for user here
-        updateUserDaily(id, this.props.currentUser, option).then((res)=>{
+        updateUserDaily(id, option).then((res)=>{
             if(!res.success){
                 throw new Error();
             }
