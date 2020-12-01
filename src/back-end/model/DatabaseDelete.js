@@ -29,6 +29,10 @@ class DatabaseDelete {
         return result;
     }
 
+    async deleteCollectionContent(collection) {
+        return await mongoConnect.getDBCollection(collection).deleteMany({});
+    }
+
     async deleteQuestion(question) {
         let result = await mongoConnect.getDBCollection(QUESTIONS).deleteOne({ "question": question });
         return result.deletedCount;

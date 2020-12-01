@@ -37,20 +37,20 @@ router.put('/user/update/phonenum', userController.user_update_phonenum_put);
 
 // Send user password recovery email
 router.put(
-  '/user/send/password',
-  userController.user_send_new_password_recovery_email
+    '/user/send/password',
+    userController.user_send_new_password_recovery_email
 );
 
 // Send user new email confirmation email
 router.put(
-  '/user/send/email',
-  userController.user_send_new_email_confirmation_email
+    '/user/send/email',
+    userController.user_send_new_email_confirmation_email
 );
 
 // Send user new phone number sms
 router.put(
-  '/user/send/phonenum',
-  userController.user_send_new_phonenum_confirmation_sms
+    '/user/send/phonenum',
+    userController.user_send_new_phonenum_confirmation_sms
 );
 
 /* SIGNUP */
@@ -91,8 +91,8 @@ router.get('/profile/links', profileController.profile_links_get);
 
 // Update profile picture
 router.put(
-  '/profile/update/picture',
-  profileController.profile_update_picture_put
+    '/profile/update/picture',
+    profileController.profile_update_picture_put
 );
 
 // Update profile about
@@ -100,14 +100,14 @@ router.put('/profile/update/about', profileController.profile_update_about_put);
 
 // Update profile status
 router.put(
-  '/profile/update/status',
-  profileController.profile_update_status_put
+    '/profile/update/status',
+    profileController.profile_update_status_put
 );
 
 // Update profile tracker
 router.put(
-  '/profile/update/tracker',
-  profileController.profile_update_tracker_put
+    '/profile/update/tracker',
+    profileController.profile_update_tracker_put
 );
 
 // Update profile ACS
@@ -149,26 +149,26 @@ router.put('/trivia/update/ACS/solo', triviaController.update_acs_solo);
 
 // Create matches
 router.put(
-  '/picksandpredictions/create/match',
-  pickspredictionsController.matches_put
+    '/picksandpredictions/create/match',
+    pickspredictionsController.matches_put
 );
 
 // Get matches
 router.get(
-  '/picksandpredictions/match',
-  pickspredictionsController.matches_get
+    '/picksandpredictions/match',
+    pickspredictionsController.matches_get
 );
 
 // Update matches
 router.put(
-  '/picksandpredictions/update/match',
-  pickspredictionsController.matches_update_put
+    '/picksandpredictions/update/match',
+    pickspredictionsController.matches_update_put
 );
 
 // Delete matches
 router.delete(
-  '/picksandpredictions/delete/match',
-  pickspredictionsController.matches_del
+    '/picksandpredictions/delete/match',
+    pickspredictionsController.matches_del
 );
 
 /* DEBATE */
@@ -178,33 +178,27 @@ router.put('/debates/create/topic', debateController.debate_topics_put);
 
 // Create debate submission
 router.put(
-  '/debates/create/submission',
-  debateController.debate_submission_put
+    '/debates/create/submission',
+    debateController.debate_submission_put
 );
 
-// Get debate topics
+// Get debate topic for a user
 router.get('/debates/topic', debateController.debate_topics_get);
 
-// Get debate submission
+// Get debate submission for any user (query)
 router.get('/debates/submission', debateController.debate_submission_get);
 
-// Get debate submission time limit
-router.get(
-  '/debates/submission/time',
-  debateController.debate_submission_time_limit_get
-);
-
-// Update debate topics
-router.put('/debates/update/topic', debateController.debate_update_topics_put);
+// Get all debate submissions within the user's tier
+router.get('/debates/submission/all', debateController.debate_submission_get_all);
 
 // Update debate submission score
 router.put(
-  '/debates/submission/update/score',
-  debateController.debate_submission_update_score_put
+    '/debates/submission/update/score',
+    debateController.debate_submission_update_score_put
 );
 
-// Delete debate topics
-router.delete('/debates/delete/topic', debateController.debate_topics_del);
+// TEMP: Reset debate analyses + get new topics
+router.get('/debates/daily', debateController.debate_daily);
 
 /* THE ZONE */
 
@@ -237,5 +231,4 @@ router.delete('/thezone/delete/post', thezoneController.the_zone_post_del);
 
 // Delete the zone comment
 router.delete('/thezone/delete/comment', thezoneController.the_zone_comment_del);
-
 module.exports = router;

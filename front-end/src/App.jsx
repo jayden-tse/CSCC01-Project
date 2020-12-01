@@ -174,7 +174,8 @@ class App extends React.Component {
         page = (
           <div>
             {this.singleTopNavBar()}
-            <DebatePage />
+            <DebatePage
+              currentUser={this.state.currentUser} />
           </div>
         );
       } else if (this.state.currentPage === 'Profile') {

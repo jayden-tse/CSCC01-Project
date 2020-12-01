@@ -5,6 +5,7 @@ import TheZoneAgree from "./TheZoneAgree";
 import TheZoneComment from "./TheZoneComment";
 import { getPost, deletePost } from '../../api/TheZoneCalls';
 
+
 class TheZonePost extends React.Component {
   constructor(props) {
     super(props);
@@ -52,7 +53,7 @@ class TheZonePost extends React.Component {
         comments: commentList
       })
     })
-  }
+	}
 
 
   handleDelete() {
@@ -114,7 +115,6 @@ class TheZonePost extends React.Component {
             />
           </div>
         </div>
-
       </div>
     );
   }
