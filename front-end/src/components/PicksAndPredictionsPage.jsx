@@ -2,6 +2,7 @@ import React from 'react';
 import DailyPicks from './PicksAndPredictions/DailyPicks';
 import PreseasonPicks from './PicksAndPredictions/PreseasonPicks';
 import PlayoffPicks from './PicksAndPredictions/PlayoffPicks';
+import './PicksAndPredictions.css';
 
 const DAILY='Daily Picks',
     PRESEASON='Preseason Picks',
@@ -34,7 +35,7 @@ class PicksAndPredictionsPage extends React.Component {
   }
   
   render() {
-    return (<div>
+    return (<div className="PicksContainer">
                 <ScreenChanger value={this.state.screen} handleChange={this.handleScreenChange}/>
                 <h1 className="PicksHeader">{this.state.screen}</h1>
                 {this.selectScreen()}

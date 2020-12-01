@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './SinglePick.css';
 
 //states for daily pick
 const PICKABLE='pickable', ONGOING='ongoing', COMPLETED='completed';
@@ -6,7 +7,9 @@ const PICKABLE='pickable', ONGOING='ongoing', COMPLETED='completed';
 class SinglePick extends Component {
     //will have buttons to select pick
     renderPickable(){
-        return (<div>
+        return (<span className='pickRender'>
+                    Make Your Pick!
+                    <br/>
                     <input
                         className="PickRadio"
                         type="radio"
@@ -23,12 +26,12 @@ class SinglePick extends Component {
                         checked={this.props.picked === this.props.option2}
                         />
                     {this.props.option2}
-                </div>);
+                </span>);
     }
 
     //will have your pick and an 'ongoing' message
     renderOngoing(){
-        return (<span>
+        return (<span className='pickRender'>
                 Currently Ongoing<br/>
                 Your Pick: {this.props.picked}
                 </span>);
@@ -36,7 +39,7 @@ class SinglePick extends Component {
 
     //show result of the pick, and any acs gained/lost
     renderCompleted(){
-        return (<span>
+        return (<span className='pickRender'>
             Result: {this.props.result}<br/>
             Your Pick: {this.props.picked}<br/>
             {this.props.ACSChange} ACS Gained
@@ -59,15 +62,19 @@ class SinglePick extends Component {
 
     render() { 
         return(
-            <div>
-                <div>
+            <div className='PickContainer'>
+                <div className='PickImages'>
                     <img alt={this.props.option1}/>
                     VS
                     <img alt={this.props.option2}/>
                 </div>
-                {this.props.matchTime}
-                <br/>
-            {this.selectRender()}
+                <div className='PickSideOption'>
+                    {this.props.matchDate}
+                    <br/>
+                    {this.props.matchTime}
+                    <br/>
+                    {this.selectRender()}
+                </div>
             </div>
         );
     }

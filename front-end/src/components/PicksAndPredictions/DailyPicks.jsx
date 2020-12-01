@@ -87,7 +87,8 @@ class DailyPicks extends Component {
             option2={data.team2}
             pickState={this.pickStateForMatch(data.date, data.start, data.end)}
             picked={this.getUserPickSingle(data.picks)}
-            matchTime={`${this.formatDate(data.date,data.start).toDateString()} ${data.start}-${data.end} EST`}
+            matchDate={`${this.formatDate(data.date,data.start).toDateString()}`}
+            matchTime={`${data.start}-${data.end} EST`}
             //change later
             result={data.team1}
             ACSChange={this.getUserACSChange(data.picks, data.team1)}
@@ -98,7 +99,7 @@ class DailyPicks extends Component {
     }
 
     render() { 
-        return <div>
+        return <div className="DailyList">
            {this.formatList()}
         </div>;
     }

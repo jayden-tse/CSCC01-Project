@@ -1,0 +1,18 @@
+.PickContainer{
+    padding-bottom:30px;
+    display: grid;
+    /* grid-gap: 5px; */
+    grid-template-columns: auto 300px 300px auto;
+    grid-template-rows: 100%;
+    grid-template-areas:
+      '. imgs side .';
+    font-size: 30px;
+}
+
+.PickImages{
+    grid-area: imgs;
+}
+
+.PickSideOption{
+    grid-area: side;
+}
