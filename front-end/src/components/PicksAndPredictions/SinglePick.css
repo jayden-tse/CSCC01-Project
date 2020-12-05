@@ -1,0 +1,70 @@
+.PickContainer{
+    padding-bottom:30px;
+    display: grid;
+    grid-template-columns: auto 300px 40px 300px auto;
+    grid-template-rows: 30px 180px;
+    grid-template-areas:
+        '. time time time .'
+        '. imgs . side .';
+    font-size: 30px;
+}
+
+.PickImages{
+    grid-area: imgs;
+    display: grid;
+    grid-template-columns: 10px 100px 80px 100px 10px;
+    grid-template-rows: 30px 40px 30px 30px;
+    grid-template-areas:
+      '. img1 . img2 .'
+      '. img1 vs img2 .'
+      '. img1 . img2 .'
+      '. lab1 . lab2 .';
+}
+
+.PickSideOption{
+    grid-area: side;
+    padding-top: 20px;
+}
+
+.PickTime{
+    grid-area: time;
+}
+
+.PickVS{
+    grid-area: vs;
+    text-align: center;
+}
+
+.PickImage1, .PickImage2{
+    width:100px;
+    height:100px;
+    padding-top: 5px;
+}
+
+.PickImage1{
+    grid-area: img1;
+}
+
+.PickImage2{
+    grid-area: img2;
+}
+
+.PickLabel1{
+    grid-area: lab1;
+    text-align: center;
+}
+
+.PickLabel2{
+    grid-area: lab2;
+    text-align: center;
+}
+
+.PickRadio{
+    width:2.5em;
+    height:2.5em;
+}
+
+.PRLabel1,.PRLabel2{
+    font-weight: bold;
+    font-size: 40px;
+}

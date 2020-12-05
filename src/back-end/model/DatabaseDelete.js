@@ -1,6 +1,7 @@
+const { ObjectId } = require('mongodb');
 var mongoConnect = require('../../mongoConnect');
 
-const { USERS, POSTS, QUESTIONS } = require('./DatabaseHelper');
+const { USERS, POSTS, DAILY, PRESEASON, QUESTIONS } = require('./DatabaseHelper');
 
 class DatabaseDelete {
 
@@ -27,6 +28,32 @@ class DatabaseDelete {
             }
         })
         return result;
+    }
+
+    async deleteDailyMatches(matchid) {
+        let result = await mongoConnect.getDBCollection(DAILY).deleteOne({ "_id": ObjectId(matchid) });
+        return result.deletedCount;
+    }
+
+    async deleteAllMatches(collection) {
+        let result = await mongoConnect.getDBCollection(collection).deleteMany({});
+        return result.result.n;
+    }
+
+    async deleteAllUserPreseasonObjects() {
+        let cursor = await mongoConnect.getDBCollection(USERS).find();
+        await cursor.forEach(async function (user) {
+            await mongoConnect.getDBCollection(USERS).updateOne(user, {
+                $unset: {
+                    "profile.preseasonPicks": ""
+                }
+            });
+        });
+    }
+
+    async deletePreseasonAwards(season) {
+        let result = await mongoConnect.getDBCollection(PRESEASON).deleteOne({ "season": season });
+        return result.deletedCount;
     }
 
     async deleteCollectionContent(collection) {

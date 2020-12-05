@@ -7,11 +7,13 @@ const saltRounds = 10;
 const Profile = require('./Profile.js');
 const Post = require('./Post.js');
 const Comment = require('./Comment.js');
+const Match = require('./Match.js');
+
+const { USERS, POSTS, PRESEASON, QUESTIONS, FANALYST, A, DEBATES } = require('./DatabaseHelper');
 const Debate = require('./Debate.js');
 const Analysis = require('./Analysis.js')
 
 const DatabaseRead = require('./DatabaseRead.js');
-const { USERS, POSTS, QUESTIONS, FANALYST, A, DEBATES } = require('./DatabaseHelper');
 const { WRITE_FAILED } = require('../controller/StatusMessages');
 const Question = require('./Question.js');
 const ObjectId = require('mongodb').ObjectID;
@@ -53,7 +55,7 @@ class DatabaseCreate {
             text: 'Your SportCred account has been created successfully.'
         };
 
-        transporter.sendMail(mailOptions, function(error, info) {
+        transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.log(error);
             } else {
@@ -104,11 +106,44 @@ class DatabaseCreate {
         let post = { "_id": ObjectId(postId) };
         let result = await mongoConnect.getDBCollection(POSTS).updateOne(
             post, {
-                $push: {
-                    comments: comment
-                }
-            });
+            $push: {
+                comments: comment
+            }
+        }
+        );
         return result;
+    }
+
+    async createMatch(collection, team1, team2, start, end, date) {
+        let newMatch = new Match(team1, team2, start, end, date, []);
+        let result = await mongoConnect.getDBCollection(collection).findOne(newMatch)
+        if (result === null) {
+            await mongoConnect.getDBCollection(collection).insertOne(newMatch);
+            let match = await mongoConnect.getDBCollection(collection).findOne(newMatch);
+            return match;
+        } else {
+            return null;
+        }
+    }
+
+    async createPreseasonObject(username, preseasonPicks) {
+        await mongoConnect.getDBCollection(USERS).updateOne({ "username": username }, {
+            $set: {
+                "profile.preseasonPicks": preseasonPicks
+            }
+        });
+        let result = await mongoConnect.getDBCollection(USERS).findOne({ "username": username });
+        return result;
+    }
+
+    async createPreseasonAwards(preseasonAwards) {
+        let result = await mongoConnect.getDBCollection(PRESEASON).findOne({ "SEASON": preseasonAwards.season });
+        if (result === null) {
+            await mongoConnect.getDBCollection(PRESEASON).insertOne(preseasonAwards);
+            return preseasonAwards;
+        } else {
+            return null;
+        }
     }
 
     // Debate
