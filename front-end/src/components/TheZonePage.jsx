@@ -13,7 +13,8 @@ class TheZonePage extends React.Component {
           redirectToOpenCourt={this.props.redirectToOpenCourt}
           redirectToPicksAndPredictions={this.props.redirectToPicksAndPredictions}
           redirectToTrivia={this.props.redirectToTrivia}
-          currentUser={this.props.currentUser}/>
+          currentUser={this.props.currentUser}
+          handleViewProfile={this.props.handleViewProfile}/>
       </div>
     )
   }

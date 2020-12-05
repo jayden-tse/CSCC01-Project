@@ -146,6 +146,7 @@ class App extends React.Component {
               redirectToDebate={this.redirectToDebate}
               redirectToPicksAndPredictions={this.redirectToPicksAndPredictions}
               redirectToTrivia={this.redirectToTrivia}
+              handleViewProfile={this.handleViewProfile}
             />
           </div>
         );
@@ -176,7 +177,8 @@ class App extends React.Component {
         page = (
           <div>
             {this.singleTopNavBar()}
-            <DebatePage />
+            <DebatePage
+              currentUser={this.state.currentUser} />
           </div>
         );
       } else if (this.state.currentPage === 'Profile') {

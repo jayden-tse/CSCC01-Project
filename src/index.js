@@ -11,11 +11,15 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const router = require('./routes');
 
+const schedule = require('node-schedule');
+const DatabaseUpdate = require('./back-end/model/DatabaseUpdate');
+const dbUpdate = new DatabaseUpdate();
+
 var passport = require('passport');
 
 async function main() {
     try {
-        mongoConnect.connectToServer(function(err, client) {
+        mongoConnect.connectToServer(function (err, client) {
             if (err) console.log(err);
             app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
             app.use(bodyParser.json());
@@ -35,6 +39,13 @@ async function main() {
             app.listen(port, () => {
                 console.log(`Example app listening at http://localhost:${port}`)
             });
+
+            // https://www.npmjs.com/package/node-schedule
+            // uncomment code below to set up daily resets for debates
+            // let daily = schedule.scheduleJob('* 0 * * *', async function() {
+            //     console.log("New day, set up new questions.");
+            //     await dbUpdate.updateDaily();
+            // });
         });
     } catch (e) {
         console.error(e);

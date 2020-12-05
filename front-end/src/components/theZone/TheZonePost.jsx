@@ -4,6 +4,8 @@ import TheZoneCreateComment from "./TheZoneCreateComment";
 import TheZoneAgree from "./TheZoneAgree";
 import TheZoneComment from "./TheZoneComment";
 import { getPost, deletePost } from '../../api/TheZoneCalls';
+import AccessProfileText from '../general/AccessProfileText.jsx';
+
 
 class TheZonePost extends React.Component {
   constructor(props) {
@@ -52,7 +54,7 @@ class TheZonePost extends React.Component {
         comments: commentList
       })
     })
-  }
+	}
 
 
   handleDelete() {
@@ -86,7 +88,7 @@ class TheZonePost extends React.Component {
             <TheZoneAgree postid={this.props.postid} mode="post" />
             <div className="titleContainer">
               <h1 className="title">{this.state.title}</h1>
-              <p>Posted by <span>{this.state.poster}</span> on <span>{this.state.date}</span></p>
+              <p>Posted by <AccessProfileText username={this.state.poster} handleViewProfile={this.props.handleViewProfile}/> on <span>{this.state.date}</span></p>
             </div>
           </div>
           {deleteButton}
@@ -106,6 +108,7 @@ class TheZonePost extends React.Component {
                 text={comment.text}
                 removeComment={this.removeComment}
                 currentUser={this.props.currentUser}
+                handleViewProfile={this.props.handleViewProfile}
               />
             )}
             <TheZoneCreateComment
@@ -114,7 +117,6 @@ class TheZonePost extends React.Component {
             />
           </div>
         </div>
-
       </div>
     );
   }

@@ -9,7 +9,7 @@ const dbUpdate = new DatabaseUpdate();
 const dbRead = new DatabaseRead();
 
 
-exports.profile_add_picks_put = async function (req, res) {
+exports.profile_add_picks_put = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -27,7 +27,7 @@ exports.profile_add_picks_put = async function (req, res) {
     }
 };
 
-exports.profile_add_user_tracker_put = async function (req, res) {
+exports.profile_add_user_tracker_put = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -45,7 +45,7 @@ exports.profile_add_user_tracker_put = async function (req, res) {
     }
 };
 
-exports.profile_get = async function (req, res) {
+exports.profile_get = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -63,7 +63,7 @@ exports.profile_get = async function (req, res) {
     }
 };
 
-exports.profile_picks_get = async function (req, res) {
+exports.profile_picks_get = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -81,7 +81,7 @@ exports.profile_picks_get = async function (req, res) {
     }
 };
 
-exports.profile_tracker_get = async function (req, res) {
+exports.profile_tracker_get = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -99,7 +99,7 @@ exports.profile_tracker_get = async function (req, res) {
     }
 };
 
-exports.profile_links_get = async function (req, res) {
+exports.profile_links_get = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -117,7 +117,7 @@ exports.profile_links_get = async function (req, res) {
     }
 }
 
-exports.profile_picture_get = async function (req, res) {
+exports.profile_picture_get = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -134,11 +134,11 @@ exports.profile_picture_get = async function (req, res) {
     }
 };
 
-exports.profile_update_picture_put = function (req, res) {
+exports.profile_update_picture_put = function(req, res) {
     res.send('NOT IMPLEMENTED');
 };
 
-exports.profile_update_about_put = async function (req, res) {
+exports.profile_update_about_put = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -160,7 +160,7 @@ exports.profile_update_about_put = async function (req, res) {
     }
 };
 
-exports.profile_update_status_put = async function (req, res) {
+exports.profile_update_status_put = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -182,7 +182,7 @@ exports.profile_update_status_put = async function (req, res) {
     }
 };
 
-exports.profile_update_picture_put = async function (req, res) {
+exports.profile_update_picture_put = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -204,7 +204,7 @@ exports.profile_update_picture_put = async function (req, res) {
     }
 };
 
-exports.profile_update_ACS_put = async function (req, res) {
+exports.profile_update_ACS_put = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -222,7 +222,7 @@ exports.profile_update_ACS_put = async function (req, res) {
     }
 };
 
-exports.profile_update_tracker_put = async function (req, res) {
+exports.profile_update_tracker_put = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -241,7 +241,7 @@ exports.profile_update_tracker_put = async function (req, res) {
     }
 };
 
-exports.profile_update_links_facebook_put = async function (req, res) {
+exports.profile_update_links_facebook_put = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -259,7 +259,7 @@ exports.profile_update_links_facebook_put = async function (req, res) {
     }
 };
 
-exports.profile_update_links_instagram_put = async function (req, res) {
+exports.profile_update_links_instagram_put = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -277,7 +277,7 @@ exports.profile_update_links_instagram_put = async function (req, res) {
     }
 };
 
-exports.profile_update_links_twitter_put = async function (req, res) {
+exports.profile_update_links_twitter_put = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -295,7 +295,7 @@ exports.profile_update_links_twitter_put = async function (req, res) {
     }
 };
 
-exports.profile_tracker_del = async function (req, res) {
+exports.profile_tracker_del = async function(req, res) {
     res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'http://localhost:3000'

@@ -8,9 +8,17 @@ const Profile = require('./Profile.js');
 const Post = require('./Post.js');
 const Comment = require('./Comment.js');
 const Match = require('./Match.js');
+
+const { USERS, POSTS, PRESEASON, QUESTIONS, FANALYST, A, DEBATES } = require('./DatabaseHelper');
+const Debate = require('./Debate.js');
+const Analysis = require('./Analysis.js')
+
+const DatabaseRead = require('./DatabaseRead.js');
+const { WRITE_FAILED } = require('../controller/StatusMessages');
+const Question = require('./Question.js');
 const ObjectId = require('mongodb').ObjectID;
 
-const { USERS, POSTS, PRESEASON } = require('./DatabaseHelper');
+const dbRead = new DatabaseRead();
 
 // Business email from which users will get the confirmation.
 const transporter = nodemailer.createTransport({
@@ -30,7 +38,8 @@ class DatabaseCreate {
         // Only store this user in the database if there exists no other accounts with
         // the same phone numbers and email.
         // default image
-        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 200, { facebook: '', instagram: '', twitter: '' });
+        let debate = await dbRead.getRandomDebateQuestion(FANALYST);
+        let userProfile = new Profile('https://storage.googleapis.com/sample-bucket-sc/image1.jpg', '', '', questionnaire, [], [], 200, { facebook: '', instagram: '', twitter: '' }, debate, FANALYST, 0);
         user.profile = userProfile;
         let hashedPassword = this.passwordHasher(user.password);
         user.password = hashedPassword;
@@ -137,6 +146,38 @@ class DatabaseCreate {
         }
     }
 
+    // Debate
+    async createDebateQuestion(tier, question) {
+        // Only for creating the questions, normal users shouldn't have access to this when website is live
+        //      for demo purposes, any user will be able to make questions
+        // Prereq's: tier is an actual tier (Fanalyst, Analyst, Expert/Pro Analyst)
+        let debate = new Debate(tier, question);
+        await mongoConnect.getDBCollection(DEBATES).insertOne(debate);
+    }
+
+    async createAnalysis(username, tier, question, answer) {
+        // user, tier, question, answer, score, voters, numvoters
+        let analysis = new Analysis(username, tier, question, answer, 0, [], 0);
+        let collection = tier + A; // e.g. fanalyst collection = "Fanalyst A"
+        if (await mongoConnect.getDBCollection(collection).findOne({ username: username })) {
+            return null;
+        } else {
+            return await mongoConnect.getDBCollection(collection).insertOne(analysis);
+        }
+    }
+
+    // Trivia
+    async createQuestion(question, answer, other) {
+        let result = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "question": question });
+        if (result === null) {
+            let newQuestion = new Question(question, answer, other);
+            await mongoConnect.getDBCollection(QUESTIONS).insertOne(newQuestion);
+            let findQuestion = await mongoConnect.getDBCollection(QUESTIONS).findOne({ "question": question });
+            return findQuestion;
+        } else {
+            return null;
+        }
+    }
 }
 
 module.exports = DatabaseCreate;

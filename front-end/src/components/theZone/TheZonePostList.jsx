@@ -52,7 +52,8 @@ class TheZonePostList extends React.Component {
             key={id.toString()}
             postid={id}
             currentUser={this.props.currentUser}
-            removePost={this.removePost} />)}
+            removePost={this.removePost}
+            handleViewProfile={this.props.handleViewProfile} />)}
       </div>
     );
   }

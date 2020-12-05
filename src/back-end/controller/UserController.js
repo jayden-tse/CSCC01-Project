@@ -11,7 +11,7 @@ exports.user_check_username_get = async function (req, res) {
     try {
         let newUsername = await dbRead.findUsername(req.query.username);
         if (newUsername !== null) {
-            res.status(400).send(USERNAME_EXISTS);
+            res.status(409).send(USERNAME_EXISTS);
         } else {
             res.sendStatus(200);
         }
@@ -24,7 +24,7 @@ exports.user_check_email_get = async function (req, res) {
     try {
         let newEmail = await dbRead.findEmail(req.query.email);
         if (newEmail !== null) {
-            res.status(400).send(EMAIL_EXISTS);
+            res.status(409).send(EMAIL_EXISTS);
         } else {
             res.sendStatus(200);
         }
@@ -37,7 +37,7 @@ exports.user_check_phonenum_get = async function (req, res) {
     try {
         let newNum = await dbRead.findPhoneNum(req.query.phonenum);
         if (newNum !== null) {
-            res.status(400).send(PHONENUM_EXISTS);
+            res.status(409).send(PHONENUM_EXISTS);
         } else {
             res.sendStatus(200);
         }
@@ -47,6 +47,10 @@ exports.user_check_phonenum_get = async function (req, res) {
 };
 
 exports.user_update_password_put = async function (req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    });
     if (req.user) {
         // user is authenticated
         try {
@@ -62,6 +66,10 @@ exports.user_update_password_put = async function (req, res) {
 };
 
 exports.user_update_email_put = async function (req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    });
     if (req.user) {
         // user is authenticated
         try {
@@ -70,7 +78,7 @@ exports.user_update_email_put = async function (req, res) {
                 await dbUpdate.updateUser(req.session.passport, 'email', req.body.email);
                 res.sendStatus(200); // OK
             } else {
-                res.status(400).send(EMAIL_EXISTS);
+                res.status(409).send(EMAIL_EXISTS);
             }
         } catch {
             res.status(500).send(WRITE_FAILED); // Internal server error
@@ -81,6 +89,10 @@ exports.user_update_email_put = async function (req, res) {
 };
 
 exports.user_update_phonenum_put = async function (req, res) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    });
     if (req.user) {
         // user is authenticated
         try {
@@ -89,7 +101,7 @@ exports.user_update_phonenum_put = async function (req, res) {
                 await dbUpdate.updateUser(req.session.passport, 'phonenum', req.body.phonenum);
                 res.sendStatus(200); // OK
             } else {
-                res.status(400).send(PHONENUM_EXISTS);
+                res.status(409).send(PHONENUM_EXISTS);
             }
         } catch {
             res.status(500).send(WRITE_FAILED); // Internal server error

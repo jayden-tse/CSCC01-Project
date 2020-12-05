@@ -143,8 +143,6 @@ updateShownUser(){
         //change current follow list if you're getting current user
         if(this.props.editable){
             this.setState({CurrentFollowList: profile.tracker})
-        } else {
-            this.updateCurrentFollowing();
         }
     }).catch((error) => {
         //will throw if somethings missing
@@ -152,6 +150,9 @@ updateShownUser(){
             console.log('Error with profile response');
             //this.setState({ ACSError: true });
     });
+
+    this.updateCurrentTracker();
+    this.updateCurrentFollowing();
 }
 
 recieveSocial(json){
