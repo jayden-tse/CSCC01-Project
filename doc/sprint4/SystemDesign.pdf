@@ -1,0 +1,984 @@
+﻿Team Yes
+CSCC01H3 F - Introduction to Software Engineering
+Ilir Dema
+
+
+________________
+
+
+Table of Contents
+
+
+CRC Cards
+Back End
+Front end
+Signup
+Login
+Profile
+The Zone
+Trivia
+Debate
+Picks And Predictions
+Nav Bar
+General
+Deprecated
+MVC Architecture
+
+
+________________
+
+
+CRC Cards
+Back End
+
+
+Acs.js
+	Responsibilities
+* Handles ACS computations
+	Collaborators
+* DatabaseHelper.js
+	
+
+User.js
+	Responsibilities
+* Contains personal and administrative information for the account
+   * Knows username
+   * Knows password
+   * Connected to a Profile
+   * Knows phone number
+   * Knows email
+	Collaborators
+* Profile.js
+	
+
+Profile.js
+	Responsibilities
+* Contains shared information along with app-generated info of the account
+   * Knows the profile picture
+   * Knows about
+   * Knows status
+   * Knows ACS
+   * Knows questionnaire answers
+   * Has a list of picks
+   * Has a tracker of other Users
+   * Knows their debate question
+   * Knows their debate tier
+   * Knows how many times user has voted
+	Collaborators
+* User.js
+	
+
+Comment.js
+	Responsibilities
+* Used to hold a comment for a specific post (stored under their respective post)
+* Contains information on comments for The Zone
+   * Knows its object id
+   * Knows its username
+   * Knows the date it was posted
+   * Knows text
+   * Knows number of agrees
+   * Knows number of disagrees
+   * Knows the users who agreed
+   * Knows the users who disagreed
+
+
+	Collaborators
+
+
+
+
+	
+
+
+
+Match.js
+	Responsibilities
+* Used for picks and predictions to store into the database
+* Stores necessary information of a sport match for a daily pick
+   * Knows team1
+   * Knows team2
+   * Knows date
+   * Knows start time
+   * Knows end time
+   * Knows users and their picks
+
+
+	Collaborators
+
+
+
+
+	
+
+
+
+Post.js
+	Responsibilities
+* Used for storing Posts in the Zone into the database
+* Stores necessary information for posts
+   * Knows username
+   * Knows the date it was posted
+   * Knows content
+   * Knows number of agrees
+   * Knows number of disagrees
+   * Knows the users who agreed
+   * Knows the users who disagreed
+   * Knows Comments
+
+
+	Collaborators
+* Comment.js
+
+
+	
+
+
+
+Question.js
+	Responsibilities
+* Used in Trivia to store questions into the database
+* Stores necessary information for questions
+   * Knows the question
+   * Knows the correct answer
+   * Knows other answers (incorrect)
+
+
+	Collaborators
+
+
+
+
+	
+
+
+
+Debate.js
+	Responsibilities
+* Used in Debates to store questions into the database
+* Stores necessary information for debates
+   * Knows tier
+   * Knows question
+
+
+	Collaborators
+
+
+
+
+	
+
+
+
+DebateController.js
+	Responsibilities
+* Handles all HTTP requests to the debate module
+* Has logic to parse the HTTP requests
+* Verify data before sending to model
+
+
+	Collaborators
+* DatabaseCreate.js
+* DatabaseRead.js
+* DatabaseUpdate.js
+* DatabaseDelete.js
+
+
+	
+
+
+
+LoginController.js
+	Responsibilities
+* Handles all HTTP requests to the login module
+* Has logic to parse the HTTP requests
+* Verify data before sending to model to authenticate user
+
+
+	Collaborators
+* DatabaseCreate.js
+* DatabaseRead.js
+* DatabaseUpdate.js
+* DatabaseDelete.js
+
+
+	
+
+TheZoneController.js
+	Responsibilities
+* Handles all HTTP requests to the Zone module
+* Has logic to parse the HTTP requests
+* Verify data before sending to model
+	Collaborators
+* DatabaseCreate.js
+* DatabaseRead.js
+* DatabaseUpdate.js
+* DatabaseDelete.js
+
+
+	
+
+
+
+UserController.js
+	Responsibilities
+* Handles all HTTP requests to the user module
+* Has logic to parse the HTTP requests
+* Verify data before sending to model
+	Collaborators
+* DatabaseCreate.js
+* DatabaseRead.js
+* DatabaseUpdate.js
+* DatabaseDelete.js
+
+
+	
+
+ProfileController.js
+	Responsibilities
+* Handles all HTTP requests to the profile module
+* Has logic to parse the HTTP requests
+* Verify data before sending to model
+	Collaborators
+* DatabaseCreate.js
+* DatabaseRead.js
+* DatabaseUpdate.js
+* DatabaseDelete.js
+
+
+	
+
+SignupController.js
+	Responsibilities
+* Handles all HTTP requests to the profile module
+* Has logic to parse the HTTP requests
+* Verify data before sending to model
+	Collaborators
+* DatabaseCreate.js
+* DatabaseRead.js
+* DatabaseUpdate.js
+* DatabaseDelete.js
+
+
+	
+
+TriviaController.js
+	Responsibilities
+* Handles all HTTP requests to the trivia module
+* Has logic to parse the HTTP requests
+* Verify data before sending to model
+	Collaborators
+* DatabaseCreate.js
+* DatabaseRead.js
+* DatabaseUpdate.js
+* DatabaseDelete.js
+
+
+	
+
+PicksPredictionsController.js
+	Responsibilities
+* Handles all HTTP requests to the picks and predictions module
+* Has logic to parse the HTTP requests
+* Verify data before sending to model
+	Collaborators
+* DatabaseCreate.js
+* DatabaseRead.js
+* DatabaseUpdate.js
+* DatabaseDelete.js
+
+
+	
+
+DatabaseCreate.js
+	Responsibilities
+* Handles any request to create documents in the database.
+	Collaborators
+* DatabaseRead.js
+* DatabaseUpdate.js
+* DatabaseHelper.js
+* User.js
+	
+
+DatabaseRead.js
+	Responsibilities
+* Handles any request to read documents in the database.
+	Collaborators
+* DatabaseHelper.js
+	
+
+DatabaseUpdate.js
+	Responsibilities
+* Handles any request to update existing documents in the database.
+	Collaborators
+* DatabaseRead.js
+* DatabaseDelete.js
+* DatabaseHelper.js
+	
+
+DatabaseDelete.js
+	Responsibilities
+* Handles any request to delete existing documents in the database.
+	Collaborators
+	
+
+
+
+DatabaseHelper.js
+	Responsibilities
+* Helps the other Database classes by providing constants.
+	Collaborators
+	
+
+StatusMessages.js
+	Responsibilities
+* Contains status messages for responses the controller classes will use.
+	Collaborators
+	
+
+
+
+
+
+Front end 
+App.jsx
+	Responsibilities
+* Display different pages depending on state
+* Tracks current user logged in 
+	Collaborators
+* SignupPage.jsx
+* LoginPage.jsx
+* ProfilePage.jsx
+* OpenCourtPage.jsx
+* TheZonePage.jsx
+* TriviaPage.jsx
+* DebatePage.jsx
+* PicksAndPredictionsPage.jsx
+* TopNavBar.jsx
+	
+
+index.js
+	Responsibilities
+* Renders the App component (topmost level container of the application) into the html page that will be shown to the user
+	Collaborators
+* App.jsx
+	
+
+HttpClient.jsx
+	Responsibilities
+* Holds common information necessary for front to back end connection
+	Collaborators
+
+
+	
+
+Note: reportWebVitals.js, setupTests.js were auto-generated files from Create React App and are separate from the system design.
+
+
+Signup
+
+
+SignupCalls.js
+	Responsibilities
+* Send sign up information to backend server using HTTP to create a new account
+* Check if a username, phone, or email already exists
+	Collaborators
+* HttpClient.jsx
+	
+
+SignupPage.jsx
+	Responsibilities
+* Display the signup form
+* Send sign up information to SignupCalls to create a new account
+	Collaborators
+* SignupCalls.js
+	
+
+Login
+
+
+LoginCalls.js
+	Responsibilities
+* Call the backend server to login and authenticate user
+	Collaborators
+* HttpClient.jsx
+	
+
+LoginPage.jsx
+	Responsibilities
+* Display the login form
+* Sends the login details to the LoginCalls to log the user in
+	Collaborators
+* LoginCalls.js
+	
+
+Profile
+
+
+ProfileCalls.js
+	Responsibilities
+* Call the backend server to access the profile information of wanted user(s)
+* Call the backend server to edit profile information of the currently logged in user
+	Collaborators
+* HttpClient.jsx
+	
+
+ProfilePage.jsx
+	Responsibilities
+* Display the components in Profile
+* Know all information regarding a users profile as well as the current user
+* Give profile information to appropriate children
+* Call fetch to retrieve and send info in server
+* Receives and controls input from collaborators
+	Collaborators
+* ProfileCalls.js
+* ProfilePicture,jsx
+* ProfileAbout.jsx
+* ProfileStatus.jsx
+* ProfieACS.jsx
+* ProfileSocial.jsx
+* ProfileRadar.jsx
+	
+
+
+
+ProfilePicture.jsx
+	Responsibilities
+* Display the profile picture
+* Upload a profile picture from the user’s given link
+* Save changes to the profile picture
+	Collaborators
+* ProfilePage.jsx
+	
+
+
+
+
+
+ProfileAbout.jsx
+	Responsibilities
+* Display the about section in profile
+* Edit the about section
+* Save changes to the profile about
+	Collaborators
+* ProfilePage.jsx
+	
+
+
+
+ProfileStatus.jsx
+	Responsibilities
+* Display the profile status
+* Edit the profile status 
+* Save change to the profile status
+	Collaborators
+* ProfilePage.jsx
+	
+
+
+
+ProfileACS.jsx
+	Responsibilities
+* Display the ACS of the wanted user
+	Collaborators
+* ProfilePage.jsx
+	
+
+
+
+ProfileSocial.jsx
+	Responsibilities
+* Save links to social media of user
+* Display social media links of wanted user
+	Collaborators
+* ProfilePage.jsx
+	
+
+ProfileRadar.jsx
+	Responsibilities
+* Have button to allow follow/unfollow
+* Display a list of followed users with acs for a given users
+* Access other profiles on followed list
+	Collaborators
+* ProfilePage.jsx
+	
+
+
+
+The Zone
+
+
+TheZoneCalls.js
+	Responsibilities
+* Manages getting and sending posts datas from backend
+	Collaborators
+* HttpClient.jsx
+	
+
+
+
+
+
+TheZonePage.jsx
+	Responsibilities
+* Display the components for the zone
+	Collaborators
+* TheZone.jsx
+
+
+
+
+
+
+	
+
+
+
+TheZone.jsx
+	Responsibilities
+* Provides navigation to the other pages of the app
+* Display posts of users
+	Collaborators
+* TheZonePostList.jsx
+
+
+
+
+
+
+	
+
+
+
+TheZoneCreatePost.jsx
+	Responsibilities
+* Display the editor to create a Post 
+* Send input to TheZoneCalls
+	Collaborators
+* TheZoneCalls.js
+	
+
+
+
+TheZonePost.jsx
+	Responsibilities
+* Display the post components
+* Display the content of the post 
+* Get content of the post from the back end with TheZoneCalls
+* Send input to back end with TheZoneCalls
+	Collaborators
+* TheZoneCreateComment.jsx
+* TheZoneComment.jsx
+* TheZoneCalls.js
+* TheZoneAgree.jsx
+* AccessProfileText.jsx
+	
+
+
+
+
+
+TheZonePostList.jsx
+	Responsibilities
+* Get list of posts to display from the backend 
+* Add a post to front end if a post is created in the back end
+* Remove a post in the front end if it is removed from the back end
+	Collaborators
+* TheZoneCalls.js
+* TheZoneCreatePost.jsx
+	
+
+
+
+
+
+
+
+TheZoneCreateComment.jsx
+	Responsibilities
+* Display the editor to create a comment
+* Send input to TheZoneCalls
+	Collaborators
+* TheZoneCalls.js
+	
+
+
+
+
+
+TheZoneComment.jsx
+	Responsibilities
+* Display comments to a post
+* Get comments to a post from TheZoneCalls
+	Collaborators
+* TheZoneCalls.js
+* TheZoneAgree.jsx
+* AccessProfileText.jsx
+	
+
+
+
+
+
+TheZoneAgree.jsx
+	Responsibilities
+* Display votes of a post/comment
+* Get votes for a post/comment from TheZoneCalls
+* Display buttons to vote on a post/comment
+* Submit and update votes for a post/comment with TheZoneCalls
+	Collaborators
+* TheZoneCalls.js
+	
+
+Trivia
+
+
+TriviaCalls.js
+	Responsibilities
+* Makes HTTP requests to the backend for Trivia related data
+   * Get 10 trivia questions
+   * Get an answer to a trivia question
+   * Update ACS based on a player’s answers to the 10 trivia questions and return the new ACS
+   * Create a trivia question and store in backend
+   * Read all trivia questions in the backend
+   * Update a trivia question in the backend
+   * Delete a trivia question in the backend
+	Collaborators
+* HttpClient.jsx
+	
+
+TriviaPage.jsx
+	Responsibilities
+* The container for displaying the Trivia game
+   * Mostly the CSS for page dimensions and alignment of elements
+	Collaborators
+* Trivia.jsx
+	
+
+Trivia.jsx
+	Responsibilities
+* Manages game state and which screen of the game to show according to the state
+   * In other words, the container for all the smaller Trivia components and controls their props
+* Uses TriviaCalls to load/send Trivia data back to the backend to keep it updated on the current game state
+	Collaborators
+* TriviaStart.jsx
+* LoadingScreen.jsx
+* TriviaGame.jsx
+* TriviaResults.jsx
+* TriviaCalls.js
+	
+
+
+
+TriviaStart.jsx
+	Responsibilities
+* The main menu / start screen of Trivia
+   * Gives user the option to choose between a Solo game or Head to Head game
+   * Optionally display any errors that prevent the game from continuing normally
+	Collaborators
+	
+
+
+
+TriviaGame.jsx
+	Responsibilities
+* Displays each Trivia question in sequence, providing how much time there is for previewing a question and answering one
+* Records the player’s answer to each Trivia question
+	Collaborators
+* TriviaQuestion.jsx
+	
+
+
+
+TriviaQuestion.jsx
+	Responsibilities
+* Displays a single Trivia question and their answers so a player can answer a Trivia question
+   * Randomizes the order of the answers using functionality provided from utilities
+* Manages the timers for previewing a question and selecting an answer
+* Communicates whether the player selected a correct or incorrect answer
+	Collaborators
+* utilities.js
+	
+
+
+
+TriviaResults.jsx
+	Responsibilities
+* Displays the results of a Trivia game
+   * Number of correct answers out of the total number of questions
+   * The updated ACS
+* Lets the player Play Again
+* Lets the player go back to the Main Menu / Start
+	Collaborators
+
+
+	
+
+
+
+Debate
+
+
+DebateCalls.js
+	Responsibilities
+* Manages sending and receiving questions and answers for Debate
+	Collaborators
+* HttpClient.jsx
+	
+
+DebatePage.jsx
+	Responsibilities
+* Display the components in Debate
+	Collaborators
+* Debate.jsx
+	
+
+
+
+Debate.jsx
+	Responsibilities
+* Get the current topic for the debate for the user from DebateCalls
+* Display the list of posts
+	Collaborators
+* DebatePostList.jsx
+* DebateCalls.jsx
+	
+
+
+
+DebateCreatePost.jsx
+	Responsibilities
+* Display the editor to create a post for debate
+* Get the current debate topic from DebateCalls
+* Send input to DebateCalls
+	Collaborators
+* DebateCalls.jsx
+	
+
+
+
+DebatePost.jsx
+	Responsibilities
+* Display the debate post components
+* Get the datas for the answer to a debate from DebateCalls
+	Collaborators
+* DebateCalls.jsx
+* DebateAgree.jsx
+	
+
+DebateAgree.jsx
+	Responsibilities
+* Display percentage of people agree with the post
+* Get  percentage of people agree with the post from DebateCalls
+* Get ACS gained from debate post from DebateCalls
+* Display ACS gained from debate post
+* Display slider from 0-100 and button to agree on a scale 
+* Send user input to DebateCalls and update the agree percentage on front end
+	Collaborators
+* DebateCalls.jsx
+	
+
+
+
+DebatePostList.jsx
+	Responsibilities
+* Display the list of posts in a debate
+* Get group of posts to display from back-end with DebateCalls
+* Add a post to the list when post is successfully created by the user
+	Collaborators
+* DebateCalls.jsx
+* DebatePostGroup.jsx
+* DebateCreatePost.jsx
+	
+
+
+
+DebatePostGroup.jsx
+	Responsibilities
+* Display the list of posts in the group and a divider between the groups
+	Collaborators
+* DebatePost.jsx
+	
+
+Picks And Predictions
+
+
+PicksCalls.js
+	Responsibilities
+* Manages sending and receiving picks and predictions of current user
+	Collaborators
+* HttpClient.jsx
+	
+
+PicksAndPredictionsPage.jsx
+	Responsibilities
+* Display the components in Picks and Predictions
+	Collaborators
+* DailyPicks.jsx
+* PreseasonPicks.jsx
+* PlayOffPicks.jsx
+	
+
+
+
+DailyPicks.jsx
+	Responsibilities
+* Display the list of daily picks
+* Get the list of matches for the day from PicksCalls
+	Collaborators
+* PicksCalls.js
+* SinglePick.jsx
+	
+
+
+
+SinglePick.jsx
+	Responsibilities
+* Display the match user is to pick from
+   * Shows date & time of match
+   * Teams that are playing
+* Allow user to choose their prediction of match winner before the match starts
+* Show match ongoing during the time the match is scheduled
+* Show the winner of the match after the game is complete
+	Collaborators
+
+
+
+
+	
+
+
+
+PreseasonPicks.jsx
+	Responsibilities
+* Display the components for preseason picks during preseason
+* Sends user input to PicksCalls to keep track of player picks
+* Get data from PicksCalls to display NBA preseason data for picks
+
+
+	Collaborators
+* PicksCalls.js
+
+
+	
+
+
+
+PlayoffPicks.jsx
+	Responsibilities
+* Display the components for playoff  during NBA playoff
+* Sends user input to PicksCalls to keep track of player picks
+
+
+	Collaborators
+* PicksCalls.js
+* PlayoffBracket.jsx
+
+
+	
+
+
+
+PlayoffBracket.jsx
+	Responsibilities
+* Display the playoff bracket during NBA playoff
+* Sends user input to PicksCalls to keep track of bracket picks
+* Get results of the playoff bracket form PicksCalls
+	Collaborators
+* PicksCalls.js
+	
+
+Nav Bar
+
+
+TopNavBar.jsx
+	Responsibilities
+* Display the logo
+* Display the button to go back to the zone
+* Display the current user logged in
+	Collaborators
+* CurrentUser.jsx
+	
+
+
+
+CurrentUser.jsx
+	Responsibilities
+* Display the current user’s name and picture
+* Display a dropdown menu when clicked
+	Collaborators
+* DropdownButton.jsx
+
+
+	
+
+
+
+DropdownButton.jsx
+	Responsibilities
+* Display button to redirect to profile page
+* Display button to log out
+	Collaborators
+	General
+
+
+AccessProfile.jsx
+	Responsibilities
+* Allows users to be redirected to a certain profile by clicking their profile picture
+	Collaborators
+* App.jsx
+	
+
+
+
+AccessProfileText.jsx
+	Responsibilities
+* Allows users to be redirected to a certain profile by clicking their name
+	Collaborators
+* App.jsx
+	
+
+
+
+LoadingScreen.jsx
+	Responsibilities
+* Shows a loading screen containing descriptive text and a loading spinner
+	Collaborators
+	
+
+
+
+utilities.js
+	Responsibilities
+* Provides miscellaneous functions for manipulating data used in the front end
+   * Shuffling an array
+	Collaborators
+	Deprecated
+These components are no longer used but they are still in the repository since they weren’t removed in time.
+
+
+OpenCourtPage.jsx
+	Responsibilities
+	Collaborators
+	It’s purpose was moved to The Zone.
+
+
+ScoreTicker.jsx
+	Responsibilities
+* Displaying Live Game data and notifications for the user
+* Get data from the backend about live game data to display
+	Collaborators
+* TheZoneCalls.jsx
+	
+
+
+
+TheZoneAgreeScale.jsx
+	Responsibilities
+* Displays a scale from 0-100 to agree/disagree with a post and a button to submit
+* Send user input for agree percentage to the back end with TheZoneCalls
+* Get new agree percentage with TheZoneCalls to display on the front-end 
+	Collaborators
+* TheZoneCalls.jsx
+	Note: Refactored into DebateAgree 
+________________
+MVC Architecture
