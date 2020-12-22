@@ -1,5 +1,5 @@
-# project-yes
-project-yes created by GitHub Classroom
+# SPORTCRED
+SPORTCRED created by GitHub Classroom
 
 ## Commit Messages: ##
 When committing features, make sure to commit on your local branch.
